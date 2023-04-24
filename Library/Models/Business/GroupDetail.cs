@@ -8,13 +8,13 @@ namespace Library.Models.Business
     {
         [Required]
         [ForeignKey(typeof(Activity))]
-        public string? ActivityId { get; set; }
+        public string ActivityId { get; set; }
 
         [BsonIgnore]
         public Activity Activity { get; set; }
 
         [Required]
-        public string? GroupeName { get; set; }
+        public string GroupeName { get; set; }
 
         public List<Seance> Seances { get; set; }
 

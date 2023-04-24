@@ -11,9 +11,9 @@ namespace Library.Models
         public bool IsDisabled { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime CreationDate { get; set; }
+        public DateTime? CreationDate { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime UpdateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
     }
 }

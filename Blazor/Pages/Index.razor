@@ -1,48 +1,43 @@
 ﻿@page "/"
-@using Library.Models.Business
-@using Blazor.Services
-@inject FamilyCallApi FamilyCall
 
-<PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+<button class="btn btn-info btn-sm" @onclick="GenerateData">Generate Data</button>
+<button class="btn btn-danger btn-sm" @onclick="DropData">Drop Data</button>
 
-Welcome to your new app.
+<div class="container">
+    <div class="row">
 
-<SurveyPrompt Title="How is Blazor working for you?" />
-
-<button class="btn btn-info btn-sm" @onclick="AddFamily">Add Family</button>
-<button class="btn btn-danger btn-sm" @onclick="DropFamily">Drop Family</button>
-
-@if (Family != null)
-{
-
-    <div>@Family.Id</div>
-    <div>@Family.Name</div>
-    <div>@Family.CreationDate</div>
-
-}
-
-@code
-{
-    private Family? Family { get; set; }
-
-    private async Task AddFamily()
-    {
-        var family = new Family
+        <div class="col-6">
+            <button class="btn btn-dark btn-sm" @onclick="GetFullFamily">Get family and all his entities linked</button>
+            @if (Family != null)
             {
-                Name = "qsdxcxcv"
-            };
-
-        Family = await FamilyCall.CreateAsync(family).ConfigureAwait(false);
-        await InvokeAsync(StateHasChanged);
-
-    }
-
-    private async Task DropFamily()
-    {
-        await FamilyCall.DropCollectionAsync();
-        Family = null; 
-        await InvokeAsync(StateHasChanged);
-    }
-}
+                <li>
+                    <ul>@Family.Name</ul>
+                    <ul>@Family.Id</ul>
+                    <ul>
+                        <li>
+                            Children =
+                        </li>
+                        @foreach (var child in Family.Children)
+                        {
+                            <ul>@child.Id</ul>
+                        }
+                    </ul>
+                    <ul>
+                        <li>
+                            Parents =
+                        </li>
+                        @foreach (var parent in Family.Parents)
+                        {
+                            <ul>@parent.Id</ul>
+                            <ul>@parent.FirstName</ul>
+                        }
+                    </ul>
+                </li>
+            }
+        </div>
+        <div class="col-6">
+            <button class="btn btn-dark btn-sm" @onclick="GetFullParent">Get parent with his family linked</button>
+        </div>
+    </div>
+</div>

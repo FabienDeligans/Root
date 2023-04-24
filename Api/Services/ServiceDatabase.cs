@@ -39,33 +39,19 @@ namespace Api.Services
 
         public async Task<T> CreateAsync<T>(T entity) where T : IEntity
         {
-            try
-            {
-                await Collection<T>()
-                    .InsertOneAsync(entity)
-                    .ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                var error = e.Message;
-                throw;
-            }
+            await Collection<T>()
+                .InsertOneAsync(entity)
+                .ConfigureAwait(false);
+
             return entity;
         }
 
         public async Task<IEnumerable<T>> CreateManyAsync<T>(IEnumerable<T> entities) where T : IEntity
         {
-            try
-            {
-                await Collection<T>()
-                    .InsertManyAsync(entities)
-                    .ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                var error = e.Message;
-                throw;
-            }
+            await Collection<T>()
+                .InsertManyAsync(entities)
+                .ConfigureAwait(false);
+
             return entities;
         }
 
@@ -206,7 +192,7 @@ namespace Api.Services
 
         public void Dispose()
         {
-            
+
         }
     }
 }

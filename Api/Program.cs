@@ -23,6 +23,8 @@ namespace Api
             // Inscrit les couches Logic et Service dans l'injection de dépendance
             builder.Services.AddTransient<ServiceDatabase>();
             builder.Services.AddTransient<FamilyLogic>();
+            builder.Services.AddTransient<ParentLogic>();
+            builder.Services.AddTransient<ChildLogic>();
 
 
             var app = builder.Build();

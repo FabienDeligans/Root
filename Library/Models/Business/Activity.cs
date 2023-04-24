@@ -6,7 +6,7 @@ namespace Library.Models.Business
     public class Activity : Entity
     {
         [Required]
-        public string? ActivityNom { get; set; }
+        public string ActivityNom { get; set; }
 
         [BsonIgnore]
         public IEnumerable<Inscription>? Inscriptions { get; set; }

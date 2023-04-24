@@ -6,32 +6,34 @@ namespace Library.Models.Business
 {
     public class Child : Entity
     {
-        [Required] public string? FirstName { get; set; }
+        [Required] 
+        public string? FirstName { get; set; }
 
-        [Required] public string? LastName { get; set; }
+        [Required] 
+        public string? LastName { get; set; }
 
         [Required]
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime? BirthDay { get; set; }
+        public DateTime BirthDay { get; set; }
 
         [Required]
         [ForeignKey(typeof(Family))]
-        public string FamilyId { get; set; }
+        public string? FamilyId { get; set; }
 
-        [BsonIgnore] public Family Family { get; set; }
+        [BsonIgnore] 
+        public Family? Family { get; set; }
 
-        [BsonIgnore] public IEnumerable<Inscription>? Inscriptions { get; set; }
-
-        public int Age => GetAge();
+        [BsonIgnore] 
+        public IEnumerable<Inscription>? Inscriptions { get; set; }
 
         public int GetAge()
         {
             if (BirthDay != null)
             {
                 var today = DateTime.Today;
-                var age = today.Year - BirthDay.Value.Year;
+                var age = today.Year - BirthDay.Year;
 
-                if (BirthDay.Value.Date > today.AddYears(-age)) age--;
+                if (BirthDay.Date > today.AddYears(-age)) age--;
 
                 return age;
             }

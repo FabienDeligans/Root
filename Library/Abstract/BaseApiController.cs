@@ -30,7 +30,7 @@ namespace Library.Abstract
         [HttpPost("CreateAsync")]
         public virtual async Task<ActionResult<T>> CreateAsync(T entity)
         {
-            var result = await _apiLogic.CreateAsync(entity); 
+            var result = await _apiLogic.CreateAsync(entity);
             return new ActionResult<T>(result);
         }
 
@@ -38,24 +38,24 @@ namespace Library.Abstract
         public virtual async Task<ActionResult<IEnumerable<T>>> CreateManyAsync(IEnumerable<T> entities)
         {
             var result = await _apiLogic.CreateManyAsync(entities);
-            return new ActionResult<IEnumerable<T>> (result);
+            return new ActionResult<IEnumerable<T>>(result);
         }
 
         [HttpGet("GetAllAsync")]
         public virtual async Task<ActionResult<IEnumerable<T>>> GetAllAsync()
         {
             var result = await _apiLogic.GetAllAsync();
-            return new ActionResult<IEnumerable<T>>(result); 
+            return new ActionResult<IEnumerable<T>>(result);
         }
 
-        [HttpGet("GetOneFullAsync")]
+        [HttpGet("GetOneFullAsync/{id}")]
         public virtual async Task<ActionResult<T>> GetOneFullAsync(string id)
         {
-            var result = await _apiLogic.GetOneFullAsync(id); 
+            var result = await _apiLogic.GetOneFullAsync(id);
             return new ActionResult<T>(result);
         }
 
-        [HttpGet("GetOneSimpleAsync")]
+        [HttpGet("GetOneSimpleAsync/{id}")]
         public virtual async Task<ActionResult<T>> GetOneSimpleAsync(string id)
         {
             var result = await _apiLogic.GetOneSimpleAsync(id);
@@ -69,11 +69,11 @@ namespace Library.Abstract
             return new ActionResult<T>(result);
         }
 
-        [HttpDelete("DeleteOneAsync")]
+        [HttpDelete("DeleteOneAsync/{id}")]
         public virtual async Task<ActionResult> DeleteOneAsync(string id)
         {
             await _apiLogic.DeleteOneAsync(id);
-            return Ok(); 
+            return Ok();
         }
     }
 }

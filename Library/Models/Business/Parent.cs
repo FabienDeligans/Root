@@ -22,7 +22,7 @@ namespace Library.Models.Business
         public string? City { get; set; }
 
         [Required]
-        [Phone]
+        //[Phone]
         public string? Phone { get; set; }
 
         [Phone]
@@ -34,9 +34,9 @@ namespace Library.Models.Business
 
         [Required]
         [ForeignKey(typeof(Family))]
-        public string FamilyId { get; set; }
+        public string? FamilyId { get; set; }
 
         [BsonIgnore]
-        public Family Family { get; set; }
+        public Family? Family { get; set; }
     }
 }

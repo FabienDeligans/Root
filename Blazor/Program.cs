@@ -1,4 +1,4 @@
-using Blazor.Services;
+using Blazor.Provider;
 using Library.Settings;
 
 namespace Blazor
@@ -17,7 +17,9 @@ namespace Blazor
             builder.Services.Configure<SettingsCallApi>(builder.Configuration.GetSection("Api"));
 
             // Permet � FamilleCallApi d'apeller l'api
-            builder.Services.AddHttpClient<FamilyCallApi>();
+            builder.Services.AddHttpClient<FamilyProvider>();
+            builder.Services.AddHttpClient<ParentProvider>();
+            builder.Services.AddHttpClient<ChildProvider>();
 
 
             builder.Services.AddControllers().AddNewtonsoftJson();
