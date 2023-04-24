@@ -64,6 +64,6 @@ namespace Library.Interfaces
         /// <param name="id"></param>
         /// <returns></returns>
         Task<ActionResult> DeleteOneAsync(string id);
-
+        
     }
 }

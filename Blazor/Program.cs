@@ -19,6 +19,9 @@ namespace Blazor
             // Permet � FamilleCallApi d'apeller l'api
             builder.Services.AddHttpClient<FamilyCallApi>();
 
+
+            builder.Services.AddControllers().AddNewtonsoftJson();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

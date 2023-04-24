@@ -76,7 +76,7 @@ namespace Library.Abstract
                 .ReadAsStringAsync()
                 .ConfigureAwait(false);
 
-            return JsonConvert.DeserializeObject<IEnumerable<T>>(returnJson)!;
+            return JsonConvert.DeserializeObject<IEnumerable<T>>(returnJson);
         }
 
         public async Task<IEnumerable<T>?> GetAllAsync()
@@ -123,7 +123,8 @@ namespace Library.Abstract
                 .ReadAsStringAsync()
                 .ConfigureAwait(false);
 
-            return JsonConvert.DeserializeObject<T?>(returnJson);
+            return JsonConvert.DeserializeObject<T>(returnJson);
         }
+
     }
 }

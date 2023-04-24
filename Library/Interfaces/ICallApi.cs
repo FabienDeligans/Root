@@ -14,6 +14,5 @@ namespace Library.Interfaces
         Task<T?> GetOneSimpleAsync(string id);
         Task DeleteOneAsync(string id);
         Task<T> UpdateAsync(T entityUpdate);
-
     }
 }
