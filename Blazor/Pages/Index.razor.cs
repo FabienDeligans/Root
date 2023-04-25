@@ -18,9 +18,13 @@ namespace Blazor.Pages
 
         private Family? Family { get; set; }
         private Parent? Parent { get; set; }
+        private Child? Child { get; set; }
 
         private string FamilyId { get; set; }
         private string ParentId { get; set; }
+        private string ChildId { get; set; }
+
+        private string Error { get; set; }
         private async Task GenerateData()
         {
             var random = new Random();
@@ -31,6 +35,7 @@ namespace Blazor.Pages
 
             var families = new List<Family>();
             var parents = new List<Parent>();
+            var children = new List<Child>();
 
             for (var i = 0; i < nbFamilies; i++)
             {
@@ -38,8 +43,15 @@ namespace Blazor.Pages
                 {
                     Name = $"family_name_{i}"
                 };
-                family = await FamilyProvider.CreateAsync(family).ConfigureAwait(false);
-                families.Add(family);
+                try
+                {
+                    family = await FamilyProvider.CreateAsync(family).ConfigureAwait(false);
+                    families.Add(family);
+                }
+                catch (Exception e)
+                {
+                    Error = e.Message; 
+                }
 
                 for (var j = 0; j < nbParentsByFamily; j++)
                 {
@@ -58,7 +70,6 @@ namespace Blazor.Pages
                     ParentId = parent.Id;
                 }
 
-                var children = new List<Child>();
                 for (var j = 0; j < nbChildrenByFamily; j++)
                 {
                     var child = new Child
@@ -70,37 +81,64 @@ namespace Blazor.Pages
                     };
                     children.Add(child);
                 }
-                await ChildProvider.CreateManyAsync(children).ConfigureAwait(false);
             }
-            var result = await ParentProvider.CreateManyAsync(parents).ConfigureAwait(false);
-            parents = result.ToList(); 
+            var resultParent = await ParentProvider.CreateManyAsync(parents).ConfigureAwait(false);
+            parents = resultParent.ToList();
+
+            var resultChild = await ChildProvider.CreateManyAsync(children).ConfigureAwait(false);
+            children = resultChild.ToList();
 
             FamilyId = families.FirstOrDefault().Id;
-            ParentId = parents.FirstOrDefault().Id; 
+            ParentId = parents.FirstOrDefault().Id;
+            ChildId = children.FirstOrDefault().Id;
         }
 
         private async Task DropData()
         {
-            await FamilyProvider.DropCollectionAsync().ConfigureAwait(false);
-            await ParentProvider.DropCollectionAsync().ConfigureAwait(false);
-            await ChildProvider.DropCollectionAsync().ConfigureAwait(false);
+            try
+            {
+                await FamilyProvider.DropCollectionAsync().ConfigureAwait(false);
+                await ParentProvider.DropCollectionAsync().ConfigureAwait(false);
+                await ChildProvider.DropCollectionAsync().ConfigureAwait(false);
 
-            Family = null;
-            Parent = null;
-            FamilyId = "";
-            ParentId = ""; 
+                Family = null;
+                Parent = null;
+                Child = null;
+                FamilyId = "";
+                ParentId = "";
+                ChildId = "";
+            }
+            catch (Exception e)
+            {
+                Error = e.Message; 
+            }
         }
 
         private async Task GetFullFamily()
         {
-            Family = await FamilyProvider.GetOneFullAsync(FamilyId);
-            await InvokeAsync(StateHasChanged);
+            if (!string.IsNullOrWhiteSpace(FamilyId))
+            {
+                Family = await FamilyProvider.GetOneFullAsync(FamilyId);
+                await InvokeAsync(StateHasChanged);
+            }
         }
 
         private async Task GetFullParent()
         {
-            Parent = await ParentProvider.GetOneFullAsync(ParentId);
-            await InvokeAsync(StateHasChanged);
+            if (!string.IsNullOrWhiteSpace(ParentId))
+            {
+                Parent = await ParentProvider.GetOneFullAsync(ParentId);
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+
+        private async Task GetFullChild()
+        {
+            if (!string.IsNullOrWhiteSpace(ChildId))
+            {
+                Child = await ChildProvider.GetOneFullAsync(ChildId);
+                await InvokeAsync(StateHasChanged);
+            }
         }
     }
 }

@@ -1,6 +1,8 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net;
+using System.Net.Http.Json;
 using System.Net.Mime;
 using System.Text;
+using Amazon.Runtime.Internal;
 using Library.Interfaces;
 using Library.Models;
 using Library.Settings;
@@ -14,6 +16,7 @@ namespace Library.Abstract
     {
         protected readonly HttpClient _httpClient;
         protected readonly IOptions<SettingsCallApi> _options;
+        protected HttpResponseMessage Response { get; set; }
 
         public BaseCallApi(HttpClient client, IOptions<SettingsCallApi> options)
         {
@@ -27,9 +30,22 @@ namespace Library.Abstract
 
         public async Task DropCollectionAsync()
         {
-            await _httpClient
-                .DeleteAsync($@"DropCollectionAsync")
-                .ConfigureAwait(false);
+            try
+            {
+                Response = await _httpClient
+                        .DeleteAsync($@"DropCollectionAsync")
+                        .ConfigureAwait(false);
+
+                if (!Response.IsSuccessStatusCode)
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception)
+            {
+                var msg = await CatchError();
+                throw new Exception(msg);
+            }
         }
 
         public async Task<long> CountDataAsync()
@@ -47,19 +63,31 @@ namespace Library.Abstract
 
         public async Task<T> CreateAsync(T entity)
         {
-            var json = new StringContent(JsonSerializer.Serialize(entity), Encoding.UTF8, MediaTypeNames.Application.Json);
+            try
+            {
+                var json = new StringContent(JsonSerializer.Serialize(entity), Encoding.UTF8, MediaTypeNames.Application.Json);
 
-            using var response = await _httpClient
-                .PostAsync($@"CreateAsync", json)
-                .ConfigureAwait(false);
+                Response = await _httpClient
+                    .PostAsync($@"CreateAsync", json)
+                    .ConfigureAwait(false);
 
-            response.EnsureSuccessStatusCode();
+                if (!Response.IsSuccessStatusCode)
+                {
+                    throw new Exception(); 
+                }
 
-            var returnJson = await response.Content
-                .ReadAsStringAsync()
-                .ConfigureAwait(false);
+                var returnJson = await Response.Content
+                        .ReadAsStringAsync()
+                        .ConfigureAwait(false);
 
-            return JsonConvert.DeserializeObject<T>(returnJson);
+                return JsonConvert.DeserializeObject<T>(returnJson);
+            }
+            catch (Exception e)
+            {
+                var msg = await CatchError();
+                throw new Exception(msg);
+            }
+
         }
 
         public async Task<IEnumerable<T>> CreateManyAsync(IEnumerable<T> entities)
@@ -126,5 +154,35 @@ namespace Library.Abstract
             return JsonConvert.DeserializeObject<T>(returnJson);
         }
 
+        public async Task<string> CatchError()
+        {
+            var returnJson = await Response.Content
+                .ReadAsStringAsync()
+                .ConfigureAwait(false);
+
+            var errors = JsonConvert.DeserializeObject<ProblemDetailsWithErrors>(returnJson).Errors;
+
+            string msg = "";
+            foreach (var error in errors)
+            {
+                msg += $"{error.Key} : ";
+                for (var i = 0; i < errors.Values.Count; i++)
+                {
+                    var end = errors.Values.Count - 1 == i ? ";" : "- ";
+                    msg += $"{error.Value[i]} {end}";
+                }
+            }
+
+            return msg; 
+        }
+    }
+
+    public class ProblemDetailsWithErrors
+    {
+        public string Type { get; set; }
+        public string Title { get; set; }
+        public int Status { get; set; }
+        public string TraceId { get; set; }
+        public Dictionary<string, string[]> Errors { get; set; }
     }
 }
