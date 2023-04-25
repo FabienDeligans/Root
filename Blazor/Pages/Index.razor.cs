@@ -84,6 +84,11 @@ namespace Blazor.Pages
             await FamilyProvider.DropCollectionAsync().ConfigureAwait(false);
             await ParentProvider.DropCollectionAsync().ConfigureAwait(false);
             await ChildProvider.DropCollectionAsync().ConfigureAwait(false);
+
+            Family = null;
+            Parent = null;
+            FamilyId = "";
+            ParentId = ""; 
         }
 
         private async Task GetFullFamily()

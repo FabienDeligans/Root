@@ -1,43 +1,62 @@
 ﻿@page "/"
 
+<p>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6">
+                <button class="btn btn-info btn-sm" @onclick="GenerateData">Generate Data</button>
+                <button class="btn btn-danger btn-sm" @onclick="DropData">Drop Data</button>
+            </div>
+        </div>
+    </div>
+</p>
 
-<button class="btn btn-info btn-sm" @onclick="GenerateData">Generate Data</button>
-<button class="btn btn-danger btn-sm" @onclick="DropData">Drop Data</button>
+<p>
+    <div class="container-fluid">
+        <div class="row">
 
-<div class="container">
-    <div class="row">
-
-        <div class="col-6">
-            <button class="btn btn-dark btn-sm" @onclick="GetFullFamily">Get family and all his entities linked</button>
-            @if (Family != null)
-            {
-                <li>
-                    <ul>@Family.Name</ul>
-                    <ul>@Family.Id</ul>
+            <div class="col-6">
+                <button class="btn btn-dark btn-sm" @onclick="GetFullFamily">Get family and all his entities linked</button>
+                @if (Family != null)
+                {
                     <ul>
-                        <li>
-                            Children =
-                        </li>
+                        <li>Family = </li>
+                        <ul>@Family.Name</ul>
+                        <ul>@Family.Id</ul>
+                    </ul>
+                    <ul>
+                        <li>Family.Children =</li>
                         @foreach (var child in Family.Children)
                         {
                             <ul>@child.Id</ul>
                         }
                     </ul>
                     <ul>
-                        <li>
-                            Parents =
-                        </li>
+                        <li>Family.Parents =</li>
                         @foreach (var parent in Family.Parents)
                         {
                             <ul>@parent.Id</ul>
-                            <ul>@parent.FirstName</ul>
                         }
                     </ul>
-                </li>
-            }
-        </div>
-        <div class="col-6">
-            <button class="btn btn-dark btn-sm" @onclick="GetFullParent">Get parent with his family linked</button>
+                }
+            </div>
+            <div class="col-6">
+                <button class="btn btn-dark btn-sm" @onclick="GetFullParent">Get parent with his family linked</button>
+                @if (Parent != null)
+                {
+                    <ul>
+                        <li>Parent = </li>
+                        <ul>@Parent.FirstName</ul>
+                        <ul>@Parent.Id</ul>
+                    </ul>
+                    <ul>
+                        <li>Parent.Family = </li>
+                        <ul>@Parent.Family.Name</ul>
+                        <ul>@Parent.Family.Id</ul>
+                    </ul>
+                }
+
+            </div>
         </div>
     </div>
-</div>
+</p>
