@@ -41,9 +41,9 @@ namespace Library.Abstract
                     throw new Exception();
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                var msg = await CatchError();
+                var msg = await CatchError(e);
                 throw new Exception(msg);
             }
         }
@@ -73,7 +73,7 @@ namespace Library.Abstract
 
                 if (!Response.IsSuccessStatusCode)
                 {
-                    throw new Exception(); 
+                    throw new Exception();
                 }
 
                 var returnJson = await Response.Content
@@ -84,7 +84,7 @@ namespace Library.Abstract
             }
             catch (Exception e)
             {
-                var msg = await CatchError();
+                var msg = await CatchError(e);
                 throw new Exception(msg);
             }
 
@@ -92,19 +92,27 @@ namespace Library.Abstract
 
         public async Task<IEnumerable<T>> CreateManyAsync(IEnumerable<T> entities)
         {
-            var json = new StringContent(JsonSerializer.Serialize(entities), Encoding.UTF8, MediaTypeNames.Application.Json);
+            try
+            {
+                var json = new StringContent(JsonSerializer.Serialize(entities), Encoding.UTF8, MediaTypeNames.Application.Json);
 
-            using var response = await _httpClient
-                .PostAsync($@"CreateManyAsync", json)
-                .ConfigureAwait(false);
+                using var response = await _httpClient
+                    .PostAsync($@"CreateManyAsync", json)
+                    .ConfigureAwait(false);
 
-            response.EnsureSuccessStatusCode();
+                response.EnsureSuccessStatusCode();
 
-            var returnJson = await response.Content
-                .ReadAsStringAsync()
-                .ConfigureAwait(false);
+                var returnJson = await response.Content
+                    .ReadAsStringAsync()
+                    .ConfigureAwait(false);
 
-            return JsonConvert.DeserializeObject<IEnumerable<T>>(returnJson);
+                return JsonConvert.DeserializeObject<IEnumerable<T>>(returnJson);
+            }
+            catch (Exception e)
+            {
+                var msg = await CatchError(e);
+                throw new Exception(msg);
+            }
         }
 
         public async Task<IEnumerable<T>?> GetAllAsync()
@@ -154,11 +162,16 @@ namespace Library.Abstract
             return JsonConvert.DeserializeObject<T>(returnJson);
         }
 
-        public async Task<string> CatchError()
+        public async Task<string> CatchError(Exception e)
         {
+            if (e is HttpRequestException)
+            {
+                return "pas de connection serveur";
+            }
+
             var returnJson = await Response.Content
-                .ReadAsStringAsync()
-                .ConfigureAwait(false);
+            .ReadAsStringAsync()
+            .ConfigureAwait(false);
 
             var errors = JsonConvert.DeserializeObject<ProblemDetailsWithErrors>(returnJson).Errors;
 
@@ -173,7 +186,7 @@ namespace Library.Abstract
                 }
             }
 
-            return msg; 
+            return msg;
         }
     }
 

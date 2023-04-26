@@ -1,5 +1,13 @@
 ﻿@page "/"
 
+
+@if (Error != "")
+{
+    <p>
+        <div class="alert-danger">@Error</div>
+    </p>
+}
+
 <p>
     <div class="container-fluid">
         <div class="row">

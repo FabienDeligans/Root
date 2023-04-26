@@ -24,7 +24,7 @@ namespace Blazor.Pages
         private string ParentId { get; set; }
         private string ChildId { get; set; }
 
-        private string Error { get; set; }
+        private string Error;
         private async Task GenerateData()
         {
             var random = new Random();
@@ -36,61 +36,63 @@ namespace Blazor.Pages
             var families = new List<Family>();
             var parents = new List<Parent>();
             var children = new List<Child>();
-
-            for (var i = 0; i < nbFamilies; i++)
+            try
             {
-                var family = new Family()
+
+                for (var i = 0; i < nbFamilies; i++)
                 {
-                    Name = $"family_name_{i}"
-                };
-                try
-                {
+                    var family = new Family()
+                    {
+                        //Name = $"family_name_{i}"
+                    };
                     family = await FamilyProvider.CreateAsync(family).ConfigureAwait(false);
                     families.Add(family);
-                }
-                catch (Exception e)
-                {
-                    Error = e.Message; 
-                }
 
-                for (var j = 0; j < nbParentsByFamily; j++)
-                {
-                    var parent = new Parent
+                    for (var j = 0; j < nbParentsByFamily; j++)
                     {
-                        FirstName = $"first_name_parent_{i}",
-                        LastName = $"last_name_parent_{i}",
-                        Address = $"address_parent_{i}",
-                        PostalCode = $"postal_code_parent_{i}",
-                        City = $"city_parent_{i}",
-                        Phone = $"00000000_{i}",
-                        Mail = $"mail@parent.{i}",
-                        FamilyId = family.Id
-                    };
-                    parents.Add(parent);
-                    ParentId = parent.Id;
-                }
+                        var parent = new Parent
+                        {
+                            FirstName = $"first_name_parent_{i}",
+                            LastName = $"last_name_parent_{i}",
+                            Address = $"address_parent_{i}",
+                            PostalCode = $"postal_code_parent_{i}",
+                            City = $"city_parent_{i}",
+                            Phone = $"00000000_{i}",
+                            Mail = $"mail@parent.{i}",
+                            FamilyId = family.Id
+                        };
+                        parents.Add(parent);
+                        ParentId = parent.Id;
+                    }
 
-                for (var j = 0; j < nbChildrenByFamily; j++)
-                {
-                    var child = new Child
+                    for (var j = 0; j < nbChildrenByFamily; j++)
                     {
-                        FirstName = $"first_name_child_{i}",
-                        LastName = $"last_name_child_{i}",
-                        BirthDay = new DateTime(1985, 01, 15),
-                        FamilyId = family.Id
-                    };
-                    children.Add(child);
+                        var child = new Child
+                        {
+                            FirstName = $"first_name_child_{i}",
+                            LastName = $"last_name_child_{i}",
+                            BirthDay = new DateTime(1985, 01, 15),
+                            FamilyId = family.Id
+                        };
+                        children.Add(child);
+                    }
+
                 }
+                var resultParent = await ParentProvider.CreateManyAsync(parents).ConfigureAwait(false);
+                parents = resultParent.ToList();
+
+                var resultChild = await ChildProvider.CreateManyAsync(children).ConfigureAwait(false);
+                children = resultChild.ToList();
+
+                FamilyId = families.FirstOrDefault().Id;
+                ParentId = parents.FirstOrDefault().Id;
+                ChildId = children.FirstOrDefault().Id;
             }
-            var resultParent = await ParentProvider.CreateManyAsync(parents).ConfigureAwait(false);
-            parents = resultParent.ToList();
-
-            var resultChild = await ChildProvider.CreateManyAsync(children).ConfigureAwait(false);
-            children = resultChild.ToList();
-
-            FamilyId = families.FirstOrDefault().Id;
-            ParentId = parents.FirstOrDefault().Id;
-            ChildId = children.FirstOrDefault().Id;
+            catch (Exception e)
+            {
+                Error = e.Message;
+                await InvokeAsync(StateHasChanged);
+            }
         }
 
         private async Task DropData()
@@ -110,7 +112,8 @@ namespace Blazor.Pages
             }
             catch (Exception e)
             {
-                Error = e.Message; 
+                Error = e.Message;
+                await InvokeAsync(StateHasChanged);
             }
         }
 
