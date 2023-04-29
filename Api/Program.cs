@@ -1,5 +1,5 @@
 using Api.Logics;
-using Api.Services;
+using Api.Services.MongoDb;
 using Library.Settings;
 
 namespace Api
@@ -21,7 +21,7 @@ namespace Api
             builder.Services.Configure<SettingsServiceMongoDb>(builder.Configuration.GetSection("MongoDatabase"));
 
             // Inscrit les couches Logic et Service dans l'injection de dépendance
-            builder.Services.AddTransient<ServiceDatabase>();
+            builder.Services.AddTransient<ServiceMongoDatabase>();
             builder.Services.AddTransient<FamilyLogic>();
             builder.Services.AddTransient<ParentLogic>();
             builder.Services.AddTransient<ChildLogic>();

@@ -6,15 +6,15 @@ using Library.Settings;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-namespace Api.Services
+namespace Api.Services.MongoDb
 {
-    public class ServiceDatabase : IApiServiceDatabase, IDisposable
+    public class ServiceMongoDatabase : IApiServiceDatabase, IDisposable
     {
         private IMongoClient Client { get; set; }
         private IMongoDatabase Database { get; set; }
         private string DatabaseName { get; set; }
 
-        public ServiceDatabase(IOptions<SettingsServiceMongoDb> settings)
+        public ServiceMongoDatabase(IOptions<SettingsServiceMongoDb> settings)
         {
             Client = new MongoClient(settings.Value.ConnectionString);
             Database = Client.GetDatabase(settings.Value.DatabaseName);
@@ -103,13 +103,13 @@ namespace Api.Services
                 foreach (var propertyInfo in properties)
                 {
                     var attributes = propertyInfo.GetCustomAttributes(true);
-                    foreach (var attribute in attributes.Where( v => v.GetType() == typeof(ForeignKeyAttribute)))
+                    foreach (var attribute in attributes.Where(v => v.GetType() == typeof(ForeignKeyAttribute)))
                     {
                         if (attribute is not ForeignKeyAttribute fkAttribute) continue;
                         var typeOfForeignKey = fkAttribute.TheType;
                         var valueOfForeignKey = propertyInfo.GetValue(entity);
 
-                        var methodInfo = this.GetType().GetMethod(nameof(GetOneAsync));
+                        var methodInfo = GetType().GetMethod(nameof(GetOneAsync));
                         var genericMethod = methodInfo?.MakeGenericMethod(typeOfForeignKey);
                         var task = (Task)genericMethod?.Invoke(this, new[] { valueOfForeignKey })!;
                         if (task == null) continue;
@@ -128,7 +128,7 @@ namespace Api.Services
             {
                 throw new Exception(e.Message);
             }
-            return (T)entity;
+            return entity;
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace Api.Services
                     var typeOfIEnumerable = propertyInfo.PropertyType.GenericTypeArguments;
 
                     // création de la méthode par réflexion
-                    var methodInfo = this.GetType().GetMethod(nameof(this.GetAllAsync));
+                    var methodInfo = GetType().GetMethod(nameof(this.GetAllAsync));
                     var genericMethod = methodInfo!.MakeGenericMethod(typeOfIEnumerable);
 
                     // exécution de la méthode
@@ -186,7 +186,7 @@ namespace Api.Services
             {
                 throw new Exception(e.Message);
             }
-            return (T)entity;
+            return entity;
         }
 
         public void Dispose()

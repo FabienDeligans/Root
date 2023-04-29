@@ -5,27 +5,27 @@ namespace Library.Abstract
 {
     public abstract class BaseApiLogic<T> : IApiLogic<T> where T : IEntity
     {
-        protected readonly IApiServiceDatabase _service;
+        protected readonly IApiServiceDatabase ServiceDatabase;
 
-        protected BaseApiLogic(IApiServiceDatabase service)
+        protected BaseApiLogic(IApiServiceDatabase serviceDatabase)
         {
-            _service = service;
+            ServiceDatabase = serviceDatabase;
         }
 
         public virtual async Task DropCollectionAsync()
         {
-            await _service.DropCollectionAsync<T>();
+            await ServiceDatabase.DropCollectionAsync<T>();
         }
 
         public virtual async Task<long> CountDataAsync()
         {
-            return await _service.CountDataAsync<T>();
+            return await ServiceDatabase.CountDataAsync<T>();
         }
 
         public virtual async Task<T> CreateAsync(T entity)
         {
             entity.CreationDate = DateTime.Now.ToLocalTime();
-            return await _service.CreateAsync<T>(entity);
+            return await ServiceDatabase.CreateAsync<T>(entity);
         }
 
         public virtual async Task<IEnumerable<T>> CreateManyAsync(IEnumerable<T> entities)
@@ -34,38 +34,38 @@ namespace Library.Abstract
             {
                 entity.CreationDate = DateTime.Now.ToLocalTime();
             }
-            return await _service.CreateManyAsync(entities);
+            return await ServiceDatabase.CreateManyAsync(entities);
         }
 
         public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await _service.GetAllAsync<T>();
+            return await ServiceDatabase.GetAllAsync<T>();
         }
 
         public virtual async Task<T> GetOneFullAsync(string? id)
         {
-            var entity = await _service.GetOneAsync<T>(id);
+            var entity = await ServiceDatabase.GetOneAsync<T>(id);
 
-            entity = await _service.GetEntityWithForeignKey<T>(entity);
-            entity = await _service.GetCollectionEntity<T>(entity);
+            entity = await ServiceDatabase.GetEntityWithForeignKey<T>(entity);
+            entity = await ServiceDatabase.GetCollectionEntity<T>(entity);
 
             return entity;
         }
 
         public async Task<T> GetOneSimpleAsync(string id)
         {
-            return await _service.GetOneAsync<T>(id);
+            return await ServiceDatabase.GetOneAsync<T>(id);
         }
 
         public virtual async Task<T> UpdateAsync(T entityUpdate)
         {
             entityUpdate.UpdateDate = DateTime.Now.ToLocalTime();
-            return await _service.UpdateAsync<T>(entityUpdate);
+            return await ServiceDatabase.UpdateAsync<T>(entityUpdate);
         }
 
         public virtual async Task DeleteOneAsync(string id)
         {
-            await _service.DeleteOneAsync<T>(id);
+            await ServiceDatabase.DeleteOneAsync<T>(id);
         }
     }
 }

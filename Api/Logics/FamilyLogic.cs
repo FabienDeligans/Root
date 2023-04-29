@@ -1,4 +1,4 @@
-﻿using Api.Services;
+﻿using Api.Services.MongoDb;
 using Library.Abstract;
 using Library.Models.Business;
 
@@ -6,7 +6,7 @@ namespace Api.Logics
 {
     public class FamilyLogic : BaseApiLogic<Family>
     {
-        public FamilyLogic(ServiceDatabase serviceDatabase) : base(serviceDatabase)
+        public FamilyLogic(ServiceMongoDatabase serviceDatabaseDatabase) : base(serviceDatabaseDatabase)
         {
         }
     }

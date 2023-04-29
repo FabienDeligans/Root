@@ -2,7 +2,6 @@
 using System.Net.Http.Json;
 using System.Net.Mime;
 using System.Text;
-using Amazon.Runtime.Internal;
 using Library.Interfaces;
 using Library.Models;
 using Library.Settings;
@@ -103,6 +102,11 @@ namespace Library.Abstract
             catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
             {
                 var msg = await CatchError400(e);
+                throw new Exception(msg);
+            }
+            catch (Exception e)
+            {
+                var msg = e.ToString();
                 throw new Exception(msg);
             }
         }

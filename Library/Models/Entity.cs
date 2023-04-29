@@ -15,5 +15,6 @@ namespace Library.Models
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime? UpdateDate { get; set; }
+
     }
 }
