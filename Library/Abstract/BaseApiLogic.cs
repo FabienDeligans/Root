@@ -46,8 +46,8 @@ namespace Library.Abstract
         {
             var entity = await _service.GetOneAsync<T>(id);
 
-            entity = await _service.GetEntityWithForeignKey<T>(entity!)!;
-            entity = await _service.GetCollectionEntity<T>(entity!)!;
+            entity = await _service.GetEntityWithForeignKey<T>(entity);
+            entity = await _service.GetCollectionEntity<T>(entity);
 
             return entity;
         }

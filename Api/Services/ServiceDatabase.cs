@@ -70,7 +70,6 @@ namespace Api.Services
                 .Find(x => x.Id == id)
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
-
         }
 
         public async Task<T> UpdateAsync<T>(T entityUpdate) where T : IEntity
@@ -104,7 +103,7 @@ namespace Api.Services
                 foreach (var propertyInfo in properties)
                 {
                     var attributes = propertyInfo.GetCustomAttributes(true);
-                    foreach (var attribute in attributes)
+                    foreach (var attribute in attributes.Where( v => v.GetType() == typeof(ForeignKeyAttribute)))
                     {
                         if (attribute is not ForeignKeyAttribute fkAttribute) continue;
                         var typeOfForeignKey = fkAttribute.TheType;
@@ -127,7 +126,7 @@ namespace Api.Services
             }
             catch (Exception e)
             {
-                var ex = e.Message;
+                throw new Exception(e.Message);
             }
             return (T)entity;
         }

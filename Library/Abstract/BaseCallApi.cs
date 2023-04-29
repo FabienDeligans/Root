@@ -16,7 +16,7 @@ namespace Library.Abstract
     {
         protected readonly HttpClient _httpClient;
         protected readonly IOptions<SettingsCallApi> _options;
-        protected HttpResponseMessage Response { get; set; }
+        protected HttpResponseMessage? Response { get; set; }
 
         public BaseCallApi(HttpClient client, IOptions<SettingsCallApi> options)
         {
@@ -33,61 +33,78 @@ namespace Library.Abstract
             try
             {
                 Response = await _httpClient
-                        .DeleteAsync($@"DropCollectionAsync")
+                        .DeleteAsync(Route.DropCollectionAsync)
                         .ConfigureAwait(false);
-
-                if (!Response.IsSuccessStatusCode)
-                {
-                    throw new Exception();
-                }
+                
+                Response.EnsureSuccessStatusCode();
             }
-            catch (Exception e)
+            catch (Exception e) when (Response is null)
             {
-                var msg = await CatchError(e);
+                var msg = await CatchError500(e);
+                throw new Exception(msg);
+            }
+            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var msg = await CatchError400(e);
                 throw new Exception(msg);
             }
         }
 
         public async Task<long> CountDataAsync()
         {
-            var response = await _httpClient
-                .GetAsync($@"CountDataAsync")
-                .ConfigureAwait(false);
+            try
+            {
+                var response = await _httpClient
+                        .GetAsync(Route.CountDataAsync)
+                        .ConfigureAwait(false);
 
-            var returnJson = await response.Content
-                .ReadAsStringAsync()
-                .ConfigureAwait(false);
+                var returnJson = await response.Content
+                    .ReadAsStringAsync()
+                    .ConfigureAwait(false);
 
-            return JsonConvert.DeserializeObject<long>(returnJson);
+                return JsonConvert.DeserializeObject<long>(returnJson);
+            }
+            catch (Exception e) when (Response is null)
+            {
+                var msg = await CatchError500(e);
+                throw new Exception(msg);
+            }
+            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var msg = await CatchError400(e);
+                throw new Exception(msg);
+            }
         }
 
         public async Task<T> CreateAsync(T entity)
         {
             try
             {
-                var json = new StringContent(JsonSerializer.Serialize(entity), Encoding.UTF8, MediaTypeNames.Application.Json);
+                var json = new StringContent(JsonSerializer.Serialize(entity), Encoding.UTF8,
+                    MediaTypeNames.Application.Json);
 
                 Response = await _httpClient
-                    .PostAsync($@"CreateAsync", json)
+                    .PostAsync(Route.CreateAsync, json)
                     .ConfigureAwait(false);
 
-                if (!Response.IsSuccessStatusCode)
-                {
-                    throw new Exception();
-                }
+                Response.EnsureSuccessStatusCode();
 
                 var returnJson = await Response.Content
-                        .ReadAsStringAsync()
-                        .ConfigureAwait(false);
+                    .ReadAsStringAsync()
+                    .ConfigureAwait(false);
 
                 return JsonConvert.DeserializeObject<T>(returnJson);
             }
-            catch (Exception e)
+            catch (Exception e) when (Response is null)
             {
-                var msg = await CatchError(e);
+                var msg = await CatchError500(e);
                 throw new Exception(msg);
             }
-
+            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var msg = await CatchError400(e);
+                throw new Exception(msg);
+            }
         }
 
         public async Task<IEnumerable<T>> CreateManyAsync(IEnumerable<T> entities)
@@ -97,7 +114,7 @@ namespace Library.Abstract
                 var json = new StringContent(JsonSerializer.Serialize(entities), Encoding.UTF8, MediaTypeNames.Application.Json);
 
                 using var response = await _httpClient
-                    .PostAsync($@"CreateManyAsync", json)
+                    .PostAsync(Route.CreateManyAsync, json)
                     .ConfigureAwait(false);
 
                 response.EnsureSuccessStatusCode();
@@ -108,67 +125,137 @@ namespace Library.Abstract
 
                 return JsonConvert.DeserializeObject<IEnumerable<T>>(returnJson);
             }
-            catch (Exception e)
+            catch (Exception e) when (Response is null)
             {
-                var msg = await CatchError(e);
+                var msg = await CatchError500(e);
+                throw new Exception(msg);
+            }
+            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var msg = await CatchError400(e);
                 throw new Exception(msg);
             }
         }
 
         public async Task<IEnumerable<T>?> GetAllAsync()
         {
-            return await _httpClient
-                .GetFromJsonAsync<IEnumerable<T>>($"GetAllAsync")
-                .ConfigureAwait(false);
+            try
+            {
+                return await _httpClient
+                        .GetFromJsonAsync<IEnumerable<T>>(Route.GetAllAsync)
+                        .ConfigureAwait(false);
+            }
+            catch (Exception e) when (Response is null)
+            {
+                var msg = await CatchError500(e);
+                throw new Exception(msg);
+            }
+            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var msg = await CatchError400(e);
+                throw new Exception(msg);
+            }
         }
 
         public async Task<T?> GetOneFullAsync(string id)
         {
-            return await _httpClient
-                .GetFromJsonAsync<T>($"GetOneFullAsync/{id}")
-                .ConfigureAwait(false);
+            try
+            {
+                return await _httpClient
+                        .GetFromJsonAsync<T>($"{Route.GetOneFullAsync}/{id}")
+                        .ConfigureAwait(false);
+            }
+            catch (Exception e) when (Response is null)
+            {
+                var msg = await CatchError500(e);
+                throw new Exception(msg);
+            }
+            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var msg = await CatchError400(e);
+                throw new Exception(msg);
+            }
         }
 
         public async Task<T?> GetOneSimpleAsync(string id)
         {
-            return await _httpClient
-                .GetFromJsonAsync<T>($"GetOneSimpleAsync/{id}")
-                .ConfigureAwait(false);
+            try
+            {
+                return await _httpClient
+                        .GetFromJsonAsync<T>($"{Route.GetOneSimpleAsync}/{id}")
+                        .ConfigureAwait(false);
+            }
+            catch (Exception e) when (Response is null)
+            {
+                var msg = await CatchError500(e);
+                throw new Exception(msg);
+            }
+            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var msg = await CatchError400(e);
+                throw new Exception(msg);
+            }
         }
 
         public async Task DeleteOneAsync(string id)
         {
-            using var response = await _httpClient
-                .DeleteAsync($@"DeleteOneAsync/{id}")
-                .ConfigureAwait(false);
+            try
+            {
+                using var response = await _httpClient
+                        .DeleteAsync($@"{Route.DeleteOneAsync}/{id}")
+                        .ConfigureAwait(false);
 
-            response.EnsureSuccessStatusCode();
+                response.EnsureSuccessStatusCode();
+            }
+            catch (Exception e) when (Response is null)
+            {
+                var msg = await CatchError500(e);
+                throw new Exception(msg);
+            }
+            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var msg = await CatchError400(e);
+                throw new Exception(msg);
+            }
         }
 
         public async Task<T> UpdateAsync(T entityUpdate)
         {
             var json = new StringContent(JsonSerializer.Serialize(entityUpdate), Encoding.UTF8, MediaTypeNames.Application.Json);
 
-            using var response = await _httpClient
-                .PutAsync($@"UpdateAsync", json)
-                .ConfigureAwait(false);
+            try
+            {
+                using var response = await _httpClient
+                        .PutAsync($@"{Route.UpdateAsync}", json)
+                        .ConfigureAwait(false);
 
-            response.EnsureSuccessStatusCode();
+                response.EnsureSuccessStatusCode();
 
-            var returnJson = await response.Content
-                .ReadAsStringAsync()
-                .ConfigureAwait(false);
+                var returnJson = await response.Content
+                    .ReadAsStringAsync()
+                    .ConfigureAwait(false);
 
-            return JsonConvert.DeserializeObject<T>(returnJson);
+                return JsonConvert.DeserializeObject<T>(returnJson);
+            }
+            catch (Exception e) when (Response is null)
+            {
+                var msg = await CatchError500(e);
+                throw new Exception(msg);
+            }
+            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var msg = await CatchError400(e);
+                throw new Exception(msg);
+            }
         }
 
-        public async Task<string> CatchError(Exception e)
+        public async Task<string> CatchError500(Exception e)
         {
-            if (e is HttpRequestException)
-            {
-                return "pas de connection serveur";
-            }
+            return e.Message;
+        }
 
+        public async Task<string> CatchError400(Exception e)
+        {
             var returnJson = await Response.Content
             .ReadAsStringAsync()
             .ConfigureAwait(false);
@@ -181,7 +268,7 @@ namespace Library.Abstract
                 msg += $"{error.Key} : ";
                 for (var i = 0; i < errors.Values.Count; i++)
                 {
-                    var end = errors.Values.Count - 1 == i ? ";" : "- ";
+                    var end = errors.Values.Count - 1 == i ? "" : "- ";
                     msg += $"{error.Value[i]} {end}";
                 }
             }

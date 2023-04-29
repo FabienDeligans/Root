@@ -36,14 +36,14 @@ namespace Blazor.Pages
             var families = new List<Family>();
             var parents = new List<Parent>();
             var children = new List<Child>();
+
             try
             {
-
                 for (var i = 0; i < nbFamilies; i++)
                 {
                     var family = new Family()
                     {
-                        //Name = $"family_name_{i}"
+                        Name = $"family_name_{i}"
                     };
                     family = await FamilyProvider.CreateAsync(family).ConfigureAwait(false);
                     families.Add(family);

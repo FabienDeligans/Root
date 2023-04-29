@@ -1,5 +1,6 @@
 ﻿using Library.Interfaces;
 using Library.Models;
+using Library.Settings;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library.Abstract
@@ -14,62 +15,62 @@ namespace Library.Abstract
             _apiLogic = apiLogic;
         }
 
-        [HttpDelete("DropCollectionAsync")]
+        [HttpDelete(Route.DropCollectionAsync)]
         public virtual async Task<ActionResult> DropCollectionAsync()
         {
             await _apiLogic.DropCollectionAsync();
             return Ok();
         }
 
-        [HttpGet("CountDataAsync")]
+        [HttpGet(Route.CountDataAsync)]
         public virtual async Task<long> CountDataAsync()
         {
             return await _apiLogic.CountDataAsync();
         }
 
-        [HttpPost("CreateAsync")]
+        [HttpPost(Route.CreateAsync)]
         public virtual async Task<ActionResult<T>> CreateAsync(T entity)
         {
             var result = await _apiLogic.CreateAsync(entity);
             return new ActionResult<T>(result);
         }
 
-        [HttpPost("CreateManyAsync")]
+        [HttpPost(Route.CreateManyAsync)]
         public virtual async Task<ActionResult<IEnumerable<T>>> CreateManyAsync(IEnumerable<T> entities)
         {
             var result = await _apiLogic.CreateManyAsync(entities);
             return new ActionResult<IEnumerable<T>>(result);
         }
 
-        [HttpGet("GetAllAsync")]
+        [HttpGet(Route.GetAllAsync)]
         public virtual async Task<ActionResult<IEnumerable<T>>> GetAllAsync()
         {
             var result = await _apiLogic.GetAllAsync();
             return new ActionResult<IEnumerable<T>>(result);
         }
 
-        [HttpGet("GetOneFullAsync/{id}")]
+        [HttpGet(Route.GetOneFullAsync + "/{id}")]
         public virtual async Task<ActionResult<T>> GetOneFullAsync(string id)
         {
             var result = await _apiLogic.GetOneFullAsync(id);
             return new ActionResult<T>(result);
         }
 
-        [HttpGet("GetOneSimpleAsync/{id}")]
+        [HttpGet( Route.GetOneSimpleAsync + "/{id}")]
         public virtual async Task<ActionResult<T>> GetOneSimpleAsync(string id)
         {
             var result = await _apiLogic.GetOneSimpleAsync(id);
             return new ActionResult<T>(result);
         }
 
-        [HttpPut("UpdateAsync")]
+        [HttpPut(Route.UpdateAsync)]
         public virtual async Task<ActionResult<T>> UpdateAsync(T entityUpdate)
         {
             var result = await _apiLogic.UpdateAsync(entityUpdate);
             return new ActionResult<T>(result);
         }
 
-        [HttpDelete("DeleteOneAsync/{id}")]
+        [HttpDelete(Route.DeleteOneAsync + "/{id}")]
         public virtual async Task<ActionResult> DeleteOneAsync(string id)
         {
             await _apiLogic.DeleteOneAsync(id);
