@@ -10,6 +10,7 @@
         public const string GetOneFullAsync = "GetOneFullAsync";
         public const string GetOneSimpleAsync = "GetOneSimpleAsync";
         public const string UpdateAsync = "UpdateAsync";
+        public const string UpdatePropertyAsync = "UpdatePropertyAsync";
         public const string DeleteOneAsync = "DeleteOneAsync";
     }
 }

@@ -63,6 +63,12 @@ namespace Library.Abstract
             return await ServiceDatabase.UpdateAsync<T>(entityUpdate);
         }
 
+        public async Task<T> UpdatePropertyAsync(string id, Dictionary<string, string> propertyValueDictionary)
+        {
+            propertyValueDictionary.Add(nameof(IEntity.UpdateDate), DateTime.Now.ToLocalTime().ToString());
+            return await ServiceDatabase.UpdatePropertyAsync<T>(id, propertyValueDictionary);
+        }
+
         public virtual async Task DeleteOneAsync(string id)
         {
             await ServiceDatabase.DeleteOneAsync<T>(id);

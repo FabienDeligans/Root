@@ -1,4 +1,7 @@
-﻿namespace Library.Interfaces
+﻿using Library.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Library.Interfaces
 {
     public interface IApiLogic<T>
     {
@@ -10,6 +13,7 @@
         Task<T> GetOneFullAsync(string id);
         Task<T> GetOneSimpleAsync(string id);
         Task<T> UpdateAsync(T entityUpdate);
+        Task<T> UpdatePropertyAsync(string id, Dictionary<string, string> propertyValueDictionary);
         Task DeleteOneAsync(string id);
     }
 }

@@ -59,6 +59,13 @@ namespace Library.Interfaces
         Task<ActionResult<T>> UpdateAsync(T entityUpdate);
 
         /// <summary>
+        /// Met à jour la propriété d'un object
+        /// </summary>
+        /// <param name="entityUpdate"></param>
+        /// <returns></returns>
+        Task<ActionResult<T>> UpdatePropertyAsync(string id, Dictionary<string, string> propertyValueDictionary);
+
+        /// <summary>
         /// Efface un object
         /// </summary>
         /// <param name="id"></param>

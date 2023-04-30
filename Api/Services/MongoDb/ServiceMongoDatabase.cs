@@ -1,9 +1,11 @@
 ﻿using System.Collections;
+using System.Globalization;
 using Library.CustomAttribute;
 using Library.Interfaces;
 using Library.Models;
 using Library.Settings;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Api.Services.MongoDb
@@ -78,6 +80,18 @@ namespace Api.Services.MongoDb
                 .ReplaceOneAsync(x => x!.Id == entityUpdate!.Id, entityUpdate)
                 .ConfigureAwait(false);
             return entityUpdate;
+        }
+
+        public async Task<T> UpdatePropertyAsync<T>(string id, Dictionary<string, string> propertyValueDictionary) where T : IEntity
+        {
+            foreach (var (key, value) in propertyValueDictionary)
+            {
+                var filter = Builders<T>.Filter.Eq(v => v.Id, id);
+                var update = Builders<T>.Update.Set(key, value);
+                await Collection<T>().FindOneAndUpdateAsync(filter, update);
+            }
+
+            return await GetOneAsync<T>(id);
         }
 
         public async Task DeleteOneAsync<T>(string id) where T : IEntity

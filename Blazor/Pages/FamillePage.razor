@@ -1,0 +1,56 @@
+﻿@page "/famillePage"
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6">
+            <EditForm Model="@Model" OnValidSubmit="Save">
+                <DataAnnotationsValidator />
+
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <InputText Id="name" Class="form-control" @bind-Value="@Model.Name"></InputText>
+                    <ValidationMessage For="() => Model.Name" />
+                </div>
+
+                <br />
+                <button class="btn btn-info" type="submit">Ok</button>
+                <button class="btn btn-danger" type="cancel" @onclick="Reset">Cancel</button>
+            </EditForm>
+        </div>
+
+        <div class="col-6">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Creation Date</th>
+                        <th>Update Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var family in Families)
+                    {
+                        <tr @onclick="() => Model = family">
+                            <td>@family.Id</td>
+                            <td>@family.Name</td>
+                            <td>@family.CreationDate</td>
+                            <td>@family.UpdateDate</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="row">
+        <div>Model</div>
+        <div>@Model.Id</div>
+        <div>
+            <div>@Model.Name</div>
+            <input type="text" class="form-control" @onchange="(arg) => AutoUpdate(arg, nameof(Model.Name))" />
+        </div>
+        <div>Creation date : @Model.CreationDate</div>
+        <div>Update date : @Model.UpdateDate</div>
+    </div>
+</div>

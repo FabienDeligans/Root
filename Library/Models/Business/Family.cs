@@ -5,7 +5,7 @@ namespace Library.Models.Business
 {
     public class Family : Entity
     {
-        [Required]
+        [Required(ErrorMessage = "Le nom est obligatoire")]
         public string? Name { get; set; }
 
         [BsonIgnore]

@@ -14,6 +14,7 @@ namespace Library.Interfaces
         Task<T?> GetOneSimpleAsync(string id);
         Task DeleteOneAsync(string id);
         Task<T> UpdateAsync(T entityUpdate);
+        Task<T> UpdatePropertyAsync(string id, Dictionary<string, string> propertyValueDictionary);
         Task<string> CatchError500(Exception e); 
         Task<string> CatchError400(Exception e); 
     }

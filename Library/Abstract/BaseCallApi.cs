@@ -7,6 +7,7 @@ using Library.Models;
 using Library.Settings;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Exception = System.Exception;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Library.Abstract
@@ -232,6 +233,36 @@ namespace Library.Abstract
                 using var response = await _httpClient
                         .PutAsync($@"{Route.UpdateAsync}", json)
                         .ConfigureAwait(false);
+
+                response.EnsureSuccessStatusCode();
+
+                var returnJson = await response.Content
+                    .ReadAsStringAsync()
+                    .ConfigureAwait(false);
+
+                return JsonConvert.DeserializeObject<T>(returnJson);
+            }
+            catch (Exception e) when (Response is null)
+            {
+                var msg = await CatchError500(e);
+                throw new Exception(msg);
+            }
+            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var msg = await CatchError400(e);
+                throw new Exception(msg);
+            }
+        }
+
+        public async Task<T> UpdatePropertyAsync(string id, Dictionary<string, string> propertyValueDictionary)
+        {
+            var json = new StringContent(JsonSerializer.Serialize(propertyValueDictionary), Encoding.UTF8, MediaTypeNames.Application.Json);
+
+            try
+            {
+                using var response = await _httpClient
+                    .PutAsync($@"{Route.UpdatePropertyAsync}/{id}", json)
+                    .ConfigureAwait(false);
 
                 response.EnsureSuccessStatusCode();
 

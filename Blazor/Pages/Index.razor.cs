@@ -76,17 +76,10 @@ namespace Blazor.Pages
                         };
                         children.Add(child);
                     }
-
                 }
-                var resultParent = await ParentProvider.CreateManyAsync(parents).ConfigureAwait(false);
-                parents = resultParent.ToList();
 
-                var resultChild = await ChildProvider.CreateManyAsync(children).ConfigureAwait(false);
-                children = resultChild.ToList();
-
-                FamilyId = families.FirstOrDefault().Id;
-                ParentId = parents.FirstOrDefault().Id;
-                ChildId = children.FirstOrDefault().Id;
+                await ParentProvider.CreateManyAsync(parents).ConfigureAwait(false);
+                await ChildProvider.CreateManyAsync(children).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -113,33 +106,6 @@ namespace Blazor.Pages
             catch (Exception e)
             {
                 Error = e.Message;
-                await InvokeAsync(StateHasChanged);
-            }
-        }
-
-        private async Task GetFullFamily()
-        {
-            if (!string.IsNullOrWhiteSpace(FamilyId))
-            {
-                Family = await FamilyProvider.GetOneFullAsync(FamilyId);
-                await InvokeAsync(StateHasChanged);
-            }
-        }
-
-        private async Task GetFullParent()
-        {
-            if (!string.IsNullOrWhiteSpace(ParentId))
-            {
-                Parent = await ParentProvider.GetOneFullAsync(ParentId);
-                await InvokeAsync(StateHasChanged);
-            }
-        }
-
-        private async Task GetFullChild()
-        {
-            if (!string.IsNullOrWhiteSpace(ChildId))
-            {
-                Child = await ChildProvider.GetOneFullAsync(ChildId);
                 await InvokeAsync(StateHasChanged);
             }
         }

@@ -70,6 +70,13 @@ namespace Library.Abstract
             return new ActionResult<T>(result);
         }
 
+        [HttpPut(Route.UpdatePropertyAsync + "/{id}")]
+        public async Task<ActionResult<T>> UpdatePropertyAsync(string id, Dictionary<string, string> propertyValueDictionary)
+        {
+            var result = await _apiLogic.UpdatePropertyAsync(id, propertyValueDictionary);
+            return result; 
+        }
+
         [HttpDelete(Route.DeleteOneAsync + "/{id}")]
         public virtual async Task<ActionResult> DeleteOneAsync(string id)
         {
