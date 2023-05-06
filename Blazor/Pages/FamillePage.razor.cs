@@ -1,4 +1,6 @@
-﻿using Blazor.Provider;
+﻿using Blazor.Controller.Modal;
+using Blazor.Provider;
+using Blazored.Modal;
 using Library.Models.Business;
 using Microsoft.AspNetCore.Components;
 
@@ -14,14 +16,17 @@ namespace Blazor.Pages
         protected override async Task OnInitializedAsync()
         {
             Model = new Family();
-            await GetAllFamilies(); 
+            await GetAllFamilies();
         }
+
+
+
 
         private async Task Save()
         {
             Model = await FamilyProvider!.CreateAsync(Model).ConfigureAwait(false);
-            await GetAllFamilies(); 
-            await InvokeAsync(StateHasChanged); 
+            await GetAllFamilies();
+            await InvokeAsync(StateHasChanged);
         }
 
         private async Task Reset()
@@ -30,7 +35,7 @@ namespace Blazor.Pages
             await InvokeAsync(StateHasChanged);
         }
 
-        private IEnumerable<Family>Families { get; set; } = new List<Family>();
+        private IEnumerable<Family> Families { get; set; } = new List<Family>();
 
         private async Task GetAllFamilies()
         {
@@ -38,20 +43,17 @@ namespace Blazor.Pages
             await InvokeAsync(StateHasChanged);
         }
 
-
-
-        //<input type = "text" @onchange="(arg) => AutoUpdate(arg, nameof(Model.Name))"/>
-
         private async Task AutoUpdate(ChangeEventArgs arg, string propertyName)
         {
             var dico = new Dictionary<string, string>()
             {
                 {propertyName, arg.Value.ToString()}
-            }; 
+            };
             Model = await FamilyProvider.UpdatePropertyAsync(Model.Id, dico);
             await GetAllFamilies();
             await InvokeAsync(StateHasChanged);
 
         }
+
     }
 }

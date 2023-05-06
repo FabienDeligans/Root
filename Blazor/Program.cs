@@ -1,4 +1,6 @@
+using Blazor.Controller.Modal;
 using Blazor.Provider;
+using Blazored.Modal;
 using Library.Settings;
 
 namespace Blazor
@@ -12,6 +14,10 @@ namespace Blazor
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
+
+            builder.Services.AddBlazoredModal();
+            builder.Services.AddScoped<ModalController>();
+
 
             // R�cup�re la route principale de l'api dans "appsettings.json"
             builder.Services.Configure<SettingsCallApi>(builder.Configuration.GetSection("Api"));

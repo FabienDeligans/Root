@@ -1,0 +1,25 @@
+﻿<div class="modal fade show d-block" tabindex="-1" role="dialog">
+    <div class="modal-backdrop fade show" @onclick="Cancel"></div>
+    <div class="modal-dialog " style="z-index: 1050">
+        @* ReSharper disable once HexColorValueWithAlpha *@
+        <div class="modal-content" style="background-color: #fff0; border-style: hidden">
+            <div class="modal-body @ClassCSS">
+                @Message
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
+    [Parameter]
+    public string? Message { get; set; }
+
+    [Parameter]
+    public string? ClassCSS { get; set; }
+
+    private async Task Cancel() => await BlazoredModal.CancelAsync();
+
+}
