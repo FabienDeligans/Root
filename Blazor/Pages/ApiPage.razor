@@ -1,0 +1,47 @@
+﻿@page "/apiPage"
+
+<h3>ApiPage</h3>
+
+<p>
+    <input type="text"
+           class="form-control form-control-sm"
+    @onchange="Search" />
+
+    @if (Address != null)
+    {
+        <p>
+            @foreach (var address in Address.Features)
+            {
+            <div>@address.Properties.name @address.Properties.postcode @address.Properties.city</div>
+            }
+        </p>
+    }
+</p>
+
+<p>
+    <button class="btn btn-info" @onclick="SearchNameLorraineHipseaume">search name Lorraine hipseaume</button>
+    
+    @if (ListNomPrenom != null)
+    {
+        <p>
+            @foreach (var nomPrenom in ListNomPrenom.Results.Take(5))
+            {
+                <div>@nomPrenom.Prenom @nomPrenom.Nom @nomPrenom.Sexe</div>
+            }
+        </p>
+    }
+</p>
+
+<p>
+    <button class="btn btn-info" @onclick="SearchNameLorraineIpsum">search name Lorraine ipsum</button>
+
+    @if (ListNomPrenomIpsum != null)
+    {
+        <p>
+            @foreach (var nomPrenom in ListNomPrenomIpsum.Take(5))
+            {
+                <div>@nomPrenom.name_part @nomPrenom.word_part</div>
+            }
+        </p>
+    }
+</p>

@@ -2,6 +2,7 @@ using Blazor.Controller.Modal;
 using Blazor.Provider;
 using Blazored.Modal;
 using Library.Blazor.CallApiAddressProvider;
+using Library.Blazor.LoraineProvider;
 using Library.Settings;
 
 namespace Blazor
@@ -28,6 +29,8 @@ namespace Blazor
             builder.Services.AddHttpClient<ParentProvider>();
             builder.Services.AddHttpClient<ChildProvider>();
             builder.Services.AddHttpClient<ApiAddressProvider>();
+            builder.Services.AddHttpClient<LorraineHipseaumeProvider>();
+            builder.Services.AddHttpClient<LorraineIpsumProvider>();
 
 
             builder.Services.AddControllers().AddNewtonsoftJson();
