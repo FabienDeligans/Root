@@ -1,9 +1,9 @@
-﻿using Library.Interfaces;
+﻿using Library.Api.ApiLogicProvider;
 using Library.Models;
 using Library.Settings;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Library.Abstract
+namespace Library.Api.ApiControllerProvider
 {
     [ApiController]
     public abstract class BaseApiController<T> : ControllerBase, IApiController<T> where T : IEntity
@@ -56,7 +56,7 @@ namespace Library.Abstract
             return new ActionResult<T>(result);
         }
 
-        [HttpGet( Route.GetOneSimpleAsync + "/{id}")]
+        [HttpGet(Route.GetOneSimpleAsync + "/{id}")]
         public virtual async Task<ActionResult<T>> GetOneSimpleAsync(string id)
         {
             var result = await _apiLogic.GetOneSimpleAsync(id);
@@ -74,7 +74,7 @@ namespace Library.Abstract
         public async Task<ActionResult<T>> UpdatePropertyAsync(string id, Dictionary<string, string> propertyValueDictionary)
         {
             var result = await _apiLogic.UpdatePropertyAsync(id, propertyValueDictionary);
-            return result; 
+            return result;
         }
 
         [HttpDelete(Route.DeleteOneAsync + "/{id}")]

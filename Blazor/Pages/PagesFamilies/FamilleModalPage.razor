@@ -1,0 +1,17 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <EditForm Model="@Model" OnValidSubmit="Save">
+            <DataAnnotationsValidator />
+
+            <div class="form-group">
+                <label for="name">Name</label>
+                <InputText Id="name" Class="form-control" @bind-Value="@Model.Name"></InputText>
+                <ValidationMessage For="() => Model.Name" />
+            </div>
+
+            <br />
+            <button class="btn btn-info" type="submit">Ok</button>
+            <button class="btn btn-danger" type="cancel" @onclick="Reset">Cancel</button>
+        </EditForm>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+﻿@page "/searchAddress"
+
+<h3>SearchAddressPage</h3>
+
+<p>
+    <input type="text"
+           class="form-control form-control-sm"
+    @onchange="Search" />
+
+</p>
+
+@if (Address != null)
+{
+
+    <p>
+        @foreach (var address in Address.features)
+        {
+            <div>@address.Details.name @address.Details.postcode @address.Details.city</div>
+        }
+    </p>
+
+}

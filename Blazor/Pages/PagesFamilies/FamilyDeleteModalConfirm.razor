@@ -1,0 +1,28 @@
+﻿@using Blazor.Provider
+
+<button class="btn btn-info" type="submit" @onclick="Delete">Ok</button>
+<button class="btn btn-danger" type="cancel" @onclick="Reset">Cancel</button>
+
+@code {
+    [Parameter]
+    public string FamilyId { get; set; }
+
+    [Inject]
+    public FamilyProvider FamilyProvider { get; set; }
+
+    [CascadingParameter]
+    public BlazoredModalInstance? BlazoredModal { get; set; }
+
+    private async Task Delete()
+    {
+        await FamilyProvider.DeleteOneAsync(FamilyId).ConfigureAwait(false); 
+        await InvokeAsync(async () => await BlazoredModal!.CloseAsync(ModalResult.Ok("ok")).ConfigureAwait(false));
+
+    }
+
+    private async Task Reset()
+    {
+        await InvokeAsync(async () => await BlazoredModal!.CloseAsync(ModalResult.Cancel()).ConfigureAwait(false));
+    }
+
+}

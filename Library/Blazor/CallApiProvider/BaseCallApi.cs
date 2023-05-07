@@ -2,7 +2,6 @@
 using System.Net.Http.Json;
 using System.Net.Mime;
 using System.Text;
-using Library.Interfaces;
 using Library.Models;
 using Library.Settings;
 using Microsoft.Extensions.Options;
@@ -10,7 +9,7 @@ using Newtonsoft.Json;
 using Exception = System.Exception;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace Library.Abstract
+namespace Library.Blazor.CallApiProvider
 {
     public class BaseCallApi<T> : ICallApi<T> where T : IEntity
     {
@@ -35,7 +34,7 @@ namespace Library.Abstract
                 Response = await _httpClient
                         .DeleteAsync(Route.DropCollectionAsync)
                         .ConfigureAwait(false);
-                
+
                 Response.EnsureSuccessStatusCode();
             }
             catch (Exception e) when (Response is null)
@@ -54,11 +53,11 @@ namespace Library.Abstract
         {
             try
             {
-                var response = await _httpClient
+                Response = await _httpClient
                         .GetAsync(Route.CountDataAsync)
                         .ConfigureAwait(false);
 
-                var returnJson = await response.Content
+                var returnJson = await Response.Content
                     .ReadAsStringAsync()
                     .ConfigureAwait(false);
 

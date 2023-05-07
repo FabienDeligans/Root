@@ -1,6 +1,7 @@
 using Blazor.Controller.Modal;
 using Blazor.Provider;
 using Blazored.Modal;
+using Library.Blazor.CallApiAddressProvider;
 using Library.Settings;
 
 namespace Blazor
@@ -26,6 +27,7 @@ namespace Blazor
             builder.Services.AddHttpClient<FamilyProvider>();
             builder.Services.AddHttpClient<ParentProvider>();
             builder.Services.AddHttpClient<ChildProvider>();
+            builder.Services.AddHttpClient<ApiAddressProvider>();
 
 
             builder.Services.AddControllers().AddNewtonsoftJson();

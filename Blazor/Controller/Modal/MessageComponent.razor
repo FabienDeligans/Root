@@ -11,8 +11,9 @@
 </div>
 
 @code {
+
     [CascadingParameter]
-    BlazoredModalInstance BlazoredModal { get; set; } = default!;
+    public BlazoredModalInstance BlazoredModal { get; set; } = default; 
 
     [Parameter]
     public string? Message { get; set; }
@@ -20,6 +21,5 @@
     [Parameter]
     public string? ClassCSS { get; set; }
 
-    private async Task Cancel() => await BlazoredModal.CancelAsync();
-
+    private async Task Cancel() => await InvokeAsync(async () => await BlazoredModal!.CancelAsync(BlazoredModal).ConfigureAwait(false));
 }

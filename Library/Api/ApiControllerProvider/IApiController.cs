@@ -1,7 +1,7 @@
 ﻿using Library.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Library.Interfaces
+namespace Library.Api.ApiControllerProvider
 {
     public interface IApiController<T> where T : IEntity
     {
@@ -71,6 +71,6 @@ namespace Library.Interfaces
         /// <param name="id"></param>
         /// <returns></returns>
         Task<ActionResult> DeleteOneAsync(string id);
-        
+
     }
 }

@@ -1,7 +1,4 @@
-﻿using Library.Models;
-using Microsoft.AspNetCore.Mvc;
-
-namespace Library.Interfaces
+﻿namespace Library.Api.ApiLogicProvider
 {
     public interface IApiLogic<T>
     {

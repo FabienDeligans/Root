@@ -1,20 +1,20 @@
-﻿using Blazor.Shared;
-using Blazored.Modal;
+﻿using Blazored.Modal;
 using Blazored.Modal.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Options;
 
 namespace Blazor.Controller.Modal
 {
     public class ModalController : ComponentBase
     {
-        private readonly IModalService _modalService;
+        [CascadingParameter]
+        public IModalService _modalService { get; set; } = default!;
 
         public ModalController(IModalService modalService)
         {
             _modalService = modalService;
         }
 
+        #region ShowModal
         public async Task<object?> ShowModal<T>() where T : IComponent
         {
             return await ShowModal<T>("");
@@ -31,6 +31,7 @@ namespace Blazor.Controller.Modal
         {
             return await ShowModal<T>(title, parameters, new ModalOptions());
         }
+        #endregion
 
         public async Task<object?> ShowModal<T>(string title, ModalParameters parameters, ModalOptions options) where T : IComponent
         {
@@ -40,30 +41,33 @@ namespace Blazor.Controller.Modal
             return result.Confirmed ? result.Data : null;
         }
 
+        #region ShowModalDuration
         public async Task ShowModalDuration(string text, int millisecond, string alert)
         {
             await ShowModalDuration(text, millisecond, alert, new ModalParameters(), new ModalOptions());
         }
-        public async Task ShowModalDuration(string text, int millisecond, string alert, ModalOptions options) 
+        public async Task ShowModalDuration(string text, int millisecond, string alert, ModalOptions options)
         {
             await ShowModalDuration(text, millisecond, alert, new ModalParameters(), options);
         }
-        public async Task ShowModalDuration(string title, int millisecond, string alert, ModalParameters parameters) 
+        public async Task ShowModalDuration(string title, int millisecond, string alert, ModalParameters parameters)
         {
             await ShowModalDuration(title, millisecond, alert, parameters, new ModalOptions());
         }
+        #endregion
 
         public async Task ShowModalDuration(string text, int millisecond, string? alert, ModalParameters parameters, ModalOptions options)
         {
             parameters.Add(nameof(MessageComponent.Message), text);
             parameters.Add(nameof(MessageComponent.ClassCSS), alert);
 
-            options.Class = alert; 
+            options.Class = alert;
             options.UseCustomLayout = true;
 
             var modal = _modalService.Show<MessageComponent>("", parameters, options);
 
             await Task.Delay(millisecond);
+
             modal.Close();
         }
     }

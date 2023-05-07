@@ -1,6 +1,6 @@
 ﻿using Library.Models;
 
-namespace Library.Interfaces
+namespace Library.Api.ApiDatabaseProvider
 {
     public interface IApiServiceDatabase
     {

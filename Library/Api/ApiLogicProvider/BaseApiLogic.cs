@@ -1,7 +1,7 @@
-﻿using Library.Interfaces;
+﻿using Library.Api.ApiDatabaseProvider;
 using Library.Models;
 
-namespace Library.Abstract
+namespace Library.Api.ApiLogicProvider
 {
     public abstract class BaseApiLogic<T> : IApiLogic<T> where T : IEntity
     {
@@ -25,7 +25,7 @@ namespace Library.Abstract
         public virtual async Task<T> CreateAsync(T entity)
         {
             entity.CreationDate = DateTime.Now.ToLocalTime();
-            return await ServiceDatabase.CreateAsync<T>(entity);
+            return await ServiceDatabase.CreateAsync(entity);
         }
 
         public virtual async Task<IEnumerable<T>> CreateManyAsync(IEnumerable<T> entities)
@@ -46,8 +46,8 @@ namespace Library.Abstract
         {
             var entity = await ServiceDatabase.GetOneAsync<T>(id);
 
-            entity = await ServiceDatabase.GetEntityWithForeignKey<T>(entity);
-            entity = await ServiceDatabase.GetCollectionEntity<T>(entity);
+            entity = await ServiceDatabase.GetEntityWithForeignKey(entity);
+            entity = await ServiceDatabase.GetCollectionEntity(entity);
 
             return entity;
         }
@@ -60,7 +60,7 @@ namespace Library.Abstract
         public virtual async Task<T> UpdateAsync(T entityUpdate)
         {
             entityUpdate.UpdateDate = DateTime.Now.ToLocalTime();
-            return await ServiceDatabase.UpdateAsync<T>(entityUpdate);
+            return await ServiceDatabase.UpdateAsync(entityUpdate);
         }
 
         public async Task<T> UpdatePropertyAsync(string id, Dictionary<string, string> propertyValueDictionary)

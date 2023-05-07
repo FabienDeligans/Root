@@ -1,5 +1,5 @@
 ﻿using Api.Services.MongoDb;
-using Library.Abstract;
+using Library.Api.ApiLogicProvider;
 using Library.Models.Business;
 
 namespace Api.Logics

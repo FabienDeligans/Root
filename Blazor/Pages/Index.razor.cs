@@ -25,6 +25,7 @@ namespace Blazor.Pages
         private string ChildId { get; set; }
 
         private string Error;
+        
         private async Task GenerateData()
         {
             var random = new Random();
@@ -109,5 +110,6 @@ namespace Blazor.Pages
                 await InvokeAsync(StateHasChanged);
             }
         }
+
     }
 }

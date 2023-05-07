@@ -1,6 +1,6 @@
 ﻿using Library.Models;
 
-namespace Library.Interfaces
+namespace Library.Blazor.CallApiProvider
 {
     public interface ICallApi<T> where T : IEntity
     {
@@ -15,7 +15,7 @@ namespace Library.Interfaces
         Task DeleteOneAsync(string id);
         Task<T> UpdateAsync(T entityUpdate);
         Task<T> UpdatePropertyAsync(string id, Dictionary<string, string> propertyValueDictionary);
-        Task<string> CatchError500(Exception e); 
-        Task<string> CatchError400(Exception e); 
+        Task<string> CatchError500(Exception e);
+        Task<string> CatchError400(Exception e);
     }
 }

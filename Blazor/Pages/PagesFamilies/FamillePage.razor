@@ -1,0 +1,43 @@
+﻿@page "/famillePage"
+
+<p>
+    <h3>Familles Page</h3>
+</p>
+
+<div class="container-fluid">
+    <div class="row">
+        <button class="btn btn-info" @onclick="Add">Add</button>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Creation Date</th>
+                        <th>Update Date</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var family in Families)
+                    {
+                        <tr @onclick="() => Model = family" class="align-middle">
+                            <td>@family.Id</td>
+                            <td>
+                                <input type="text"
+                                       class="form-control form-control-sm"
+                                       Value="@family.Name"
+                                @onchange="(arg) => AutoUpdate(arg, nameof(Model.Name))" />
+                            </td>
+                            <td>@family.CreationDate</td>
+                            <td>@family.UpdateDate</td>
+                            <td><button class="btn btn-danger btn-sm" @onclick="@(()=>ConfirmDelete(family.Id))">Delete</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
