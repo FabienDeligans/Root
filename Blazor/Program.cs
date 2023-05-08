@@ -2,7 +2,7 @@ using Blazor.Controller.Modal;
 using Blazor.Provider;
 using Blazored.Modal;
 using Library.Blazor.CallApiAddressProvider;
-using Library.Blazor.LoraineProvider;
+using Library.Blazor.CallApiLoraineProvider;
 using Library.Settings;
 
 namespace Blazor

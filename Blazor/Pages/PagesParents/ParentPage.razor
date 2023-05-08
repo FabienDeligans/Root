@@ -1,0 +1,73 @@
+﻿@page "/parentPage"
+
+<p>
+    <h3>Parents Pages</h3>
+</p>
+
+<div class="container-fluid">
+    <div class="row">
+        <button class="btn btn-info" @onclick="Add">Add</button>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>FamilleId</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Address</th>
+                        <th>Code Postal</th>
+                        <th>City</th>
+                        <th>Creation Date</th>
+                        <th>Update Date</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var parent in Parents)
+                    {
+                        <tr @onclick="() => Model = parent" class="align-middle">
+                            <td>@parent.Id</td>
+                            <td>@parent.FamilyId</td>
+                            <td>
+                                <input type="text"
+                                       class="form-control form-control-sm"
+                                       Value="@parent.FirstName"
+                                @onchange="(arg) => AutoUpdate(arg, nameof(Model.FirstName))" />
+                            </td>
+                            <td>
+                                <input type="text"
+                                       class="form-control form-control-sm"
+                                       Value="@parent.LastName"
+                                       @onchange="(arg) => AutoUpdate(arg, nameof(Model.LastName))" />
+                            </td>
+                            <td>
+                                <input type="text"
+                                       class="form-control form-control-sm"
+                                       Value="@parent.Address"
+                                       @onchange="(arg) => AutoUpdate(arg, nameof(Model.Address))" />
+                            </td>
+                            <td>
+                                <input type="text"
+                                       class="form-control form-control-sm"
+                                       Value="@parent.PostalCode"
+                                       @onchange="(arg) => AutoUpdate(arg, nameof(Model.PostalCode))" />
+                            </td>
+                            <td>
+                                <input type="text"
+                                       class="form-control form-control-sm"
+                                       Value="@parent.City"
+                                       @onchange="(arg) => AutoUpdate(arg, nameof(Model.City))" />
+                            </td>
+                            <td>@parent.CreationDate</td>
+                            <td>@parent.UpdateDate</td>
+                            <td><button class="btn btn-danger btn-sm" @onclick="@(()=>ConfirmDelete(parent.Id))">Delete</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

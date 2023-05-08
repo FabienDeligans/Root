@@ -1,0 +1,88 @@
+﻿@if (Parent != null)
+{
+    <EditForm Model="@Parent" OnValidSubmit="@Submit">
+        <div class="@_statusClass">@_statusMessage</div>
+
+        <DataAnnotationsValidator />
+
+        <p>
+            <label for="inputGroupSelect01"><b>Familles: </b></label>
+            <select class="form-select" id="inputGroupSelect01" @bind="Parent.FamilyId" disabled="@IsDisabled">
+                <option></option>
+                @foreach (var famille in Families.OrderBy(v => v.Name))
+                {
+                    <option value="@famille.Id">@famille.Name</option>
+                }
+            </select>
+            <ValidationMessage For="@(() => Parent.FamilyId)" />
+        </p>
+
+        <p>
+            <div class="row">
+                <div class="form-group col-6">
+                    <label for="prenom"><b>Prenom: </b></label>
+                    <InputText Id="prenom" Class="form-control" @bind-Value="@Parent.FirstName"></InputText>
+                    <ValidationMessage For="@(() => Parent.FirstName)" />
+                </div>
+                <div class="form-group col-6">
+                    <label for="nom"><b>Nom: </b></label>
+                    <InputText Id="nom" Class="form-control" @bind-Value="@Parent.LastName"></InputText>
+                    <ValidationMessage For="@(() => Parent.LastName)" />
+                </div>
+            </div>
+        </p>
+
+        <p>
+            <div class="form-group">
+                <label for="adresse"><b>Adresse: </b></label>
+                <InputText Id="adresse" Class="form-control" @bind-Value="@Parent.Address"></InputText>
+                <ValidationMessage For="@(() => Parent.Address)" />
+            </div>
+            <div class="row">
+                <div class="form-group col-4">
+                    <label for="cp"><b>Code Postal: </b></label>
+                    <InputText Id="cp" Class="form-control" @bind-Value="@Parent.PostalCode"></InputText>
+                    <ValidationMessage For="@(() => Parent.PostalCode)" />
+                </div>
+                <div class="form-group col-8">
+                    <label for="ville"><b>Ville: </b></label>
+                    <InputText Id="ville" Class="form-control" @bind-Value="@Parent.City"></InputText>
+                    <ValidationMessage For="@(() => Parent.City)" />
+                </div>
+            </div>
+        </p>
+
+        <p>
+            <div class="row">
+                <div class="form-group col-6">
+                    <label for="tel1"><b>Telephone: </b></label>
+                    <InputText Id="tel1" Class="form-control" @bind-Value="@Parent.Phone"></InputText>
+                    <ValidationMessage For="@(() => Parent.Phone)" />
+                </div>
+                <div class="form-group col-6">
+                    <label for="tel2"><b>Telephone bureau: </b></label>
+                    <InputText Id="tel2" Class="form-control" @bind-Value="@Parent.PhoneWork"></InputText>
+                    <ValidationMessage For="@(() => Parent.PhoneWork)" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="mail"><b>Mail: </b></label>
+                <InputText Id="mail" Class="form-control" @bind-Value="@Parent.Mail"></InputText>
+                <ValidationMessage For="@(() => Parent.Mail)" />
+            </div>
+        </p>
+
+        <br />
+
+        <div class="form-group">
+            <label for="isDisabled"><b>Désactiver: </b></label>
+            <InputCheckbox Id="isDisabled" Class="form-check" @bind-Value="@Parent.IsDisabled"></InputCheckbox>
+            <ValidationMessage For="@(() => Parent.IsDisabled)" />
+        </div>
+
+        <br />
+        <button class="btn btn-info" type="submit">Ok</button>
+        <button class="btn btn-danger" @onclick="Cancel">Cancel</button>
+
+    </EditForm>
+}

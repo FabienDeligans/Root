@@ -8,12 +8,12 @@
 
     public class NomPrenomLorraineHipseaume
     {
-        public Sexe? Sexe { get; set; }
+        public Genre? Sexe { get; set; }
         public string Nom { get; set; }
         public string Prenom { get; set; }
     }
 
-    public enum Sexe
+    public enum Genre
     {
         Masculin = 1, 
         Feminin = 2

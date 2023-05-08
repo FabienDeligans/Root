@@ -70,6 +70,25 @@ namespace Blazor.Controller.Modal
 
             modal.Close();
         }
+
+        public string Spinner { get; set; }
+        public async Task ShowSpinner(Func<Task> func)
+        {
+            var modalOption = new ModalOptions()
+            {
+                UseCustomLayout = true, 
+                DisableBackgroundCancel = true,
+                HideCloseButton = true,
+                HideHeader = true,
+                Position = ModalPosition.Middle,
+                SizeCustomClass = "fullscreen-modal"
+            };
+            var modal = _modalService.Show<Spinner>("", modalOption);
+
+            await func.Invoke();
+
+            modal.Close();
+        }
     }
 
     public static class Alert

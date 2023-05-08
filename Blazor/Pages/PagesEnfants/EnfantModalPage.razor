@@ -1,0 +1,56 @@
+﻿@if (Child != null)
+{
+    <EditForm Model="@Child" OnValidSubmit="@Submit">
+        <div class="@_statusClass">@_statusMessage</div>
+
+        <DataAnnotationsValidator />
+
+        <p>
+            <label for="inputGroupSelect01"><b>Familles: </b></label>
+            <select class="form-select" id="inputGroupSelect01" @bind="Child.FamilyId" disabled="@IsDisabled">
+                <option></option>
+                @foreach (var famille in Families.OrderBy(v => v.Name))
+                {
+                    <option value="@famille.Id">@famille.Name</option>
+                }
+            </select>
+            <ValidationMessage For="@(() => Child.FamilyId)" />
+        </p>
+        <p>
+            <div class="row">
+                <div class="form-group col-6">
+                    <label for="prenom"><b>Prenom: </b></label>
+                    <InputText Id="prenom" Class="form-control" @bind-Value="@Child.FirstName"></InputText>
+                    <ValidationMessage For="@(() => Child.FirstName)" />
+                </div>
+                <div class="form-group col-6">
+                    <label for="nom"><b>Nom: </b></label>
+                    <InputText Id="nom" Class="form-control" @bind-Value="@Child.LastName"></InputText>
+                    <ValidationMessage For="@(() => Child.LastName)" />
+                </div>
+            </div>
+        </p>
+        <p>
+            <div class="row">
+                <div class="form-group col-6">
+                    <label for="birthday"><b>Date de naissance: </b></label>
+                    <InputDate Id="birthday" Class="form-control" @bind-Value="@Child.BirthDay"></InputDate>
+                    <ValidationMessage For="@(() => Child.BirthDay)" />
+                </div>
+            </div>
+        </p>
+
+        <br />
+
+        <div class="form-group">
+            <label for="isDisabled"><b>Désactiver: </b></label>
+            <InputCheckbox Id="isDisabled" Class="form-check" @bind-Value="@Child.IsDisabled"></InputCheckbox>
+            <ValidationMessage For="@(() => Child.IsDisabled)" />
+        </div>
+
+        <br />
+        <button class="btn btn-info" type="submit">Ok</button>
+        <button class="btn btn-danger" @onclick="Cancel">Cancel</button>
+
+    </EditForm>
+}

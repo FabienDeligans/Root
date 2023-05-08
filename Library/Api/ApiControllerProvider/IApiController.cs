@@ -38,6 +38,14 @@ namespace Library.Api.ApiControllerProvider
         Task<ActionResult<IEnumerable<T>>> GetAllAsync();
 
         /// <summary>
+        /// Retourne tous les enregistrements dont la propriété est égale à la valeur
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        Task<ActionResult<IEnumerable<T>?>> GetAllFilteredByPropertyEqualAsync(string propertyName, string value);
+
+        /// <summary>
         /// Retour un object complet avec ses Foreignkey et ses listes dépendants d'autres objects
         /// </summary>
         /// <param name="id"></param>
@@ -63,7 +71,7 @@ namespace Library.Api.ApiControllerProvider
         /// </summary>
         /// <param name="entityUpdate"></param>
         /// <returns></returns>
-        Task<ActionResult<T>> UpdatePropertyAsync(string id, Dictionary<string, string> propertyValueDictionary);
+        Task<ActionResult<T>> UpdatePropertyAsync(string id, Dictionary<string, object> propertyValueDictionary);
 
         /// <summary>
         /// Efface un object

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq.Expressions;
 using Library.Api.ApiDatabaseProvider;
 using Library.CustomAttribute;
 using Library.Models;
@@ -64,6 +65,13 @@ namespace Api.Services.MongoDb
             return result.AsEnumerable();
         }
 
+        public async Task<IEnumerable<T>> GetAllFilterd<T>(Expression<Func<T, bool>> predicate) where T : IEntity
+        {
+            var filter = Builders<T>.Filter.Where(predicate);
+            var result = await Collection<T>().FindAsync(filter);
+            return result.ToEnumerable();
+        }
+
         public async Task<T> GetOneAsync<T>(string? id) where T : IEntity
         {
             return await Collection<T>()
@@ -80,7 +88,7 @@ namespace Api.Services.MongoDb
             return entityUpdate;
         }
 
-        public async Task<T> UpdatePropertyAsync<T>(string id, Dictionary<string, string> propertyValueDictionary) where T : IEntity
+        public async Task<T> UpdatePropertyAsync<T>(string id, Dictionary<string, object> propertyValueDictionary) where T : IEntity
         {
             foreach (var (key, value) in propertyValueDictionary)
             {

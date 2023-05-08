@@ -11,20 +11,36 @@ namespace Blazor.Pages.PagesFamilies
         [Inject]
         public FamilyProvider? FamilyProvider { get; set; }
 
-        private Family Model { get; set; }
+        [Parameter]
+        public string? FamilyId { get; set; }
+        private Family Family { get; set; }
 
         [CascadingParameter]
         public BlazoredModalInstance? BlazoredModal { get; set; }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
-            Model = new Family();
+            if (string.IsNullOrWhiteSpace(FamilyId))
+            {
+                Family = new Family();
+            }
+            else
+            {
+                Family = await FamilyProvider.GetOneSimpleAsync(FamilyId); 
+            }
         }
 
         private async Task Save()
         {
-            Model = await FamilyProvider!.CreateAsync(Model).ConfigureAwait(false);
-            await InvokeAsync(async () => await BlazoredModal!.CloseAsync(ModalResult.Ok(Model)).ConfigureAwait(false));
+            if (string.IsNullOrWhiteSpace(FamilyId))
+            {
+                Family = await FamilyProvider!.CreateAsync(Family).ConfigureAwait(false);
+            }
+            else
+            {
+                Family = await FamilyProvider.UpdateAsync(Family);
+            }
+            await InvokeAsync(async () => await BlazoredModal!.CloseAsync(ModalResult.Ok(Family)).ConfigureAwait(false));
         }
 
         private async Task Reset()

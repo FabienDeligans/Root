@@ -2,26 +2,36 @@
 using Library.Models;
 using Newtonsoft.Json;
 
-namespace Library.Blazor.CallApiAddressProvider
+namespace Library.Blazor.CallApiLoraineProvider
 {
-    public class ApiAddressProvider
+    public class LorraineIpsumProvider
     {
         protected readonly HttpClient _httpClient;
         protected HttpResponseMessage? Response { get; set; }
 
-        public ApiAddressProvider(HttpClient client)
+        public LorraineIpsumProvider(HttpClient client)
         {
             _httpClient = client;
-            _httpClient.BaseAddress = new Uri($"https://api-adresse.data.gouv.fr/search/");
+            _httpClient.BaseAddress = new Uri($"https://www.lorraine-ipsum.fr/frontend/ajax_get_results?random=1683491757900");
         }
-        public async Task<AddressResult> GetListAddress(string address, int nbResult)
+        public async Task<List<NomPrenomIpsum>> GetListRandomName()
         {
             try
             {
-                Response = await _httpClient.GetAsync($"?q={address}&limit={nbResult}");
+                Response = await _httpClient.GetAsync("");
                 var returnJson = await Response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                var result = JsonConvert.DeserializeObject<AddressResult>(returnJson);
-                return result; 
+                var result = JsonConvert.DeserializeObject<IEnumerable<NomPrenomLorraineIpsum>>(returnJson);
+
+                var nomPrenomList = new List<NomPrenomIpsum>();
+                foreach (var ipsum in result)
+                {
+                    nomPrenomList.Add(new NomPrenomIpsum()
+                    {
+                        Prenom = ipsum.name_part,
+                        Nom = ipsum.word_part
+                    });
+                }
+                return nomPrenomList;
             }
             catch (Exception e) when (Response is null)
             {

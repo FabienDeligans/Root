@@ -1,5 +1,7 @@
 ﻿using Library.Api.ApiDatabaseProvider;
 using Library.Models;
+using System.Linq.Expressions;
+using System.Web;
 
 namespace Library.Api.ApiLogicProvider
 {
@@ -42,6 +44,23 @@ namespace Library.Api.ApiLogicProvider
             return await ServiceDatabase.GetAllAsync<T>();
         }
 
+        public async Task<IEnumerable<T>> GetAllFilteredByPropertyEqualAsync(string propertyName, string value)
+        {
+            value = HttpUtility.UrlDecode(value.ToString())!;
+            var parameter = Expression.Parameter(typeof(T));
+
+            var type = typeof(T).GetProperty(propertyName)!.PropertyType;
+            var left = Expression.Property(parameter, propertyName);
+
+            var val = type.Name == "DateTime" ? Convert.ToDateTime(value) : Convert.ChangeType(value, type);
+            var right = Expression.Constant(val);
+
+            BinaryExpression? body = Expression.Equal(left, right);
+            var predicate = Expression.Lambda<Func<T, bool>>(body!, parameter);
+
+            return await ServiceDatabase.GetAllFilterd(predicate);
+        }
+
         public virtual async Task<T> GetOneFullAsync(string? id)
         {
             var entity = await ServiceDatabase.GetOneAsync<T>(id);
@@ -63,7 +82,7 @@ namespace Library.Api.ApiLogicProvider
             return await ServiceDatabase.UpdateAsync(entityUpdate);
         }
 
-        public async Task<T> UpdatePropertyAsync(string id, Dictionary<string, string> propertyValueDictionary)
+        public async Task<T> UpdatePropertyAsync(string id, Dictionary<string, object> propertyValueDictionary)
         {
             propertyValueDictionary.Add(nameof(IEntity.UpdateDate), DateTime.Now.ToLocalTime().ToString());
             return await ServiceDatabase.UpdatePropertyAsync<T>(id, propertyValueDictionary);

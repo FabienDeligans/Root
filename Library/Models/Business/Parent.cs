@@ -22,7 +22,7 @@ namespace Library.Models.Business
         public string? City { get; set; }
 
         [Required]
-        //[Phone]
+        [Phone]
         public string? Phone { get; set; }
 
         [Phone]

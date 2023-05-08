@@ -2,26 +2,38 @@
 using Library.Models;
 using Newtonsoft.Json;
 
-namespace Library.Blazor.CallApiAddressProvider
+namespace Library.Blazor.CallApiLoraineProvider
 {
-    public class ApiAddressProvider
+    public class LorraineHipseaumeProvider
     {
         protected readonly HttpClient _httpClient;
         protected HttpResponseMessage? Response { get; set; }
 
-        public ApiAddressProvider(HttpClient client)
+        public LorraineHipseaumeProvider(HttpClient client)
         {
             _httpClient = client;
-            _httpClient.BaseAddress = new Uri($"https://api-adresse.data.gouv.fr/search/");
+            _httpClient.BaseAddress = new Uri($"https://lorraine-hipseau.me/data?rarity=0&title=0&q=2011-2020");
         }
-        public async Task<AddressResult> GetListAddress(string address, int nbResult)
+        public async Task<List<NomPrenomLorraineHipseaume>> GetListRandomName()
         {
             try
             {
-                Response = await _httpClient.GetAsync($"?q={address}&limit={nbResult}");
+                Response = await _httpClient.GetAsync("");
                 var returnJson = await Response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                var result = JsonConvert.DeserializeObject<AddressResult>(returnJson);
-                return result; 
+                var result = JsonConvert.DeserializeObject<ListNomPrenom>(returnJson);
+
+                var prenomNomList = new List<NomPrenomLorraineHipseaume>();
+                foreach (var hipseaume in result.Results)
+                {
+                    prenomNomList.Add(new NomPrenomLorraineHipseaume()
+                    {
+                        Nom = hipseaume.Nom,
+                        Prenom = hipseaume.Prenom,
+                        Sexe = hipseaume.Sexe,
+                    });
+                }
+
+                return prenomNomList; 
             }
             catch (Exception e) when (Response is null)
             {

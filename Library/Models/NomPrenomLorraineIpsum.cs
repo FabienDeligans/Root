@@ -12,4 +12,10 @@
         public string name_ratio { get; set; }
         public string word_ratio { get; set; }
     }
+
+    public class NomPrenomIpsum
+    {
+        public string Nom { get; set; }
+        public string Prenom { get; set; }
+    }
 }

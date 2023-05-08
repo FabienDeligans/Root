@@ -26,7 +26,7 @@ namespace Library.Models.Business
         [BsonIgnore] 
         public IEnumerable<Inscription>? Inscriptions { get; set; }
 
-        public int GetAge()
+        public string GetAge()
         {
             if (BirthDay != null)
             {
@@ -35,11 +35,11 @@ namespace Library.Models.Business
 
                 if (BirthDay.Date > today.AddYears(-age)) age--;
 
-                return age;
+                return $"{age} {(age < 2 ? "an" : "ans")}";
             }
             else
             {
-                return 0;
+                return "";
             }
         }
     }

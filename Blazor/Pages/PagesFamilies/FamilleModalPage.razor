@@ -1,17 +1,29 @@
 ﻿<div class="container-fluid">
     <div class="row">
-        <EditForm Model="@Model" OnValidSubmit="Save">
-            <DataAnnotationsValidator />
+        @if (Family != null)
+        {
 
-            <div class="form-group">
-                <label for="name">Name</label>
-                <InputText Id="name" Class="form-control" @bind-Value="@Model.Name"></InputText>
-                <ValidationMessage For="() => Model.Name" />
-            </div>
+            <EditForm Model="Family" OnValidSubmit="Save">
+                <DataAnnotationsValidator />
 
-            <br />
-            <button class="btn btn-info" type="submit">Ok</button>
-            <button class="btn btn-danger" type="cancel" @onclick="Reset">Cancel</button>
-        </EditForm>
+                <div class="form-group">
+                    <label for="name"><b>Nom: </b></label>
+                    <InputText Id="name" Class="form-control" @bind-Value="@Family.Name"></InputText>
+                    <ValidationMessage For="() => Family.Name" />
+                </div>
+                
+                <br/>
+
+                <div class="form-group">
+                    <label for="disable"><b>Désactiver: </b></label>
+                    <InputCheckbox Id="disable" Class="form-check" @bind-Value="Family.IsDisabled"></InputCheckbox>
+                    <ValidationMessage For="() => Family.IsDisabled" />
+                </div>
+
+                <br />
+                <button class="btn btn-info" type="submit">Ok</button>
+                <button class="btn btn-danger" type="cancel" @onclick="Reset">Cancel</button>
+            </EditForm>
+        }
     </div>
 </div>

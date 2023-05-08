@@ -117,13 +117,13 @@ namespace Library.Blazor.CallApiProvider
             {
                 var json = new StringContent(JsonSerializer.Serialize(entities), Encoding.UTF8, MediaTypeNames.Application.Json);
 
-                using var response = await _httpClient
+                Response = await _httpClient
                     .PostAsync(Route.CreateManyAsync, json)
                     .ConfigureAwait(false);
 
-                response.EnsureSuccessStatusCode();
+                Response.EnsureSuccessStatusCode();
 
-                var returnJson = await response.Content
+                var returnJson = await Response.Content
                     .ReadAsStringAsync()
                     .ConfigureAwait(false);
 
@@ -148,6 +148,26 @@ namespace Library.Blazor.CallApiProvider
                 return await _httpClient
                         .GetFromJsonAsync<IEnumerable<T>>(Route.GetAllAsync)
                         .ConfigureAwait(false);
+            }
+            catch (Exception e) when (Response is null)
+            {
+                var msg = await CatchError500(e);
+                throw new Exception(msg);
+            }
+            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var msg = await CatchError400(e);
+                throw new Exception(msg);
+            }
+        }
+
+        public async Task<IEnumerable<T>?> GetAllFilteredByPropertyEqualAsync(string propertyName, string value)
+        {
+            try
+            {
+                return await _httpClient
+                    .GetFromJsonAsync<IEnumerable<T>>($"{Route.GetAllFilteredByPropertyEqualAsync}/{propertyName}/{value}")
+                    .ConfigureAwait(false);
             }
             catch (Exception e) when (Response is null)
             {
@@ -205,11 +225,11 @@ namespace Library.Blazor.CallApiProvider
         {
             try
             {
-                using var response = await _httpClient
+                Response = await _httpClient
                         .DeleteAsync($@"{Route.DeleteOneAsync}/{id}")
                         .ConfigureAwait(false);
 
-                response.EnsureSuccessStatusCode();
+                Response.EnsureSuccessStatusCode();
             }
             catch (Exception e) when (Response is null)
             {
@@ -229,13 +249,13 @@ namespace Library.Blazor.CallApiProvider
 
             try
             {
-                using var response = await _httpClient
+                Response = await _httpClient
                         .PutAsync($@"{Route.UpdateAsync}", json)
                         .ConfigureAwait(false);
 
-                response.EnsureSuccessStatusCode();
+                Response.EnsureSuccessStatusCode();
 
-                var returnJson = await response.Content
+                var returnJson = await Response.Content
                     .ReadAsStringAsync()
                     .ConfigureAwait(false);
 
@@ -253,19 +273,19 @@ namespace Library.Blazor.CallApiProvider
             }
         }
 
-        public async Task<T> UpdatePropertyAsync(string id, Dictionary<string, string> propertyValueDictionary)
+        public async Task<T> UpdatePropertyAsync(string id, Dictionary<string, object> propertyValueDictionary)
         {
             var json = new StringContent(JsonSerializer.Serialize(propertyValueDictionary), Encoding.UTF8, MediaTypeNames.Application.Json);
 
             try
             {
-                using var response = await _httpClient
+                Response = await _httpClient
                     .PutAsync($@"{Route.UpdatePropertyAsync}/{id}", json)
                     .ConfigureAwait(false);
 
-                response.EnsureSuccessStatusCode();
+                Response.EnsureSuccessStatusCode();
 
-                var returnJson = await response.Content
+                var returnJson = await Response.Content
                     .ReadAsStringAsync()
                     .ConfigureAwait(false);
 
@@ -309,14 +329,5 @@ namespace Library.Blazor.CallApiProvider
 
             return msg;
         }
-    }
-
-    public class ProblemDetailsWithErrors
-    {
-        public string Type { get; set; }
-        public string Title { get; set; }
-        public int Status { get; set; }
-        public string TraceId { get; set; }
-        public Dictionary<string, string[]> Errors { get; set; }
     }
 }

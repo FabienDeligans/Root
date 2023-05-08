@@ -49,6 +49,13 @@ namespace Library.Api.ApiControllerProvider
             return new ActionResult<IEnumerable<T>>(result);
         }
 
+        [HttpGet(Route.GetAllFilteredByPropertyEqualAsync + "/{propertyName}/{value}")]
+        public async Task<ActionResult<IEnumerable<T>?>> GetAllFilteredByPropertyEqualAsync(string propertyName, string value)
+        {
+            var result = await _apiLogic.GetAllFilteredByPropertyEqualAsync(propertyName, value);
+            return new ActionResult<IEnumerable<T>?>(result);
+        }
+
         [HttpGet(Route.GetOneFullAsync + "/{id}")]
         public virtual async Task<ActionResult<T>> GetOneFullAsync(string id)
         {
@@ -71,7 +78,7 @@ namespace Library.Api.ApiControllerProvider
         }
 
         [HttpPut(Route.UpdatePropertyAsync + "/{id}")]
-        public async Task<ActionResult<T>> UpdatePropertyAsync(string id, Dictionary<string, string> propertyValueDictionary)
+        public async Task<ActionResult<T>> UpdatePropertyAsync(string id, Dictionary<string, object> propertyValueDictionary)
         {
             var result = await _apiLogic.UpdatePropertyAsync(id, propertyValueDictionary);
             return result;

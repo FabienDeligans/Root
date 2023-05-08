@@ -1,43 +1,160 @@
-﻿@page "/famillePage"
+﻿@page "/FamilyPage"
 
-<p>
-    <h3>Familles Page</h3>
-</p>
+@if (Loaded)
+{
+    <div class="container-fluid">
 
-<div class="container-fluid">
-    <div class="row">
-        <button class="btn btn-info" @onclick="Add">Add</button>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Name</th>
-                        <th>Creation Date</th>
-                        <th>Update Date</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var family in Families)
-                    {
-                        <tr @onclick="() => Model = family" class="align-middle">
-                            <td>@family.Id</td>
-                            <td>
-                                <input type="text"
-                                       class="form-control form-control-sm"
-                                       Value="@family.Name"
-                                @onchange="(arg) => AutoUpdate(arg, nameof(Model.Name))" />
-                            </td>
-                            <td>@family.CreationDate</td>
-                            <td>@family.UpdateDate</td>
-                            <td><button class="btn btn-danger btn-sm" @onclick="@(()=>ConfirmDelete(family.Id))">Delete</button></td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+        <div class="row">
+            <div class="col" style="margin: 10px">
+                <label for="inputGroupSelect01"><b>Families (@Families.Count())</b></label>
+                <div class="input-group">
+                    <select class="form-select" id="inputGroupSelect01" @onchange="LoadFamily">
+                        <option></option>
+                        @foreach (var family in Families.OrderBy(v => v.Name))
+                        {
+                            @if (Family != null && Family.Id == family.Id)
+                            {
+                                <option value="@family.Id" selected="selected" class="bg-primary">@family.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@family.Id" class="@(family.IsDisabled ? "bg-secondary" : "")">@family.Name</option>
+                            }
+                        }
+                    </select>
+                    <button class="btn btn-info bi bi-person-plus" type="button" @onclick="CreateFamily"></button>
+                </div>
+            </div>
+
+            <div class="col-1 justify-content-center flex-row" style="margin: 10px">
+                <label class="form-check-label" for="toggle"><b>Voir tous</b></label>
+                <div class="form-check form-switch" style="margin-top: 10px; padding-left: 0px">
+                    <input class="form-check-input" type="checkbox" id="toggle" style="margin: auto; vertical-align: center" checked="@ShowAll" @onchange="ToggleShowAll">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-3 d-flex flex-column">
+
+                <div class="row" style="margin: 10px">
+                    <div class="d-flex flex-row justify-content-between align-items-center">
+                        <label for="inputGroupSelect02"><b>Parents (@Parents.Count())</b></label>
+                        <button class="btn btn-info bi bi-person-plus" @onclick="CreateParent"></button>
+                    </div>
+                    <div class="input-group">
+                        <select class="form-select" id="inputGroupSelect02" @onchange="LoadFamily" size="13">
+                            <option></option>
+                            @foreach (var parent in Parents.OrderBy(v => v.FirstName))
+                            {
+                                @if (Family != null && parent.FamilyId == Family.Id)
+                                {
+                                    <option value="@parent.FamilyId" selected="selected" class="bg-primary">@parent.FirstName @parent.LastName</option>
+                                }
+                                else
+                                {
+                                    <option value="@parent.FamilyId" class="@(parent.IsDisabled ? "bg-secondary" : "")">@parent.FirstName @parent.LastName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row" style="margin: 10px">
+                    <div class="d-flex flex-row justify-content-between align-items-center">
+                        <label for="inputGroupSelect03"><b>Enfants (@Children.Count())</b></label>
+                        <button class="btn btn-info bi bi-person-plus" @onclick="CreateEnfant"></button>
+                    </div>
+                    <div class="input-group">
+                        <select class="form-select" id="inputGroupSelect03" @onchange="LoadFamily" size="13">
+                            <option></option>
+                            @foreach (var enfant in Children.OrderBy(v => v.FirstName))
+                            {
+                                @if (Family != null && enfant.FamilyId == Family.Id)
+                                {
+                                    <option value="@enfant.FamilyId" selected="selected" class="bg-primary">@enfant.FirstName @enfant.LastName</option>
+                                }
+                                else
+                                {
+                                    <option value="@enfant.FamilyId" class="@(enfant.IsDisabled ? "bg-secondary" : "")">@enfant.FirstName @enfant.LastName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="col-9">
+                @if (Family != null)
+                {
+                    <div class="container-fluid" style="margin: 10px">
+                        <p>
+                            <h3>Family</h3>
+                            <div class="card shadow p-1 mb-1 bg-white rounded text-center" style="width: 25%; margin: 10px" @onclick="@(() => UpdateFamily(Family.Id))">
+                                <div class="card-body zoom">
+                                    <h4 class="card-title">@Family.Name </h4>
+                                    @if (@Family.IsDisabled)
+                                    {
+                                        <i class="bi bi-flag-fill" style="color: red"></i>
+                                    }
+                                </div>
+                            </div>
+                        </p>
+
+                        <p>
+                            <h3>Parents</h3>
+                            <div class="d-flex flex-row">
+                                @foreach (var parent in Family.Parents!)
+                                {
+                                    <div class="card shadow p-1 mb-1 bg-white rounded text-center" style="width: 25%; height: auto; margin: 10px" @onclick="@(() => UpdateParent(parent.Id))">
+                                        <div class="card-body zoom">
+                                            <h5 class="card-title">@parent.FirstName @parent.LastName</h5>
+                                            <p class="card-text">
+                                                <div>@parent.Address</div>
+                                                <div>@parent.PostalCode @parent.City</div>
+                                                <div>@parent.Phone</div>
+                                                <div>@parent.Mail</div>
+                                                @if (@parent.IsDisabled)
+                                                {
+                                                    <i class="bi bi-flag-fill" style="color: red"></i>
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </p>
+
+                        <p>
+                            <h3>Enfants</h3>
+                            <div class="d-flex flex-row">
+                                @foreach (var enfant in Family.Children!)
+                                {
+                                    <div class="card shadow p-1 mb-1 bg-white rounded text-center" style="width: 25%; margin: 10px" @onclick="@(() => UpdateEnfant(enfant.Id))">
+                                        <div class="card-body zoom">
+                                            <h5 class="card-title">@enfant.FirstName @enfant.LastName</h5>
+                                            <p class="card-text">
+                                                <div>@enfant.BirthDay!.ToShortDateString()</div>
+                                                <div>@enfant.GetAge()</div>
+                                                @if (@enfant.IsDisabled)
+                                                {
+                                                    <i class="bi bi-flag-fill" style="color: red"></i>
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </p>
+                    </div>
+                }
+
+            </div>
+
         </div>
     </div>
-</div>
+}
+
