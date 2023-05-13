@@ -64,7 +64,7 @@ namespace Blazor.Pages
                             address.Properties.housenumber = random.Next(1, 50).ToString();
                         }
 
-                        var lorraineHipseaumes = new List<NomPrenomLorraineHipseaume>();
+                        var lorraineHipseaumes = new List<NomPrenomHipseaume>();
 
                         for (var i = 0; i < nbFamilies; i++)
                         {
@@ -96,7 +96,7 @@ namespace Blazor.Pages
                                 };
                                 parents.Add(parent);
                                 ParentId = parent.Id;
-                                lorraineHipseaumes = new List<NomPrenomLorraineHipseaume>();
+                                lorraineHipseaumes = new List<NomPrenomHipseaume>();
                             }
 
                             for (var j = 0; j < random.Next(1, 4); j++)
@@ -114,7 +114,7 @@ namespace Blazor.Pages
                                     FamilyId = family.Id
                                 };
                                 children.Add(child);
-                                lorraineHipseaumes = new List<NomPrenomLorraineHipseaume>();
+                                lorraineHipseaumes = new List<NomPrenomHipseaume>();
                             }
                         }
 

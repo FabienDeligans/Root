@@ -14,7 +14,7 @@ namespace Library.Blazor.CallApiLoraineProvider
             _httpClient = client;
             _httpClient.BaseAddress = new Uri($"https://lorraine-hipseau.me/data?rarity=0&title=0&q=2011-2020");
         }
-        public async Task<List<NomPrenomLorraineHipseaume>> GetListRandomName()
+        public async Task<List<NomPrenomHipseaume>> GetListRandomName()
         {
             try
             {
@@ -22,10 +22,10 @@ namespace Library.Blazor.CallApiLoraineProvider
                 var returnJson = await Response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 var result = JsonConvert.DeserializeObject<ListNomPrenom>(returnJson);
 
-                var prenomNomList = new List<NomPrenomLorraineHipseaume>();
+                var prenomNomList = new List<NomPrenomHipseaume>();
                 foreach (var hipseaume in result.Results)
                 {
-                    prenomNomList.Add(new NomPrenomLorraineHipseaume()
+                    prenomNomList.Add(new NomPrenomHipseaume()
                     {
                         Nom = hipseaume.Nom,
                         Prenom = hipseaume.Prenom,

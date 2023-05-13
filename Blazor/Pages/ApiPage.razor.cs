@@ -21,7 +21,7 @@ namespace Blazor.Pages
 
         [Inject]
         public LorraineHipseaumeProvider LorraineHipseameProvider { get; set; }
-        public List<NomPrenomLorraineHipseaume> ListNomPrenomHipseaume { get; set; }
+        public List<NomPrenomHipseaume> ListNomPrenomHipseaume { get; set; }
 
         private async Task SearchNameLorraineHipseaume()
         {

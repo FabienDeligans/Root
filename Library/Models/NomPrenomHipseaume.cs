@@ -2,11 +2,11 @@
 {
     public class ListNomPrenom
     {
-        public List<NomPrenomLorraineHipseaume> Results { get; set; } = new List<NomPrenomLorraineHipseaume>();
+        public List<NomPrenomHipseaume> Results { get; set; } = new List<NomPrenomHipseaume>();
         public int Total { get; set; }
     }
 
-    public class NomPrenomLorraineHipseaume
+    public class NomPrenomHipseaume
     {
         public Genre? Sexe { get; set; }
         public string Nom { get; set; }
