@@ -41,42 +41,41 @@ namespace Blazor.Controller.Modal
             return result.Confirmed ? result.Data : null;
         }
 
-        #region ShowModalDuration
-        public async Task ShowModalDuration(string text, int millisecond, string alert)
+        #region ShowModalAlert
+        public async Task ShowModalAlert(string text, int millisecond, string alert)
         {
-            await ShowModalDuration(text, millisecond, alert, new ModalParameters(), new ModalOptions());
+            await ShowModalAlert(text, millisecond, alert, new ModalParameters(), new ModalOptions());
         }
-        public async Task ShowModalDuration(string text, int millisecond, string alert, ModalOptions options)
+        public async Task ShowModalAlert(string text, int millisecond, string alert, ModalOptions options)
         {
-            await ShowModalDuration(text, millisecond, alert, new ModalParameters(), options);
+            await ShowModalAlert(text, millisecond, alert, new ModalParameters(), options);
         }
-        public async Task ShowModalDuration(string title, int millisecond, string alert, ModalParameters parameters)
+        public async Task ShowModalAlert(string title, int millisecond, string alert, ModalParameters parameters)
         {
-            await ShowModalDuration(title, millisecond, alert, parameters, new ModalOptions());
+            await ShowModalAlert(title, millisecond, alert, parameters, new ModalOptions());
         }
         #endregion
 
-        public async Task ShowModalDuration(string text, int millisecond, string? alert, ModalParameters parameters, ModalOptions options)
+        public async Task ShowModalAlert(string text, int millisecond, string? alert, ModalParameters parameters, ModalOptions options)
         {
-            parameters.Add(nameof(MessageComponent.Message), text);
-            parameters.Add(nameof(MessageComponent.ClassCSS), alert);
+            parameters.Add(nameof(AlertComponent.Message), text);
+            parameters.Add(nameof(AlertComponent.ClassCSS), alert);
 
             options.Class = alert;
             options.UseCustomLayout = true;
 
-            var modal = _modalService.Show<MessageComponent>("", parameters, options);
+            var modal = _modalService.Show<AlertComponent>("", parameters, options);
 
             await Task.Delay(millisecond);
 
             modal.Close();
         }
 
-        public string Spinner { get; set; }
         public async Task ShowSpinner(Func<Task> func)
         {
             var modalOption = new ModalOptions()
             {
-                UseCustomLayout = true, 
+                UseCustomLayout = true,
                 DisableBackgroundCancel = true,
                 HideCloseButton = true,
                 HideHeader = true,
@@ -84,9 +83,8 @@ namespace Blazor.Controller.Modal
                 SizeCustomClass = "fullscreen-modal"
             };
             var modal = _modalService.Show<Spinner>("", modalOption);
-
+            
             await func.Invoke();
-
             modal.Close();
         }
     }

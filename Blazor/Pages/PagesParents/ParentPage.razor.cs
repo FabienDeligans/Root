@@ -53,11 +53,11 @@ namespace Blazor.Pages.PagesParents
             //{
             //    if (result != null)
             //    {
-            //        await ModalController.ShowModalDuration($"Enregistrement OK pour le parent {result.LastName}", 1000, Alert.Success);
+            //        await ModalController.ShowModalAlert($"Enregistrement OK pour le parent {result.LastName}", 1000, Alert.Success);
             //    }
             //    else
             //    {
-            //        await ModalController.ShowModalDuration($"Annulation effectuée", 1000, Alert.Danger);
+            //        await ModalController.ShowModalAlert($"Annulation effectuée", 1000, Alert.Danger);
             //    }
             //});
 
@@ -77,11 +77,11 @@ namespace Blazor.Pages.PagesParents
             //{
             //    if (result != null)
             //    {
-            //        await ModalController.ShowModalDuration($"Effacement effectué", 1000, Alert.Success);
+            //        await ModalController.ShowModalAlert($"Effacement effectué", 1000, Alert.Success);
             //    }
             //    else
             //    {
-            //        await ModalController.ShowModalDuration($"Effacement annulé", 1000, Alert.Danger);
+            //        await ModalController.ShowModalAlert($"Effacement annulé", 1000, Alert.Danger);
             //    }
             //});
 

@@ -29,13 +29,14 @@ namespace Blazor.Pages.PagesFamilies
         private Family Family { get; set; }
 
         private bool ShowAll { get; set; }
-        private bool Loaded { get; set; }
 
+        private bool Loaded { get; set; }
+    
         protected override async Task OnInitializedAsync()
         {
-            await InvokeAsync(async () =>
+            await ModalController.ShowSpinner(async () =>
             {
-                await ModalController.ShowSpinner(async () =>
+                await InvokeAsync(async () =>
                 {
                     var famillesTask = FamilyProvider!.GetAllFilteredByPropertyEqualAsync(nameof(Family.IsDisabled), "false");
                     var parentTask = ParentProvider!.GetAllFilteredByPropertyEqualAsync(nameof(Parent.IsDisabled), "false");
@@ -69,7 +70,7 @@ namespace Blazor.Pages.PagesFamilies
             Children = await enfantTask;
 
             ShowAll = !ShowAll;
-            Loaded = true; 
+            Loaded = true;
         }
 
         private async Task PartialLoad()
@@ -95,11 +96,11 @@ namespace Blazor.Pages.PagesFamilies
         {
             if (!ShowAll)
             {
-                await AllLoad(); 
+                await AllLoad();
             }
             else
             {
-                await PartialLoad(); 
+                await PartialLoad();
             }
             await InvokeAsync(StateHasChanged);
         }
@@ -132,11 +133,11 @@ namespace Blazor.Pages.PagesFamilies
                 {
                     await PartialLoad();
                     await LoadFamily(new ChangeEventArgs() { Value = result.Id });
-                    await ModalController.ShowModalDuration($"Modification OK pour : {result.Name}", 1000, Alert.Success);
+                    await ModalController.ShowModalAlert($"Modification OK pour : {result.Name}", 1000, Alert.Success);
                 }
                 else
                 {
-                    await ModalController.ShowModalDuration($"Action annullée", 1000, Alert.Danger);
+                    await ModalController.ShowModalAlert($"Action annullée", 1000, Alert.Danger);
                 }
             });
         }
@@ -151,11 +152,11 @@ namespace Blazor.Pages.PagesFamilies
                 {
                     await PartialLoad();
                     await LoadFamily(new ChangeEventArgs() { Value = result.Id });
-                    await ModalController.ShowModalDuration($"Modification OK pour : {result.Name}", 1000, Alert.Success);
+                    await ModalController.ShowModalAlert($"Modification OK pour : {result.Name}", 1000, Alert.Success);
                 }
                 else
                 {
-                    await ModalController.ShowModalDuration($"Action annullée", 1000, Alert.Danger);
+                    await ModalController.ShowModalAlert($"Action annullée", 1000, Alert.Danger);
                 }
             });
         }
@@ -174,11 +175,11 @@ namespace Blazor.Pages.PagesFamilies
                 {
                     await PartialLoad();
                     await LoadFamily(new ChangeEventArgs() { Value = result.FamilyId });
-                    await ModalController.ShowModalDuration($"Modification OK pour : {result.FirstName} {result.LastName}", 1000, Alert.Success);
+                    await ModalController.ShowModalAlert($"Modification OK pour : {result.FirstName} {result.LastName}", 1000, Alert.Success);
                 }
                 else
                 {
-                    await ModalController.ShowModalDuration($"Action annullée", 1000, Alert.Danger);
+                    await ModalController.ShowModalAlert($"Action annullée", 1000, Alert.Danger);
                 }
             });
         }
@@ -193,11 +194,11 @@ namespace Blazor.Pages.PagesFamilies
                 {
                     await PartialLoad();
                     await LoadFamily(new ChangeEventArgs() { Value = result.FamilyId });
-                    await ModalController.ShowModalDuration($"Enregistrement OK pour : {result.FirstName} {result.LastName}", 1000, Alert.Success);
+                    await ModalController.ShowModalAlert($"Enregistrement OK pour : {result.FirstName} {result.LastName}", 1000, Alert.Success);
                 }
                 else
                 {
-                    await ModalController.ShowModalDuration($"Action annullée", 1000, Alert.Danger);
+                    await ModalController.ShowModalAlert($"Action annullée", 1000, Alert.Danger);
                 }
             });
         }
@@ -216,11 +217,11 @@ namespace Blazor.Pages.PagesFamilies
                 {
                     await PartialLoad();
                     await LoadFamily(new ChangeEventArgs() { Value = result.FamilyId });
-                    await ModalController.ShowModalDuration($"Modification OK pour : {result.FirstName} {result.LastName}", 1000, Alert.Success);
+                    await ModalController.ShowModalAlert($"Modification OK pour : {result.FirstName} {result.LastName}", 1000, Alert.Success);
                 }
                 else
                 {
-                    await ModalController.ShowModalDuration($"Action annullée", 1000, Alert.Danger);
+                    await ModalController.ShowModalAlert($"Action annullée", 1000, Alert.Danger);
                 }
             });
         }
@@ -235,11 +236,11 @@ namespace Blazor.Pages.PagesFamilies
                 {
                     await PartialLoad();
                     await LoadFamily(new ChangeEventArgs() { Value = result.FamilyId });
-                    await ModalController.ShowModalDuration($"Enregistrement OK pour : {result.FirstName} {result.LastName}", 1000, Alert.Success);
+                    await ModalController.ShowModalAlert($"Enregistrement OK pour : {result.FirstName} {result.LastName}", 1000, Alert.Success);
                 }
                 else
                 {
-                    await ModalController.ShowModalDuration($"Action annullée", 1000, Alert.Danger);
+                    await ModalController.ShowModalAlert($"Action annullée", 1000, Alert.Danger);
                 }
             });
         }
