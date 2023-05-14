@@ -83,9 +83,17 @@ namespace Blazor.Controller.Modal
                 SizeCustomClass = "fullscreen-modal"
             };
             var modal = _modalService.Show<Spinner>("", modalOption);
-            
-            await func.Invoke();
-            modal.Close();
+
+            try
+            {
+                await func.Invoke();
+                //await Task.Delay(10000000); 
+            }
+            finally
+            {
+                modal.Close();
+            }
+
         }
     }
 

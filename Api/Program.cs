@@ -17,8 +17,9 @@ namespace Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Récupère les informations de la base de données dans "appsettings.json"
+            // Récupère les informations dans "appsettings.json"
             builder.Services.Configure<SettingsServiceMongoDb>(builder.Configuration.GetSection("MongoDatabase"));
+            builder.Services.Configure<SettingsApi>(builder.Configuration.GetSection("Callers"));
 
             // Inscrit les couches Logic et Service dans l'injection de dépendance
             builder.Services.AddTransient<ServiceMongoDatabase>();

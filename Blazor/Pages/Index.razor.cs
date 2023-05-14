@@ -40,8 +40,6 @@ namespace Blazor.Pages
         private string ParentId { get; set; }
         private string ChildId { get; set; }
 
-        private string Error;
-
         private async Task GenerateData()
         {
             try
@@ -52,13 +50,13 @@ namespace Blazor.Pages
                     {
                         var random = new Random();
 
-                        var nbFamilies = 50;
+                        var nbFamilies = 500;
 
                         var families = new List<Family>();
                         var parents = new List<Parent>();
                         var children = new List<Child>();
 
-                        var addresses = await ApiAddressProvider.GetListAddress("Brindas", nbFamilies + 1);
+                        var addresses = await ApiAddressProvider.GetListAddress("Brindas", 100);
                         foreach (var address in addresses.Features)
                         {
                             address.Properties.housenumber = random.Next(1, 50).ToString();
@@ -76,22 +74,23 @@ namespace Blazor.Pages
                             family = await FamilyProvider.CreateAsync(family).ConfigureAwait(false);
                             families.Add(family);
 
+                            var rand = random.Next(1, 100);
                             for (var j = 0; j < random.Next(1, 3); j++)
                             {
                                 var result = await LorraineHipseaume.GetListRandomName();
                                 lorraineHipseaumes = result.ToList();
 
-                                var rand = random.Next(0, lorraineHipseaumes.Count);
+                                var randName = random.Next(1, lorraineHipseaumes.Count);
                                 var parent = new Parent
                                 {
                                     IsDisabled = false,
-                                    FirstName = lorraineHipseaumes[rand].Prenom,
-                                    LastName = lorraineHipseaumes[rand].Nom,
-                                    Address = $"{addresses.Features[i + 1].Properties.housenumber} {addresses.Features[i + 1].Properties.street}",
-                                    PostalCode = $"{addresses.Features[i].Properties.postcode}",
-                                    City = $"{addresses.Features[i].Properties.city}",
+                                    FirstName = lorraineHipseaumes[randName].Prenom,
+                                    LastName = lorraineHipseaumes[randName].Nom,
+                                    Address = $"{addresses.Features[rand].Properties.housenumber} {addresses.Features[rand].Properties.street}",
+                                    PostalCode = $"{addresses.Features[j].Properties.postcode}",
+                                    City = $"{addresses.Features[j].Properties.city}",
                                     Phone = $"0000000000",
-                                    Mail = $"{lorraineHipseaumes[rand].Prenom}.{lorraineHipseaumes[rand].Nom}@parent.com",
+                                    Mail = $"{lorraineHipseaumes[randName].Prenom}.{lorraineHipseaumes[randName].Nom}@parent.com",
                                     FamilyId = family.Id
                                 };
                                 parents.Add(parent);
@@ -104,12 +103,12 @@ namespace Blazor.Pages
                                 var result = await LorraineHipseaume.GetListRandomName();
                                 lorraineHipseaumes = result.ToList();
 
-                                var rand = random.Next(0, lorraineHipseaumes.Count);
+                                var randName = random.Next(1, lorraineHipseaumes.Count);
                                 var child = new Child
                                 {
                                     IsDisabled = false,
-                                    FirstName = $"{lorraineHipseaumes[rand].Prenom}",
-                                    LastName = $"{lorraineHipseaumes[rand].Nom}",
+                                    FirstName = $"{lorraineHipseaumes[randName].Prenom}",
+                                    LastName = $"{lorraineHipseaumes[randName].Nom}",
                                     BirthDay = new DateTime(1985, 01, 15),
                                     FamilyId = family.Id
                                 };
@@ -132,10 +131,13 @@ namespace Blazor.Pages
                         }
                     });
                 });
+                await ModalController.ShowModalAlert($"Génération des datas terminées", 2000, Alert.Success);
+
             }
             catch (Exception e)
             {
-                Error = e.Message;
+                await ModalController.ShowModalAlert($"{e.Message}", 2000, Alert.Danger);
+
                 await InvokeAsync(StateHasChanged);
             }
         }
@@ -160,10 +162,13 @@ namespace Blazor.Pages
                         ChildId = "";
                     });
                 });
+
+                await ModalController.ShowModalAlert($"Effacement de la base de données effectuée", 2000, Alert.Success);
             }
             catch (Exception e)
             {
-                Error = e.Message;
+                await ModalController.ShowModalAlert($"{e.Message}", 2000, Alert.Danger);
+
                 await InvokeAsync(StateHasChanged);
             }
         }

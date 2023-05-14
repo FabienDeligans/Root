@@ -18,13 +18,13 @@
     right: 0;
     top: 0;
     bottom: 0;
-    background: radial-gradient(circle, rgba(255,255,255,1) 50%, rgba(231,237,254,0) 100%);
+    /*background: radial-gradient(circle, rgba(255,255,255,1) 50%, rgba(231,237,254,0) 100%);*/
     border-style: none;
     align-content: center;
     align-items: center;
 }
 
-.modal-content {
+.modal-body{
     position: fixed;
     margin: auto;
     width: 20%;
@@ -33,7 +33,7 @@
     right: 0;
     top: 0;
     bottom: 0;
-    background: radial-gradient(circle, rgba(255,255,255,1) 50%, rgba(231,237,254,0) 100%);
+    /*background: radial-gradient(circle, rgba(255,255,255,1) 50%, rgba(231,237,254,0) 100%);*/
     border-style: none;
     align-content: center;
     align-items: center;

@@ -16,7 +16,7 @@ namespace Library.Blazor.CallApiProvider
         Task DeleteOneAsync(string id);
         Task<T> UpdateAsync(T entityUpdate);
         Task<T> UpdatePropertyAsync(string id, Dictionary<string, object> propertyValueDictionary);
-        Task<string> CatchError500(Exception e);
-        Task<string> CatchError400(Exception e);
+        Task<string> CatchResponseNull(Exception e);
+        Task<string> CatchBadRequest(Exception e);
     }
 }

@@ -20,7 +20,7 @@ namespace Library.Blazor.CallApiLoraineProvider
             {
                 Response = await _httpClient.GetAsync("");
                 var returnJson = await Response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                var result = JsonConvert.DeserializeObject<ListNomPrenom>(returnJson);
+                var result = JsonConvert.DeserializeObject<ListNomPrenomLorraineHipseaume>(returnJson);
 
                 var prenomNomList = new List<NomPrenomHipseaume>();
                 foreach (var hipseaume in result.Results)

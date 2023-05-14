@@ -21,11 +21,31 @@ namespace Library.Blazor.CallApiProvider
         {
             _options = options;
             _httpClient = client;
-
+            _httpClient.DefaultRequestHeaders.Add("From", _options.Value.CallerName);
             _httpClient.BaseAddress = new Uri($"{_options.Value.Adress}{GetTypeName()}/");
         }
 
         public string GetTypeName() => typeof(T).Name;
+
+        public async Task<string> CatchExceptions(Exception exception)
+        {
+            if (Response is null)
+            {
+                return await CatchResponseNull(exception);
+            }
+
+            switch (Response.StatusCode)
+            {
+                case HttpStatusCode.BadRequest:
+                    return await CatchBadRequest(exception);
+                    break;
+                case HttpStatusCode.Unauthorized:
+                    return await CatchUnauthorized(exception);
+                    break;
+            }
+
+            return exception.Message;
+        }
 
         public async Task DropCollectionAsync()
         {
@@ -37,14 +57,9 @@ namespace Library.Blazor.CallApiProvider
 
                 Response.EnsureSuccessStatusCode();
             }
-            catch (Exception e) when (Response is null)
+            catch (Exception e) 
             {
-                var msg = await CatchError500(e);
-                throw new Exception(msg);
-            }
-            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
-            {
-                var msg = await CatchError400(e);
+                var msg = await CatchExceptions(e);
                 throw new Exception(msg);
             }
         }
@@ -63,14 +78,9 @@ namespace Library.Blazor.CallApiProvider
 
                 return JsonConvert.DeserializeObject<long>(returnJson);
             }
-            catch (Exception e) when (Response is null)
+            catch (Exception e)
             {
-                var msg = await CatchError500(e);
-                throw new Exception(msg);
-            }
-            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
-            {
-                var msg = await CatchError400(e);
+                var msg = await CatchExceptions(e);
                 throw new Exception(msg);
             }
         }
@@ -94,19 +104,9 @@ namespace Library.Blazor.CallApiProvider
 
                 return JsonConvert.DeserializeObject<T>(returnJson);
             }
-            catch (Exception e) when (Response is null)
-            {
-                var msg = await CatchError500(e);
-                throw new Exception(msg);
-            }
-            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
-            {
-                var msg = await CatchError400(e);
-                throw new Exception(msg);
-            }
             catch (Exception e)
             {
-                var msg = e.ToString();
+                var msg = await CatchExceptions(e);
                 throw new Exception(msg);
             }
         }
@@ -129,14 +129,9 @@ namespace Library.Blazor.CallApiProvider
 
                 return JsonConvert.DeserializeObject<IEnumerable<T>>(returnJson);
             }
-            catch (Exception e) when (Response is null)
+            catch (Exception e)
             {
-                var msg = await CatchError500(e);
-                throw new Exception(msg);
-            }
-            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
-            {
-                var msg = await CatchError400(e);
+                var msg = await CatchExceptions(e);
                 throw new Exception(msg);
             }
         }
@@ -149,14 +144,9 @@ namespace Library.Blazor.CallApiProvider
                         .GetFromJsonAsync<IEnumerable<T>>(Route.GetAllAsync)
                         .ConfigureAwait(false);
             }
-            catch (Exception e) when (Response is null)
+            catch (Exception e)
             {
-                var msg = await CatchError500(e);
-                throw new Exception(msg);
-            }
-            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
-            {
-                var msg = await CatchError400(e);
+                var msg = await CatchExceptions(e);
                 throw new Exception(msg);
             }
         }
@@ -169,14 +159,9 @@ namespace Library.Blazor.CallApiProvider
                     .GetFromJsonAsync<IEnumerable<T>>($"{Route.GetAllFilteredByPropertyEqualAsync}/{propertyName}/{value}")
                     .ConfigureAwait(false);
             }
-            catch (Exception e) when (Response is null)
+            catch (Exception e)
             {
-                var msg = await CatchError500(e);
-                throw new Exception(msg);
-            }
-            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
-            {
-                var msg = await CatchError400(e);
+                var msg = await CatchExceptions(e);
                 throw new Exception(msg);
             }
         }
@@ -189,14 +174,9 @@ namespace Library.Blazor.CallApiProvider
                         .GetFromJsonAsync<T>($"{Route.GetOneFullAsync}/{id}")
                         .ConfigureAwait(false);
             }
-            catch (Exception e) when (Response is null)
+            catch (Exception e)
             {
-                var msg = await CatchError500(e);
-                throw new Exception(msg);
-            }
-            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
-            {
-                var msg = await CatchError400(e);
+                var msg = await CatchExceptions(e);
                 throw new Exception(msg);
             }
         }
@@ -209,14 +189,9 @@ namespace Library.Blazor.CallApiProvider
                         .GetFromJsonAsync<T>($"{Route.GetOneSimpleAsync}/{id}")
                         .ConfigureAwait(false);
             }
-            catch (Exception e) when (Response is null)
+            catch (Exception e)
             {
-                var msg = await CatchError500(e);
-                throw new Exception(msg);
-            }
-            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
-            {
-                var msg = await CatchError400(e);
+                var msg = await CatchExceptions(e);
                 throw new Exception(msg);
             }
         }
@@ -231,14 +206,9 @@ namespace Library.Blazor.CallApiProvider
 
                 Response.EnsureSuccessStatusCode();
             }
-            catch (Exception e) when (Response is null)
+            catch (Exception e)
             {
-                var msg = await CatchError500(e);
-                throw new Exception(msg);
-            }
-            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
-            {
-                var msg = await CatchError400(e);
+                var msg = await CatchExceptions(e);
                 throw new Exception(msg);
             }
         }
@@ -261,14 +231,9 @@ namespace Library.Blazor.CallApiProvider
 
                 return JsonConvert.DeserializeObject<T>(returnJson);
             }
-            catch (Exception e) when (Response is null)
+            catch (Exception e)
             {
-                var msg = await CatchError500(e);
-                throw new Exception(msg);
-            }
-            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
-            {
-                var msg = await CatchError400(e);
+                var msg = await CatchExceptions(e);
                 throw new Exception(msg);
             }
         }
@@ -291,24 +256,26 @@ namespace Library.Blazor.CallApiProvider
 
                 return JsonConvert.DeserializeObject<T>(returnJson);
             }
-            catch (Exception e) when (Response is null)
+            catch (Exception e)
             {
-                var msg = await CatchError500(e);
-                throw new Exception(msg);
-            }
-            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
-            {
-                var msg = await CatchError400(e);
+                var msg = await CatchExceptions(e);
                 throw new Exception(msg);
             }
         }
 
-        public async Task<string> CatchError500(Exception e)
+        public async Task<string> CatchUnauthorized(Exception e)
+        {
+            return await Response.Content
+                .ReadAsStringAsync()
+                .ConfigureAwait(false);
+        }
+
+        public async Task<string> CatchResponseNull(Exception e)
         {
             return e.Message;
         }
 
-        public async Task<string> CatchError400(Exception e)
+        public async Task<string> CatchBadRequest(Exception e)
         {
             var returnJson = await Response.Content
             .ReadAsStringAsync()
