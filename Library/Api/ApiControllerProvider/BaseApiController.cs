@@ -43,7 +43,6 @@ namespace Library.Api.ApiControllerProvider
                 EnsureFromAllowed();
 
                 return await _apiLogic.CountDataAsync();
-
             }
             catch (Exception e)
             {
@@ -194,6 +193,7 @@ namespace Library.Api.ApiControllerProvider
                 return CatchExceptions(e);
             }
         }
+
         public virtual ActionResult EnsureFromAllowed()
         {
             var requestHeaders = Request.Headers;
