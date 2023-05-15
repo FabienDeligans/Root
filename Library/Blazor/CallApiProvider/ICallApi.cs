@@ -5,7 +5,6 @@ namespace Library.Blazor.CallApiProvider
     public interface ICallApi<T> where T : IEntity
     {
         string GetTypeName();
-        Task<string> CatchExceptions(Exception exception);
         Task DropCollectionAsync();
         Task<long> CountDataAsync();
         Task<T> CreateAsync(T entity);
@@ -17,7 +16,5 @@ namespace Library.Blazor.CallApiProvider
         Task DeleteOneAsync(string id);
         Task<T> UpdateAsync(T entityUpdate);
         Task<T> UpdatePropertyAsync(string id, Dictionary<string, object> propertyValueDictionary);
-        Task<string> CatchResponseNull(Exception e);
-        Task<string> CatchBadRequest(Exception e);
     }
 }

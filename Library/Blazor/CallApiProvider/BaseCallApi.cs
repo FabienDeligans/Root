@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Net.Mime;
 using System.Text;
 using Library.Models;
@@ -9,43 +8,26 @@ using Newtonsoft.Json;
 using Exception = System.Exception;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
+
 namespace Library.Blazor.CallApiProvider
 {
     public class BaseCallApi<T> : ICallApi<T> where T : IEntity
     {
         protected readonly HttpClient _httpClient;
         protected readonly IOptions<SettingsCallApi> _options;
+        protected readonly ExceptionManager.ExceptionManager _exceptionManager; 
         protected HttpResponseMessage? Response { get; set; }
 
-        public BaseCallApi(HttpClient client, IOptions<SettingsCallApi> options)
+        public BaseCallApi(HttpClient client, IOptions<SettingsCallApi> options, ExceptionManager.ExceptionManager exceptionManager)
         {
             _options = options;
             _httpClient = client;
             _httpClient.DefaultRequestHeaders.Add("From", _options.Value.CallerName);
             _httpClient.BaseAddress = new Uri($"{_options.Value.Adress}{GetTypeName()}/");
+            _exceptionManager = exceptionManager;
         }
 
         public string GetTypeName() => typeof(T).Name;
-
-        public async Task<string> CatchExceptions(Exception exception)
-        {
-            if (Response is null)
-            {
-                return await CatchResponseNull(exception);
-            }
-
-            switch (Response.StatusCode)
-            {
-                case HttpStatusCode.BadRequest:
-                    return await CatchBadRequest(exception);
-                    break;
-                case HttpStatusCode.Unauthorized:
-                    return await CatchUnauthorized(exception);
-                    break;
-            }
-
-            return exception.Message;
-        }
 
         public async Task DropCollectionAsync()
         {
@@ -59,7 +41,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e) 
             {
-                var msg = await CatchExceptions(e);
+                var msg = await _exceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -80,7 +62,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await CatchExceptions(e);
+                var msg = await _exceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -106,7 +88,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await CatchExceptions(e);
+                var msg = await _exceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -131,7 +113,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await CatchExceptions(e);
+                var msg = await _exceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -146,7 +128,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await CatchExceptions(e);
+                var msg = await _exceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -161,7 +143,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await CatchExceptions(e);
+                var msg = await _exceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -176,7 +158,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await CatchExceptions(e);
+                var msg = await _exceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -191,7 +173,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await CatchExceptions(e);
+                var msg = await _exceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -208,7 +190,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await CatchExceptions(e);
+                var msg = await _exceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -233,7 +215,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await CatchExceptions(e);
+                var msg = await _exceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -258,43 +240,9 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await CatchExceptions(e);
+                var msg = await _exceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
-        }
-
-        public async Task<string> CatchUnauthorized(Exception e)
-        {
-            return await Response.Content
-                .ReadAsStringAsync()
-                .ConfigureAwait(false);
-        }
-
-        public async Task<string> CatchResponseNull(Exception e)
-        {
-            return e.Message;
-        }
-
-        public async Task<string> CatchBadRequest(Exception e)
-        {
-            var returnJson = await Response.Content
-            .ReadAsStringAsync()
-            .ConfigureAwait(false);
-
-            var errors = JsonConvert.DeserializeObject<ProblemDetailsWithErrors>(returnJson).Errors;
-
-            string msg = "";
-            foreach (var error in errors)
-            {
-                msg += $"{error.Key} : ";
-                for (var i = 0; i < errors.Values.Count; i++)
-                {
-                    var end = errors.Values.Count - 1 == i ? "" : "- ";
-                    msg += $"{error.Value[i]} {end}";
-                }
-            }
-
-            return msg;
         }
     }
 }

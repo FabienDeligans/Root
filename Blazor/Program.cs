@@ -3,6 +3,7 @@ using Blazor.Provider;
 using Blazored.Modal;
 using Library.Blazor.CallApiAddressProvider;
 using Library.Blazor.CallApiLoraineProvider;
+using Library.Blazor.ExceptionManager;
 using Library.Settings;
 
 namespace Blazor
@@ -20,6 +21,7 @@ namespace Blazor
             builder.Services.AddBlazoredModal();
             builder.Services.AddScoped<ModalController>();
 
+            builder.Services.AddScoped<ExceptionManager>();
 
             // R�cup�re la route principale de l'api dans "appsettings.json"
             builder.Services.Configure<SettingsCallApi>(builder.Configuration.GetSection("Api"));

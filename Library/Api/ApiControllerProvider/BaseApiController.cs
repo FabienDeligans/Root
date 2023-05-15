@@ -19,6 +19,29 @@ namespace Library.Api.ApiControllerProvider
             _apiLogic = apiLogic;
         }
 
+        public virtual ActionResult EnsureFromAllowed()
+        {
+            var requestHeaders = Request.Headers;
+            var from = requestHeaders["From"];
+
+            if (!CallerNames.Contains(from))
+            {
+                throw new InvalidAuthorizationMessageException("Vous n'avez pas le droit de communiquer avec cette API");
+            }
+
+            return Ok();
+        }
+
+        public virtual ActionResult CatchExceptions(Exception e)
+        {
+            if (e.GetType() == typeof(InvalidAuthorizationMessageException))
+            {
+                return Unauthorized(e.Message);
+            }
+
+            return BadRequest(e);
+        }
+
         [HttpDelete(Route.DropCollectionAsync)]
         public virtual async Task<ActionResult> DropCollectionAsync()
         {
@@ -192,29 +215,6 @@ namespace Library.Api.ApiControllerProvider
             {
                 return CatchExceptions(e);
             }
-        }
-
-        public virtual ActionResult EnsureFromAllowed()
-        {
-            var requestHeaders = Request.Headers;
-            var from = requestHeaders["From"];
-
-            if(!CallerNames.Contains(from))
-            {
-                throw new InvalidAuthorizationMessageException("Vous n'avez pas le droit de communiquer avec cette API");
-            }
-
-            return Ok();
-        }
-
-        public virtual ActionResult CatchExceptions(Exception e)
-        {
-            if (e.GetType() == typeof(InvalidAuthorizationMessageException))
-            {
-                return Unauthorized(e.Message);
-            }
-
-            return BadRequest(e.Message);
         }
     }
 }
