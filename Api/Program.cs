@@ -1,5 +1,6 @@
 using Api.Logics;
 using Api.Services.MongoDb;
+using Library.Api.ApiExceptionManager;
 using Library.Settings;
 
 namespace Api
@@ -16,6 +17,8 @@ namespace Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddScoped<ApiExceptionManager>(); 
 
             // Récupère les informations dans "appsettings.json"
             builder.Services.Configure<SettingsServiceMongoDb>(builder.Configuration.GetSection("MongoDatabase"));

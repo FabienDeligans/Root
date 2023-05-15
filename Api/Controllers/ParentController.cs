@@ -1,9 +1,8 @@
 ﻿using Api.Logics;
 using Library.Api.ApiControllerProvider;
+using Library.Api.ApiExceptionManager;
 using Library.Models.Business;
-using Library.Settings;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace Api.Controllers
 {
@@ -12,7 +11,7 @@ namespace Api.Controllers
     public class ParentController : BaseApiController<Parent>
     {
         private readonly ParentLogic _parentLogic;
-        public ParentController(IOptions<SettingsApi> options, ParentLogic parentLogic) : base(options, parentLogic)
+        public ParentController(ParentLogic parentLogic, ApiExceptionManager apiExceptionManager) : base(parentLogic, apiExceptionManager)
         {
             _parentLogic = parentLogic;
         }

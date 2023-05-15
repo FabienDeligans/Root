@@ -6,20 +6,6 @@ namespace Library.Api.ApiControllerProvider
     public interface IApiController<T> where T : IEntity
     {
         /// <summary>
-        /// Permet de s'assurer que le demandeur de la request est autorisé
-        /// </summary>
-        /// <returns></returns>
-        ActionResult EnsureFromAllowed(); 
-
-        /// <summary>
-        /// Gestion des exceptions
-        /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        ActionResult CatchExceptions(Exception e); 
-
-
-        /// <summary>
         /// Efface une collection
         /// </summary>
         /// <returns></returns>

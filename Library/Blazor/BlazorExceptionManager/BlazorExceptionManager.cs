@@ -2,9 +2,9 @@
 using Library.Models;
 using Newtonsoft.Json;
 
-namespace Library.Blazor.ExceptionManager
+namespace Library.Blazor.BlazorExceptionManager
 {
-    public class ExceptionManager
+    public class BlazorExceptionManager
     {
         public async Task<string> CatchExceptions(Exception exception, HttpResponseMessage response )
         {

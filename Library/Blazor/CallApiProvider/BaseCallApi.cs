@@ -15,16 +15,16 @@ namespace Library.Blazor.CallApiProvider
     {
         protected readonly HttpClient _httpClient;
         protected readonly IOptions<SettingsCallApi> _options;
-        protected readonly ExceptionManager.ExceptionManager _exceptionManager; 
+        protected readonly BlazorExceptionManager.BlazorExceptionManager BlazorExceptionManager; 
         protected HttpResponseMessage? Response { get; set; }
 
-        public BaseCallApi(HttpClient client, IOptions<SettingsCallApi> options, ExceptionManager.ExceptionManager exceptionManager)
+        public BaseCallApi(HttpClient client, IOptions<SettingsCallApi> options, BlazorExceptionManager.BlazorExceptionManager blazorExceptionManager)
         {
             _options = options;
             _httpClient = client;
             _httpClient.DefaultRequestHeaders.Add("From", _options.Value.CallerName);
             _httpClient.BaseAddress = new Uri($"{_options.Value.Adress}{GetTypeName()}/");
-            _exceptionManager = exceptionManager;
+            BlazorExceptionManager = blazorExceptionManager;
         }
 
         public string GetTypeName() => typeof(T).Name;
@@ -41,7 +41,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e) 
             {
-                var msg = await _exceptionManager.CatchExceptions(e, Response);
+                var msg = await BlazorExceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -62,7 +62,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await _exceptionManager.CatchExceptions(e, Response);
+                var msg = await BlazorExceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -88,7 +88,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await _exceptionManager.CatchExceptions(e, Response);
+                var msg = await BlazorExceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -113,7 +113,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await _exceptionManager.CatchExceptions(e, Response);
+                var msg = await BlazorExceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -128,7 +128,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await _exceptionManager.CatchExceptions(e, Response);
+                var msg = await BlazorExceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -143,7 +143,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await _exceptionManager.CatchExceptions(e, Response);
+                var msg = await BlazorExceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -158,7 +158,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await _exceptionManager.CatchExceptions(e, Response);
+                var msg = await BlazorExceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -173,7 +173,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await _exceptionManager.CatchExceptions(e, Response);
+                var msg = await BlazorExceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -190,7 +190,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await _exceptionManager.CatchExceptions(e, Response);
+                var msg = await BlazorExceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -215,7 +215,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await _exceptionManager.CatchExceptions(e, Response);
+                var msg = await BlazorExceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
@@ -240,7 +240,7 @@ namespace Library.Blazor.CallApiProvider
             }
             catch (Exception e)
             {
-                var msg = await _exceptionManager.CatchExceptions(e, Response);
+                var msg = await BlazorExceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }
