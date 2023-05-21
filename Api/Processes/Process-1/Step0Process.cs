@@ -10,7 +10,7 @@ namespace Api.Processes.Process_1
         {
             SetNext(new Step1Process()); 
         }
-        public override IProcess Handle(object? obj)
+        public override IProcess RunStep(object? obj)
         {
             // Do something
             return NextProcess; 

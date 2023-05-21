@@ -4,13 +4,13 @@ namespace Api.Processes.Process_1
 {
     public class ClientProcess_1
     {
-        public void Proceced()
+        public void RunProcess()
         {
             IProcess process = null;
 
             while (process != null)
             {
-                process = process.Handle(null); 
+                process = process.RunStep(null); 
             }
         }
     }

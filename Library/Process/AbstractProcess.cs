@@ -9,6 +9,6 @@
             return nextProcess;
         }
 
-        public abstract IProcess Handle(object? obj);
+        public abstract IProcess RunStep(object? obj);
     }
 }
