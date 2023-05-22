@@ -40,9 +40,9 @@ namespace Api.Services.MongoDb
 
         public async Task<T> CreateAsync<T>(T entity) where T : IEntity
         {
-            await Collection<T>()
-                .InsertOneAsync(entity)
-                .ConfigureAwait(false);
+                await Collection<T>()
+                        .InsertOneAsync(entity)
+                        .ConfigureAwait(false);
 
             return entity;
         }

@@ -3,8 +3,8 @@
     public class ProcessModel : Entity
     {
         public ProcessType ProcessType { get; set; }
-        public string ProcessName { get; set; }
-        public Enum CurrentStep { get; set; }
+        public string CurrentStep { get; set; }
         public ProcessState ProcessState { get; set; }
+        public string Payload { get; set; }
     }
 }

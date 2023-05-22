@@ -30,6 +30,7 @@ namespace Api
             builder.Services.AddTransient<FamilyLogic>();
             builder.Services.AddTransient<ParentLogic>();
             builder.Services.AddTransient<ChildLogic>();
+            builder.Services.AddTransient<ProcessLogic>();
 
             // Inscrit CHAQUE process et CHAQUE step
             builder.Services.AddTransient<ClientProcess_1>(); 

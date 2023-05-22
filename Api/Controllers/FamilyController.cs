@@ -23,10 +23,11 @@ namespace Api.Controllers
             _familyLogic = familyLogic;
         }
 
-        //public override Task<ActionResult<Family>> CreateAsync(Family entity)
-        //{
-        //    _clientProcess_1.RunProcess();
-        //    return base.CreateAsync(entity);
-        //}
+        // TODO Test Process
+        public override Task<ActionResult<Family>> CreateAsync(Family entity)
+        {
+            _clientProcess_1.RunProcess(entity);
+            return base.CreateAsync(entity);
+        }
     }
 }

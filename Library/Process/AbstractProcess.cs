@@ -1,4 +1,6 @@
-﻿using Library.Models.Process;
+﻿using System.Text.Json;
+using Library.Api.ApiLogicProvider;
+using Library.Models.Process;
 
 namespace Library.Process
 {
@@ -9,6 +11,12 @@ namespace Library.Process
         public abstract ProcessState ProcessState { get; set; }
         public abstract Enum CurrentStep { get; set; }
         public abstract Enum NextStep { get; set; }
+
+        public readonly IApiLogic<ProcessModel> _proccesLogic; 
+        public AbstractProcess(IApiLogic<ProcessModel> processLogic)
+        {
+            _proccesLogic = processLogic;
+        }
 
         public IProcess<T> SetNext(IProcess<T>? nextProcess)
         {
@@ -21,7 +29,7 @@ namespace Library.Process
             return nextProcess;
         }
 
-        public virtual IProcess<T> RunStep(object? obj)
+        public IProcess<T> RunStep(ProcessModel processModel, object? obj)
         {
             try
             {
@@ -31,6 +39,12 @@ namespace Library.Process
                 // update success
                 ProcessState = ProcessState.Success;
 
+                processModel.ProcessState = ProcessState;
+                processModel.CurrentStep = CurrentStep.ToString();
+                processModel.Payload = JsonSerializer.Serialize(obj); 
+
+                _proccesLogic.UpdateAsync(processModel); 
+
                 return NextProcess;
             }
             catch (Exception)
@@ -38,7 +52,13 @@ namespace Library.Process
                 //update failure
                 ProcessState = ProcessState.Failure;
 
-                throw;
+                processModel.ProcessState = ProcessState;
+                processModel.CurrentStep = CurrentStep.ToString();
+                processModel.Payload = JsonSerializer.Serialize(obj);
+
+                _proccesLogic.UpdateAsync(processModel);
+
+                return null;
             }
         }
 

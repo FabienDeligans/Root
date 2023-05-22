@@ -1,37 +1,87 @@
-﻿using Library.Models.Process;
+﻿using System.Text.Json;
+using Api.Logics;
+using Library.Models.Process;
 using Library.Process;
 
 namespace Api.Processes.Process_1
 {
     public class ClientProcess_1
     {
-        private readonly IProcess<ProcessType> _step0Process;
-        private readonly IProcess<ProcessType> _step1Process;
-        private readonly IProcess<ProcessType> _step2Process;
-        private readonly IProcess<ProcessType> _step3Process;
-        private readonly IProcess<ProcessType> _stepEndProcess; 
+        private readonly Step0Process _step0Process;
+        private readonly Step1Process _step1Process;
+        private readonly Step2Process _step2Process;
+        private readonly Step3Process _step3Process;
+        private readonly StepEndProcess _stepEndProcess;
+        private readonly ProcessLogic _processLogic;
 
         public ClientProcess_1(
-            Step0Process step0Process, 
+            Step0Process step0Process,
             Step1Process step1Process,
             Step2Process step2Process,
             Step3Process step3Process,
-            StepEndProcess stepEndProcess)
+            StepEndProcess stepEndProcess,
+            ProcessLogic processLogic)
         {
             _step0Process = step0Process;
             _step1Process = step1Process;
-            _step2Process = step2Process; 
-            _step3Process = step3Process; 
+            _step2Process = step2Process;
+            _step3Process = step3Process;
             _stepEndProcess = stepEndProcess;
+            _processLogic = processLogic;
         }
 
-        public void RunProcess()
+        public void RunProcess(object obj)
         {
-            IProcess<ProcessType> process = _step0Process;
+            IProcess<ProcessType>? process = null;
+            var processesModels = new List<ProcessModel>();
+            var processes = _processLogic.GetAllAsync().Result.Where(v => v.ProcessType == ProcessType.MonProcess01);
+            var processesFailed = processes.Where(v => v.ProcessState == ProcessState.Failure);
 
-            while (process != null)
+            if (processesFailed.Any())
             {
-                process = process.RunStep(null); 
+                foreach (var processFailed in processesFailed)
+                {
+                    if (processFailed.CurrentStep.Equals(MyCustomProcessStep.Step0.ToString()))
+                    {
+                        process = _step0Process;
+                    }
+                    else if (processFailed.CurrentStep.Equals(MyCustomProcessStep.Step1.ToString()))
+                    {
+                        process = _step1Process;
+                    }
+                    else if (processFailed.CurrentStep.Equals(MyCustomProcessStep.Step2.ToString()))
+                    {
+                        process = _step2Process;
+                    }
+                    else if (processFailed.CurrentStep.Equals(MyCustomProcessStep.Step3.ToString()))
+                    {
+                        process = _step3Process;
+                    }
+                    else if (processFailed.CurrentStep.Equals(MyCustomProcessStep.StepEnd.ToString()))
+                    {
+                        process = _stepEndProcess;
+                    }
+
+                    processesModels.Add(processFailed);
+                }
+            }
+            else
+            {
+                process = _step0Process;
+                var processModel = _processLogic.CreateAsync(new ProcessModel()
+                {
+                    ProcessType = ProcessType.MonProcess01,
+                    Payload = JsonSerializer.Serialize(obj),
+                }).Result;
+                processesModels.Add(processModel);
+            }
+
+            foreach (var processesModel in processesModels)
+            {
+                while (process != null)
+                {
+                    process = process.RunStep(processesModel, obj);
+                }
             }
         }
     }
