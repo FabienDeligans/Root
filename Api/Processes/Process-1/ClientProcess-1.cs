@@ -27,7 +27,7 @@ namespace Api.Processes.Process_1
 
         public void RunProcess()
         {
-            IProcess<ProcessType> process = null;
+            IProcess<ProcessType> process = _step0Process;
 
             while (process != null)
             {

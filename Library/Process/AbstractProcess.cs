@@ -21,6 +21,27 @@ namespace Library.Process
             return nextProcess;
         }
 
-        public abstract IProcess<T> RunStep(object? obj);
+        public virtual IProcess<T> RunStep(object? obj)
+        {
+            try
+            {
+                // Do something
+                Run(); 
+
+                // update success
+                ProcessState = ProcessState.Success;
+
+                return NextProcess;
+            }
+            catch (Exception)
+            {
+                //update failure
+                ProcessState = ProcessState.Failure;
+
+                throw;
+            }
+        }
+
+        protected abstract void Run();
     }
 }

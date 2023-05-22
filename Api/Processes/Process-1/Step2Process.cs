@@ -20,11 +20,10 @@ namespace Api.Processes.Process_1
 
             SetNext(next);
         }
-
-        public override IProcess<ProcessType> RunStep(object? obj)
+        
+        protected override void Run()
         {
-            // Do something
-            return NextProcess;
+            throw new NotImplementedException();
         }
     }
 }
