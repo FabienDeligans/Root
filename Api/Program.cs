@@ -1,4 +1,5 @@
 using Api.Logics;
+using Api.Processes.Process_1;
 using Api.Services.MongoDb;
 using Library.Api.ApiExceptionManager;
 using Library.Settings;
@@ -29,6 +30,14 @@ namespace Api
             builder.Services.AddTransient<FamilyLogic>();
             builder.Services.AddTransient<ParentLogic>();
             builder.Services.AddTransient<ChildLogic>();
+
+            // Inscrit CHAQUE process
+            builder.Services.AddTransient<ClientProcess_1>(); 
+            builder.Services.AddTransient<Step0Process>(); 
+            builder.Services.AddTransient<Step1Process>(); 
+            builder.Services.AddTransient<Step2Process>(); 
+            builder.Services.AddTransient<Step3Process>();
+            builder.Services.AddTransient<StepEndProcess>();
 
 
             var app = builder.Build();

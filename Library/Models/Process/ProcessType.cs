@@ -2,6 +2,6 @@
 {
     public enum ProcessType
     {
-        Process_1 = 1
+        MonProcess01 = 1
     }
 }

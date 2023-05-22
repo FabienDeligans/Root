@@ -1,16 +1,27 @@
-﻿using Library.Process;
+﻿using Library.Models.Process;
+using Library.Process;
 
 namespace Api.Processes.Process_1
 {
-    public class Step0Process: AbstractProcess
+    public class Step0Process : AbstractProcess<ProcessType>
     {
-        public override IProcess NextProcess { get; set; }
+        public override IProcess<ProcessType> NextProcess { get; set; }
+        public override ProcessType ProcessType { get; set; }
+        public override ProcessState ProcessState { get; set; }
+        public override Enum CurrentStep { get; set; }
+        public override Enum NextStep { get; set; }
 
-        public Step0Process()
+        public Step0Process(Step1Process next)
         {
-            SetNext(new Step1Process()); 
+            ProcessType = ProcessType.MonProcess01;
+            ProcessState = ProcessState.Processing; 
+            CurrentStep = MyCustomProcessStep.Step0;
+            NextStep = MyCustomProcessStep.Step1;
+
+            SetNext(next); 
         }
-        public override IProcess RunStep(object? obj)
+
+        public override IProcess<ProcessType> RunStep(object? obj)
         {
             // Do something
             return NextProcess; 
