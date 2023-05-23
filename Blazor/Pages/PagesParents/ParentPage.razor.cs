@@ -43,50 +43,50 @@ namespace Blazor.Pages.PagesParents
             }
         }
 
-        private async Task Add()
-        {
-            //var result = (Parent)await ModalController.ShowModal<XXXXXX>("Ajouter une famille");
+        //private async Task Add()
+        //{
+        //    var result = (Parent)await ModalController.ShowModal<XXXXXX>("Ajouter une famille");
 
-            //var getAllParentsTask = GetAllParents();
+        //    var getAllParentsTask = GetAllParents();
 
-            //await InvokeAsync(async () =>
-            //{
-            //    if (result != null)
-            //    {
-            //        await ModalController.ShowModalAlert($"Enregistrement OK pour le parent {result.LastName}", 1000, Alert.Success);
-            //    }
-            //    else
-            //    {
-            //        await ModalController.ShowModalAlert($"Annulation effectuée", 1000, Alert.Danger);
-            //    }
-            //});
+        //    await InvokeAsync(async () =>
+        //    {
+        //        if (result != null)
+        //        {
+        //            await ModalController.ShowModalAlert($"Enregistrement OK pour le parent {result.LastName}", 1000, Alert.Success);
+        //        }
+        //        else
+        //        {
+        //            await ModalController.ShowModalAlert($"Annulation effectuée", 1000, Alert.Danger);
+        //        }
+        //    });
 
-            //await GetAllParents();
-        }
+        //    await GetAllParents();
+        //}
 
-        private async Task ConfirmDelete(string modelId)
-        {
-            //var parameter = new ModalParameters()
-            //{
-            //    {nameof(XXXXXXXXXXX.ParentId), modelId}
-            //};
+        //private async Task ConfirmDelete(string modelId)
+        //{
+        //    var parameter = new ModalParameters()
+        //    {
+        //        {nameof(XXXXXXXXXXX.ParentId), modelId}
+        //    };
 
-            //var result = (string)await ModalController.ShowModal<XXXXXXXXX>($"Supprimer le parent {Model.LastName}", parameter);
+        //    var result = (string)await ModalController.ShowModal<XXXXXXXXX>($"Supprimer le parent {Model.LastName}", parameter);
 
-            //await InvokeAsync(async () =>
-            //{
-            //    if (result != null)
-            //    {
-            //        await ModalController.ShowModalAlert($"Effacement effectué", 1000, Alert.Success);
-            //    }
-            //    else
-            //    {
-            //        await ModalController.ShowModalAlert($"Effacement annulé", 1000, Alert.Danger);
-            //    }
-            //});
+        //    await InvokeAsync(async () =>
+        //    {
+        //        if (result != null)
+        //        {
+        //            await ModalController.ShowModalAlert($"Effacement effectué", 1000, Alert.Success);
+        //        }
+        //        else
+        //        {
+        //            await ModalController.ShowModalAlert($"Effacement annulé", 1000, Alert.Danger);
+        //        }
+        //    });
 
-            //await GetAllParents();
+        //    await GetAllParents();
 
-        }
+        //}
     }
 }
