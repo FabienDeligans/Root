@@ -61,6 +61,11 @@ namespace Library.Api.ApiLogicProvider
             return await ServiceDatabase.GetAllFilterd(predicate);
         }
 
+        public async Task<IEnumerable<T>> GetAllFilteredByPropertyEqualAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await ServiceDatabase.GetAllFilterd(predicate);
+        }
+
         public virtual async Task<T> GetOneFullAsync(string? id)
         {
             var entity = await ServiceDatabase.GetOneAsync<T>(id);

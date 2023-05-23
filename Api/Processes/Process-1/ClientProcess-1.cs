@@ -30,12 +30,15 @@ namespace Api.Processes.Process_1
             _processLogic = processLogic;
         }
 
-        public void RunProcess(object obj)
+        public async Task RunProcess(object? obj)
         {
             IProcess<ProcessType>? process = null;
             var processesModels = new List<ProcessModel>();
-            var processes = _processLogic.GetAllAsync().Result.Where(v => v.ProcessType == ProcessType.MonProcess01);
-            var processesFailed = processes.Where(v => v.ProcessState == ProcessState.Failure);
+
+            var processesFailed = await _processLogic
+                .GetAllFilteredByPropertyEqualAsync(v => 
+                    v.ProcessType == ProcessType.MonProcess01 && 
+                    v.ProcessState == ProcessState.Failure); 
 
             if (processesFailed.Any())
             {
@@ -68,11 +71,11 @@ namespace Api.Processes.Process_1
             else
             {
                 process = _step0Process;
-                var processModel = _processLogic.CreateAsync(new ProcessModel()
+                var processModel = await _processLogic.CreateAsync(new ProcessModel()
                 {
                     ProcessType = ProcessType.MonProcess01,
                     Payload = JsonSerializer.Serialize(obj),
-                }).Result;
+                });
                 processesModels.Add(processModel);
             }
 

@@ -1,4 +1,6 @@
-﻿namespace Library.Api.ApiLogicProvider
+﻿using System.Linq.Expressions;
+
+namespace Library.Api.ApiLogicProvider
 {
     public interface IApiLogic<T>
     {
@@ -8,6 +10,7 @@
         Task<IEnumerable<T>> CreateManyAsync(IEnumerable<T> entities);
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> GetAllFilteredByPropertyEqualAsync(string propertyName, string value);
+        Task<IEnumerable<T>> GetAllFilteredByPropertyEqualAsync(Expression<Func<T, bool>> predicate); 
         Task<T> GetOneFullAsync(string id);
         Task<T> GetOneSimpleAsync(string id);
         Task<T> UpdateAsync(T entityUpdate);

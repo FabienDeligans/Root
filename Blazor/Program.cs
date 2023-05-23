@@ -30,6 +30,7 @@ namespace Blazor
             builder.Services.AddHttpClient<FamilyProvider>();
             builder.Services.AddHttpClient<ParentProvider>();
             builder.Services.AddHttpClient<ChildProvider>();
+            builder.Services.AddHttpClient<ProcessProvider>();
             builder.Services.AddHttpClient<ApiAddressProvider>();
             builder.Services.AddHttpClient<LorraineHipseaumeProvider>();
             builder.Services.AddHttpClient<LorraineIpsumProvider>();

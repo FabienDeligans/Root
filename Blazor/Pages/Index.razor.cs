@@ -20,6 +20,9 @@ namespace Blazor.Pages
         public ChildProvider ChildProvider { get; set; }
 
         [Inject]
+        public ProcessProvider ProcessProvider { get; set; }
+
+        [Inject]
         public LorraineHipseaumeProvider LorraineHipseaume { get; set; }
 
         [Inject]
@@ -50,7 +53,7 @@ namespace Blazor.Pages
                     {
                         var random = new Random();
 
-                        var nbFamilies = 500;
+                        var nbFamilies = 100;
 
                         var families = new List<Family>();
                         var parents = new List<Parent>();
@@ -62,7 +65,7 @@ namespace Blazor.Pages
                             address.Properties.housenumber = random.Next(1, 50).ToString();
                         }
 
-                        var lorraineHipseaumes = new List<NomPrenomHipseaume>();
+                        var nomPrenomIpsums = new List<NomPrenomIpsum>();
 
                         for (var i = 0; i < nbFamilies; i++)
                         {
@@ -77,43 +80,43 @@ namespace Blazor.Pages
                             var rand = random.Next(1, 100);
                             for (var j = 0; j < random.Next(1, 3); j++)
                             {
-                                var result = await LorraineHipseaume.GetListRandomName();
-                                lorraineHipseaumes = result.ToList();
+                                var result = await LorraineIpsum.GetListRandomName();
+                                nomPrenomIpsums = result.ToList();
 
-                                var randName = random.Next(1, lorraineHipseaumes.Count);
+                                var randName = random.Next(1, nomPrenomIpsums.Count);
                                 var parent = new Parent
                                 {
                                     IsDisabled = false,
-                                    FirstName = lorraineHipseaumes[randName].Prenom,
-                                    LastName = lorraineHipseaumes[randName].Nom,
+                                    FirstName = nomPrenomIpsums[randName].Prenom,
+                                    LastName = nomPrenomIpsums[randName].Nom,
                                     Address = $"{addresses.Features[rand].Properties.housenumber} {addresses.Features[rand].Properties.street}",
                                     PostalCode = $"{addresses.Features[j].Properties.postcode}",
                                     City = $"{addresses.Features[j].Properties.city}",
                                     Phone = $"0000000000",
-                                    Mail = $"{lorraineHipseaumes[randName].Prenom}.{lorraineHipseaumes[randName].Nom}@parent.com",
+                                    Mail = $"{nomPrenomIpsums[randName].Prenom}.{nomPrenomIpsums[randName].Nom}@parent.com",
                                     FamilyId = family.Id
                                 };
                                 parents.Add(parent);
                                 ParentId = parent.Id;
-                                lorraineHipseaumes = new List<NomPrenomHipseaume>();
+                                nomPrenomIpsums = new List<NomPrenomIpsum>();
                             }
 
                             for (var j = 0; j < random.Next(1, 4); j++)
                             {
-                                var result = await LorraineHipseaume.GetListRandomName();
-                                lorraineHipseaumes = result.ToList();
+                                var result = await LorraineIpsum.GetListRandomName();
+                                nomPrenomIpsums = result.ToList();
 
-                                var randName = random.Next(1, lorraineHipseaumes.Count);
+                                var randName = random.Next(1, nomPrenomIpsums.Count);
                                 var child = new Child
                                 {
                                     IsDisabled = false,
-                                    FirstName = $"{lorraineHipseaumes[randName].Prenom}",
-                                    LastName = $"{lorraineHipseaumes[randName].Nom}",
+                                    FirstName = $"{nomPrenomIpsums[randName].Prenom}",
+                                    LastName = $"{nomPrenomIpsums[randName].Nom}",
                                     BirthDay = new DateTime(1985, 01, 15),
                                     FamilyId = family.Id
                                 };
                                 children.Add(child);
-                                lorraineHipseaumes = new List<NomPrenomHipseaume>();
+                                nomPrenomIpsums = new List<NomPrenomIpsum>();
                             }
                         }
 
@@ -153,6 +156,8 @@ namespace Blazor.Pages
                         await FamilyProvider.DropCollectionAsync().ConfigureAwait(false);
                         await ParentProvider.DropCollectionAsync().ConfigureAwait(false);
                         await ChildProvider.DropCollectionAsync().ConfigureAwait(false);
+
+                        await ProcessProvider.DropCollectionAsync().ConfigureAwait(false);
 
                         Family = null;
                         Parent = null;
