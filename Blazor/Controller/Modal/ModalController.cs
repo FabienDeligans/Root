@@ -87,7 +87,6 @@ namespace Blazor.Controller.Modal
             try
             {
                 await func.Invoke();
-                //await Task.Delay(10000000); 
             }
             finally
             {
