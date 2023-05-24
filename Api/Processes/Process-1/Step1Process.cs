@@ -24,6 +24,7 @@ namespace Api.Processes.Process_1
 
         protected override void Run()
         {
+            Console.WriteLine($"{ProcessType} {CurrentStep}");
             //throw new NotImplementedException();
         }
     }

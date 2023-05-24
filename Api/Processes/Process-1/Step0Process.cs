@@ -1,4 +1,5 @@
-﻿using Api.Logics;
+﻿using System.Diagnostics;
+using Api.Logics;
 using Library.Models.Process;
 using Library.Process;
 
@@ -24,6 +25,7 @@ namespace Api.Processes.Process_1
 
         protected override void Run()
         {
+            Console.WriteLine($"{ProcessType} {CurrentStep}");
             //throw new NotImplementedException();
         }
     }

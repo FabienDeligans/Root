@@ -1,7 +1,9 @@
 using Api.Logics;
+using Api.Processes;
 using Api.Processes.Process_1;
 using Api.Services.MongoDb;
 using Library.Api.ApiExceptionManager;
+using Library.Events;
 using Library.Settings;
 
 namespace Api
@@ -40,6 +42,9 @@ namespace Api
             builder.Services.AddTransient<Step3Process>();
             builder.Services.AddTransient<StepEndProcess>();
 
+            // Inscrit le gestionaire d'evenement
+            builder.Services.AddTransient<HandlerManager>();
+            builder.Services.AddTransient<Handler>();
 
             var app = builder.Build();
 

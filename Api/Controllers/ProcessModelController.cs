@@ -1,6 +1,10 @@
 ﻿using Api.Logics;
+using Api.Processes;
+using Api.Processes.Process_1;
 using Library.Api.ApiExceptionManager;
+using Library.Events;
 using Library.Models.Process;
+using Library.Process;
 using Microsoft.AspNetCore.Mvc;
 using Route = Library.Settings.Route;
 
@@ -12,11 +16,16 @@ namespace Api.Controllers
     {
         private readonly ProcessLogic _processLogic;
         private readonly ApiExceptionManager _apiExceptionManager;
+        private readonly HandlerManager _handlerManager;
 
-        public ProcessModelController(ProcessLogic processLogic, ApiExceptionManager apiExceptionManager)
+        public ProcessModelController(
+            ProcessLogic processLogic,
+            ApiExceptionManager apiExceptionManager,
+            HandlerManager handlerManager)
         {
             _processLogic = processLogic;
             _apiExceptionManager = apiExceptionManager;
+            _handlerManager = handlerManager;
         }
 
         [HttpDelete(Route.DropCollectionAsync)]
@@ -66,11 +75,13 @@ namespace Api.Controllers
             }
         }
 
-        //[HttpPost("RunProcess")]
-        //public async Task<ActionResult> RunProcess(ProcessType processType)
-        //{
-        //    _processLogic.RunProcess(processType);
-        //    return Ok();
-        //}
+        [HttpPost(Route.RunProcess)]
+        public async Task<ActionResult> RunProcess(ProcessModel process)
+        {
+            process.CurrentStep = MyCustomProcessStep.Step0.ToString();
+            _handlerManager.Do(process);
+
+            return Ok();
+        }
     }
 }

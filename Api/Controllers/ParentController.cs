@@ -11,7 +11,10 @@ namespace Api.Controllers
     public class ParentController : BaseApiController<Parent>
     {
         private readonly ParentLogic _parentLogic;
-        public ParentController(ParentLogic parentLogic, ApiExceptionManager apiExceptionManager) : base(parentLogic, apiExceptionManager)
+        public ParentController(
+            ParentLogic parentLogic, 
+            ApiExceptionManager apiExceptionManager) 
+            : base(parentLogic, apiExceptionManager)
         {
             _parentLogic = parentLogic;
         }

@@ -13,5 +13,6 @@
         public const string UpdateAsync = "UpdateAsync";
         public const string UpdatePropertyAsync = "UpdatePropertyAsync";
         public const string DeleteOneAsync = "DeleteOneAsync";
+        public const string RunProcess = "RunProcess";
     }
 }

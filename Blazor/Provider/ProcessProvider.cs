@@ -2,7 +2,10 @@
 using Library.Models.Process;
 using Library.Settings;
 using Microsoft.Extensions.Options;
+using System.Net.Mime;
+using System.Text;
 using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 using Route = Library.Settings.Route;
 
 namespace Blazor.Provider
@@ -68,6 +71,26 @@ namespace Blazor.Provider
                 return await _httpClient
                     .GetFromJsonAsync<IEnumerable<ProcessModel>>(Route.GetAllAsync)
                     .ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                var msg = await BlazorExceptionManager.CatchExceptions(e, Response);
+                throw new Exception(msg);
+            }
+        }
+
+        public async Task RunProcess(ProcessModel process)
+        {
+            try
+            {
+                var json = new StringContent(JsonSerializer.Serialize(process), Encoding.UTF8,
+                    MediaTypeNames.Application.Json);
+
+                Response = await _httpClient
+                    .PostAsync(Route.RunProcess, json)
+                    .ConfigureAwait(false);
+
+                Response.EnsureSuccessStatusCode();
             }
             catch (Exception e)
             {

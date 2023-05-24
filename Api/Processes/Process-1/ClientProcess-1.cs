@@ -1,18 +1,21 @@
 ﻿using System.Text.Json;
 using Api.Logics;
+using Library.Events;
 using Library.Models.Process;
 using Library.Process;
 
 namespace Api.Processes.Process_1
 {
-    public class ClientProcess_1
+    public class ClientProcess_1: IProcess<ProcessType>
     {
+        public ProcessType ProcessType { get; }
         private readonly Step0Process _step0Process;
         private readonly Step1Process _step1Process;
         private readonly Step2Process _step2Process;
         private readonly Step3Process _step3Process;
         private readonly StepEndProcess _stepEndProcess;
         private readonly ProcessLogic _processLogic;
+        public Handler _handler;
 
         public ClientProcess_1(
             Step0Process step0Process,
@@ -22,12 +25,29 @@ namespace Api.Processes.Process_1
             StepEndProcess stepEndProcess,
             ProcessLogic processLogic)
         {
+            ProcessType = ProcessType.MonProcess01;
+
             _step0Process = step0Process;
             _step1Process = step1Process;
             _step2Process = step2Process;
             _step3Process = step3Process;
             _stepEndProcess = stepEndProcess;
             _processLogic = processLogic;
+        }
+
+        public void SetHandler(Handler handler)
+        {
+            _handler = handler;
+            _handler.SendEvent += OnSendEvent; 
+        }
+
+        private void OnSendEvent(object? sender, ICustomEvent e)
+        {
+            var myCustomEvent = (MyCustomEvent) e;
+            if (myCustomEvent.ValueEvent == ProcessType.MonProcess01.ToString())
+            {
+                RunProcess(null); 
+            }
         }
 
         public async Task RunProcess(object? obj)
