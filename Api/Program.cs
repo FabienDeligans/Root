@@ -3,7 +3,6 @@ using Api.Processes;
 using Api.Processes.Process_1;
 using Api.Services.MongoDb;
 using Library.Api.ApiExceptionManager;
-using Library.Events;
 using Library.Settings;
 
 namespace Api
