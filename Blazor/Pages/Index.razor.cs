@@ -134,6 +134,10 @@ namespace Blazor.Pages
                         }
                     });
                 });
+
+                var processes = await ProcessProvider.GetAllAsync(); 
+                var count = await ProcessProvider.CountDataAsync();
+
                 await ModalController.ShowModalAlert($"Génération des datas terminées", 2000, Alert.Success);
 
             }

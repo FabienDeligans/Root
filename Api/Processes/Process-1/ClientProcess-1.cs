@@ -32,13 +32,13 @@ namespace Api.Processes.Process_1
 
         public async Task RunProcess(object? obj)
         {
-            IProcess<ProcessType>? process = null;
+            IProcessStep<ProcessType>? process = null;
             var processesModels = new List<ProcessModel>();
 
             var processesFailed = await _processLogic
-                .GetAllFilteredByPropertyEqualAsync(v => 
-                    v.ProcessType == ProcessType.MonProcess01 && 
-                    v.ProcessState == ProcessState.Failure); 
+                .GetAllFilteredByPropertyEqualAsync(v =>
+                    v.ProcessType == ProcessType.MonProcess01 &&
+                    v.ProcessState == ProcessState.Failure);
 
             if (processesFailed.Any())
             {

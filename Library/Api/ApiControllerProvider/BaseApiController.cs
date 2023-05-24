@@ -9,12 +9,12 @@ namespace Library.Api.ApiControllerProvider
     public abstract class BaseApiController<T> : ControllerBase, IApiController<T> where T : IEntity
     {
         protected readonly IApiLogic<T> _apiLogic;
-        protected readonly ApiExceptionManager.ApiExceptionManager ApiExceptionManager; 
+        protected readonly ApiExceptionManager.ApiExceptionManager _apiExceptionManager; 
 
         public BaseApiController(IApiLogic<T> apiLogic, ApiExceptionManager.ApiExceptionManager apiExceptionManager)
         {
             _apiLogic = apiLogic;
-            ApiExceptionManager = apiExceptionManager;
+            _apiExceptionManager = apiExceptionManager;
         }
         
         [HttpDelete(Route.DropCollectionAsync)]
@@ -22,14 +22,14 @@ namespace Library.Api.ApiControllerProvider
         {
             try
             {
-                ApiExceptionManager.EnsureFromAllowed(Request);
+                _apiExceptionManager.EnsureFromAllowed(Request);
 
                 await _apiLogic.DropCollectionAsync();
                 return Ok();
             }
             catch (Exception e)
             {
-                return ApiExceptionManager.CatchExceptions(e);
+                return _apiExceptionManager.CatchExceptions(e);
             }
         }
 
@@ -38,13 +38,13 @@ namespace Library.Api.ApiControllerProvider
         {
             try
             {
-                ApiExceptionManager.EnsureFromAllowed(Request);
+                _apiExceptionManager.EnsureFromAllowed(Request);
 
                 return await _apiLogic.CountDataAsync();
             }
             catch (Exception e)
             {
-                return ApiExceptionManager.CatchExceptions(e);
+                return _apiExceptionManager.CatchExceptions(e);
             }
         }
 
@@ -53,14 +53,14 @@ namespace Library.Api.ApiControllerProvider
         {
             try
             {
-                ApiExceptionManager.EnsureFromAllowed(Request);
+                _apiExceptionManager.EnsureFromAllowed(Request);
 
                 var result = await _apiLogic.CreateAsync(entity);
                 return new ActionResult<T>(result);
             }
             catch (Exception e)
             {
-                return ApiExceptionManager.CatchExceptions(e);
+                return _apiExceptionManager.CatchExceptions(e);
             }
         }
 
@@ -69,14 +69,14 @@ namespace Library.Api.ApiControllerProvider
         {
             try
             {
-                ApiExceptionManager.EnsureFromAllowed(Request);
+                _apiExceptionManager.EnsureFromAllowed(Request);
 
                 var result = await _apiLogic.CreateManyAsync(entities);
                 return new ActionResult<IEnumerable<T>>(result);
             }
             catch (Exception e)
             {
-                return ApiExceptionManager.CatchExceptions(e);
+                return _apiExceptionManager.CatchExceptions(e);
             }
         }
 
@@ -85,14 +85,14 @@ namespace Library.Api.ApiControllerProvider
         {
             try
             {
-                ApiExceptionManager.EnsureFromAllowed(Request);
+                _apiExceptionManager.EnsureFromAllowed(Request);
 
                 var result = await _apiLogic.GetAllAsync();
                 return new ActionResult<IEnumerable<T>>(result);
             }
             catch (Exception e)
             {
-                return ApiExceptionManager.CatchExceptions(e);
+                return _apiExceptionManager.CatchExceptions(e);
             }
         }
 
@@ -101,14 +101,14 @@ namespace Library.Api.ApiControllerProvider
         {
             try
             {
-                ApiExceptionManager.EnsureFromAllowed(Request);
+                _apiExceptionManager.EnsureFromAllowed(Request);
 
                 var result = await _apiLogic.GetAllFilteredByPropertyEqualAsync(propertyName, value);
                 return new ActionResult<IEnumerable<T>?>(result);
             }
             catch (Exception e)
             {
-                return ApiExceptionManager.CatchExceptions(e);
+                return _apiExceptionManager.CatchExceptions(e);
             }
         }
 
@@ -117,14 +117,14 @@ namespace Library.Api.ApiControllerProvider
         {
             try
             {
-                ApiExceptionManager.EnsureFromAllowed(Request);
+                _apiExceptionManager.EnsureFromAllowed(Request);
 
                 var result = await _apiLogic.GetOneFullAsync(id);
                 return new ActionResult<T>(result);
             }
             catch (Exception e)
             {
-                return ApiExceptionManager.CatchExceptions(e);
+                return _apiExceptionManager.CatchExceptions(e);
             }
         }
 
@@ -133,14 +133,14 @@ namespace Library.Api.ApiControllerProvider
         {
             try
             {
-                ApiExceptionManager.EnsureFromAllowed(Request);
+                _apiExceptionManager.EnsureFromAllowed(Request);
 
                 var result = await _apiLogic.GetOneSimpleAsync(id);
                 return new ActionResult<T>(result);
             }
             catch (Exception e)
             {
-                return ApiExceptionManager.CatchExceptions(e);
+                return _apiExceptionManager.CatchExceptions(e);
             }
         }
 
@@ -149,14 +149,14 @@ namespace Library.Api.ApiControllerProvider
         {
             try
             {
-                ApiExceptionManager.EnsureFromAllowed(Request);
+                _apiExceptionManager.EnsureFromAllowed(Request);
 
                 var result = await _apiLogic.UpdateAsync(entityUpdate);
                 return new ActionResult<T>(result);
             }
             catch (Exception e)
             {
-                return ApiExceptionManager.CatchExceptions(e);
+                return _apiExceptionManager.CatchExceptions(e);
             }
         }
 
@@ -165,14 +165,14 @@ namespace Library.Api.ApiControllerProvider
         {
             try
             {
-                ApiExceptionManager.EnsureFromAllowed(Request);
+                _apiExceptionManager.EnsureFromAllowed(Request);
 
                 var result = await _apiLogic.UpdatePropertyAsync(id, propertyValueDictionary);
                 return result;
             }
             catch (Exception e)
             {
-                return ApiExceptionManager.CatchExceptions(e);
+                return _apiExceptionManager.CatchExceptions(e);
             }
         }
 
@@ -181,14 +181,14 @@ namespace Library.Api.ApiControllerProvider
         {
             try
             {
-                ApiExceptionManager.EnsureFromAllowed(Request);
+                _apiExceptionManager.EnsureFromAllowed(Request);
 
                 await _apiLogic.DeleteOneAsync(id);
                 return Ok();
             }
             catch (Exception e)
             {
-                return ApiExceptionManager.CatchExceptions(e);
+                return _apiExceptionManager.CatchExceptions(e);
             }
         }
     }

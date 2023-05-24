@@ -6,7 +6,7 @@ namespace Api.Processes.Process_1
 {
     public class Step1Process : AbstractProcess<ProcessType>
     {
-        public override IProcess<ProcessType> NextProcess { get; set; }
+        public override IProcessStep<ProcessType> NextProcess { get; set; }
         public override ProcessType ProcessType { get; set; }
         public override ProcessState ProcessState { get; set; }
         public override Enum CurrentStep { get; set; }

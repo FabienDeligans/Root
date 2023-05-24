@@ -4,9 +4,9 @@ using Library.Models.Process;
 
 namespace Library.Process
 {
-    public abstract class AbstractProcess<T> : IProcess<T> where T : Enum
+    public abstract class AbstractProcess<T> : IProcessStep<T> where T : Enum
     {
-        public abstract IProcess<T> NextProcess { get; set; }
+        public abstract IProcessStep<T> NextProcess { get; set; }
         public abstract ProcessType ProcessType { get; set; }
         public abstract ProcessState ProcessState { get; set; }
         public abstract Enum CurrentStep { get; set; }
@@ -18,7 +18,7 @@ namespace Library.Process
             _proccesLogic = processLogic;
         }
 
-        public IProcess<T> SetNext(IProcess<T>? nextProcess)
+        public IProcessStep<T> SetNext(IProcessStep<T>? nextProcess)
         {
             if (nextProcess == null)
             {
@@ -29,7 +29,7 @@ namespace Library.Process
             return nextProcess;
         }
 
-        public IProcess<T> RunStep(ProcessModel processModel, object? obj)
+        public IProcessStep<T> RunStep(ProcessModel processModel, object? obj)
         {
             try
             {

@@ -13,11 +13,7 @@ namespace Api.Controllers
     {
         private readonly FamilyLogic _familyLogic;
         private readonly ClientProcess_1 _clientProcess_1;
-        public FamilyController(
-            FamilyLogic familyLogic, 
-            ApiExceptionManager apiExceptionManager, 
-            ClientProcess_1 process) 
-            : base(familyLogic, apiExceptionManager)
+        public FamilyController(FamilyLogic familyLogic, ApiExceptionManager apiExceptionManager, ClientProcess_1 process) : base(familyLogic, apiExceptionManager)
         {
             _clientProcess_1 = process;
             _familyLogic = familyLogic;
