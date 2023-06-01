@@ -1,14 +1,12 @@
 ﻿using Api.Services.MongoDb;
 using Library.Api.ApiLogicProvider;
-using Library.Models.Process;
+using Library.Processes.Models;
 
-namespace Api.Logics
+namespace Api.Logics;
+
+public class ProcessLogic : BaseApiLogic<Process>
 {
-    public class ProcessLogic : BaseApiLogic<ProcessModel>
+    public ProcessLogic(ServiceMongoDatabase serviceDatabaseDatabase) : base(serviceDatabaseDatabase)
     {
-
-        public ProcessLogic(ServiceMongoDatabase serviceDatabase) : base(serviceDatabase)
-        {
-        }
     }
 }

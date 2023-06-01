@@ -1,4 +1,4 @@
-﻿namespace Library.Models
+﻿namespace Library.Blazor.CallApiLoraineProvider.Models
 {
     public class ListNomPrenomLorraineHipseaume
     {
@@ -15,7 +15,7 @@
 
     public enum Sexe
     {
-        Masculin = 1, 
+        Masculin = 1,
         Feminin = 2
     }
 }

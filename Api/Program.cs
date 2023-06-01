@@ -1,6 +1,5 @@
 using Api.Logics;
-using Api.Processes;
-using Api.Processes.Process_1;
+using Api.Processes.Process1;
 using Api.Services.MongoDb;
 using Library.Api.ApiExceptionManager;
 using Library.Settings;
@@ -33,17 +32,11 @@ namespace Api
             builder.Services.AddTransient<ChildLogic>();
             builder.Services.AddTransient<ProcessLogic>();
 
-            // Inscrit CHAQUE process et CHAQUE step
-            builder.Services.AddTransient<ClientProcess_1>(); 
-            builder.Services.AddTransient<Step0Process>(); 
-            builder.Services.AddTransient<Step1Process>(); 
-            builder.Services.AddTransient<Step2Process>(); 
-            builder.Services.AddTransient<Step3Process>();
-            builder.Services.AddTransient<StepEndProcess>();
+            // Inscrit CHAQUE Process et CHAQUE Steps
+            builder.Services.AddSingleton<ClientProcess1>(); 
+            builder.Services.AddTransient<Process1Step1>(); 
+            builder.Services.AddTransient<Process1Step2>();
 
-            // Inscrit le gestionaire d'evenement
-            builder.Services.AddTransient<HandlerManager>();
-            builder.Services.AddTransient<Handler>();
 
             var app = builder.Build();
 

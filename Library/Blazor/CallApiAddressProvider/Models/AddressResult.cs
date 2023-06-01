@@ -1,4 +1,4 @@
-﻿namespace Library.Models
+﻿namespace Library.Blazor.CallApiAddressProvider.Models
 {
     public class AddressResult
     {

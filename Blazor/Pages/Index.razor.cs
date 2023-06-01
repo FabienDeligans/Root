@@ -2,7 +2,7 @@
 using Blazor.Provider;
 using Library.Blazor.CallApiAddressProvider;
 using Library.Blazor.CallApiLoraineProvider;
-using Library.Models;
+using Library.Blazor.CallApiLoraineProvider.Models;
 using Library.Models.Business;
 using Microsoft.AspNetCore.Components;
 
@@ -18,9 +18,6 @@ namespace Blazor.Pages
 
         [Inject]
         public ChildProvider ChildProvider { get; set; }
-
-        [Inject]
-        public ProcessProvider ProcessProvider { get; set; }
 
         [Inject]
         public LorraineHipseaumeProvider LorraineHipseaume { get; set; }
@@ -135,9 +132,6 @@ namespace Blazor.Pages
                     });
                 });
 
-                var processes = await ProcessProvider.GetAllAsync(); 
-                var count = await ProcessProvider.CountDataAsync();
-
                 await ModalController.ShowModalAlert($"Génération des datas terminées", 2000, Alert.Success);
 
             }
@@ -161,7 +155,6 @@ namespace Blazor.Pages
                         await ParentProvider.DropCollectionAsync().ConfigureAwait(false);
                         await ChildProvider.DropCollectionAsync().ConfigureAwait(false);
 
-                        await ProcessProvider.DropCollectionAsync().ConfigureAwait(false);
 
                         Family = null;
                         Parent = null;

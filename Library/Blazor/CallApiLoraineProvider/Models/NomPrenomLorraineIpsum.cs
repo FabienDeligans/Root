@@ -1,4 +1,4 @@
-﻿namespace Library.Models
+﻿namespace Library.Blazor.CallApiLoraineProvider.Models
 {
     public class NomPrenomLorraineIpsum
     {
