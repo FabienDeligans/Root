@@ -26,21 +26,19 @@ namespace Api.Processes.Process1
 
             _step1 = step1;
             _step2 = step2;
-
-            RunProcess1();
         }
 
-        public async Task RunProcess1()
+        private async Task RunProcess1()
         {
-            IEnumerable<Process> processesModels = await _processLogic.GetAllFilteredByPropertyEqualAsync(
-                        v => v.ProcessType == ProcessType
-                             && v.ProcessState != ProcessState.Success);
+            var processesModels = await _processLogic.GetAllFilteredByPropertyEqualAsync(
+                        v => v.ProcessType == ProcessType && v.ProcessState != ProcessState.Success);
 
             foreach (var processModel in processesModels)
             {
                 IProcessStep? step = null;
 
-                if (processModel.CurrentProcessStep == Process1AllSteps.Process1Step1.ToString())
+                if (processModel.CurrentProcessStep == Process1AllSteps.Process1Step1.ToString()
+                    || processModel.CurrentProcessStep == null)
                 {
                     step = _step1;
                 }
@@ -82,7 +80,7 @@ namespace Api.Processes.Process1
                     .Result
                     .Contains(process)) return;
 
-                RunProcess1();
+                RunProcess1().ConfigureAwait(false);
             }
         }
     }

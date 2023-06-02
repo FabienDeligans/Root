@@ -1,7 +1,9 @@
-﻿using Library.Blazor.CallApiAddressProvider;
+﻿using Blazor.Provider;
+using Library.Blazor.CallApiAddressProvider;
 using Library.Blazor.CallApiAddressProvider.Models;
 using Library.Blazor.CallApiLoraineProvider;
 using Library.Blazor.CallApiLoraineProvider.Models;
+using Library.Processes.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace Blazor.Pages
@@ -45,6 +47,23 @@ namespace Blazor.Pages
 
         /// ////////////////////////
 
-        
+        [Inject]
+        public ProcessProvider ProcessProvider { get; set; }
+
+        private async Task RunAllProcesses()
+        {
+            var process = new Process
+            {
+                ProcessType = ProcessType.Process1,
+            };
+
+            var processes = await ProcessProvider.GetAllAsync(); 
+
+            await ProcessProvider.CreateSpecificProcess(process);
+
+            await ProcessProvider.RunSpecificProcess(process);
+
+            await ProcessProvider.RunAllFaillureProcesses(process); 
+        }
     }
 }

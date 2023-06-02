@@ -6,17 +6,15 @@ namespace Api.Processes
 {
     public class ProcessHandler : IObservable<Process>
     {
-        private List<Process> _processes;
         private List<IObserver<Process>> _observers;
 
-        private readonly ProcessLogic _processLogic; 
+        private readonly ProcessLogic _processLogic;
         public ProcessHandler(
-            ProcessLogic processLogic, 
+            ProcessLogic processLogic,
             ClientProcess1 clientProcess1)
         {
             _processLogic = processLogic;
 
-            _processes = new List<Process>();
             _observers = new List<IObserver<Process>>();
 
             clientProcess1.Subscribe(this);
@@ -27,9 +25,10 @@ namespace Api.Processes
             if (!_observers.Contains(observer))
             {
                 _observers.Add(observer);
-                _processes = (List<Process>)_processLogic.GetAllAsync().Result;
+                var processes = GetAllAsync().Result
+                    .Where(v => v.ProcessState != ProcessState.Success);
 
-                foreach (var process in _processes)
+                foreach (var process in processes)
                 {
                     observer.OnNext(process);
                 }
@@ -37,12 +36,10 @@ namespace Api.Processes
             return new DisposableSubscription<Process>(_observers, observer);
         }
 
-        public void Run(Process process)
+        public void CreateSpecificProcess(Process process)
         {
             process.ProcessState = ProcessState.Queued;
-
-            _processLogic.CreateAsync(process); 
-            _processes = (List<Process>)_processLogic.GetAllAsync().Result; 
+            _processLogic.CreateAsync(process).ConfigureAwait(false);
 
             if (_observers.Count > 0)
             {
@@ -51,6 +48,33 @@ namespace Api.Processes
                     observer.OnNext(process);
                 }
             }
+        }
+
+        public void RunAllFaillureProcesses()
+        {
+            var processes = GetAllAsync().Result
+                .Where(v => v.ProcessState != ProcessState.Success);
+
+            foreach (var process in processes)
+            {
+                foreach (var observer in _observers)
+                {
+                    observer.OnNext(process);
+                }
+            }
+        }
+
+        public void RunSpecificProcess(Process process)
+        {
+            foreach (var observer in _observers)
+            {
+                observer.OnNext(process);
+            }
+        }
+
+        public async Task<IEnumerable<Process>> GetAllAsync()
+        {
+            return await _processLogic.GetAllAsync();
         }
     }
 }

@@ -32,16 +32,5 @@ namespace Api.Logics
 
             return await ServiceDatabase.UpdateAsync(entityUpdate);
         }
-
-        public override Task<Family> CreateAsync(Family entity)
-        {
-            var process = new Process
-            {
-                ProcessType = ProcessType.Process1
-            }; 
-            _processHandler.Run(process);
-
-            return base.CreateAsync(entity);
-        }
     }
 }

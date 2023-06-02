@@ -19,6 +19,5 @@ namespace Library.Processes.Models
     public enum ProcessType
     {
         Process1 = 1,
-        Process2 = 2,
     }
 }
