@@ -1,4 +1,5 @@
 using Api.Logics;
+using Api.Processes;
 using Api.Processes.Process1;
 using Api.Services.MongoDb;
 using Library.Api.ApiExceptionManager;
@@ -33,6 +34,7 @@ namespace Api
             builder.Services.AddTransient<ProcessLogic>();
 
             // Inscrit CHAQUE Process et CHAQUE Steps
+            builder.Services.AddSingleton<ProcessHandler>(); 
             builder.Services.AddSingleton<ClientProcess1>(); 
             builder.Services.AddTransient<Process1Step1>(); 
             builder.Services.AddTransient<Process1Step2>();

@@ -1,6 +1,8 @@
-﻿using Api.Services.MongoDb;
+﻿using Api.Processes;
+using Api.Services.MongoDb;
 using Library.Api.ApiLogicProvider;
 using Library.Models.Business;
+using Library.Processes.Models;
 
 namespace Api.Logics
 {
@@ -8,8 +10,10 @@ namespace Api.Logics
     {
         private readonly ParentLogic _parentLogic;
         private readonly ChildLogic _childLogic;
-        public FamilyLogic(ServiceMongoDatabase serviceDatabaseDatabase, ParentLogic parentLogic, ChildLogic childLogic) : base(serviceDatabaseDatabase)
+        private readonly ProcessHandler _processHandler;
+        public FamilyLogic(ProcessHandler processHandler, ServiceMongoDatabase serviceDatabaseDatabase, ParentLogic parentLogic, ChildLogic childLogic) : base(serviceDatabaseDatabase)
         {
+            _processHandler = processHandler;
             _parentLogic = parentLogic;
             _childLogic = childLogic;
         }
@@ -27,6 +31,17 @@ namespace Api.Logics
             }
 
             return await ServiceDatabase.UpdateAsync(entityUpdate);
+        }
+
+        public override Task<Family> CreateAsync(Family entity)
+        {
+            var process = new Process
+            {
+                ProcessType = ProcessType.Process1
+            }; 
+            _processHandler.Run(process);
+
+            return base.CreateAsync(entity);
         }
     }
 }

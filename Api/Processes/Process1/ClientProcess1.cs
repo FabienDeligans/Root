@@ -14,13 +14,13 @@ namespace Api.Processes.Process1
 
         private readonly IProcessStep? _step1;
         private readonly IProcessStep? _step2;
-        
+
         public ClientProcess1(
             ProcessLogic processLogic,
             Process1Step1? step1,
             Process1Step2? step2)
         {
-            ProcessType = ProcessType.Process1; 
+            ProcessType = ProcessType.Process1;
 
             _processLogic = processLogic;
 
@@ -32,9 +32,7 @@ namespace Api.Processes.Process1
 
         public async Task RunProcess1()
         {
-            IEnumerable<Process> processesModels = 
-                await _processLogic
-                    .GetAllFilteredByPropertyEqualAsync(
+            IEnumerable<Process> processesModels = await _processLogic.GetAllFilteredByPropertyEqualAsync(
                         v => v.ProcessType == ProcessType
                              && v.ProcessState != ProcessState.Success);
 
@@ -42,35 +40,20 @@ namespace Api.Processes.Process1
             {
                 IProcessStep? step = null;
 
-                switch (processModel.CurrentProcessStep)
+                if (processModel.CurrentProcessStep == Process1AllSteps.Process1Step1.ToString())
                 {
-                    case Process1AllSteps.Process1Step1:
-                        step = _step1;
-                        break;
-                    case Process1AllSteps.Process1Step2:
-                        step = _step2;
-                        break;
+                    step = _step1;
                 }
-
+                if (processModel.CurrentProcessStep == Process1AllSteps.Process1Step2.ToString())
+                {
+                    step = _step2;
+                }
 
                 while (step != null)
                 {
                     step = step.Handle(processModel);
                 }
             }
-        }
-
-        public async Task CreateProcess1()
-        {
-            var process = new Process
-            {
-                ProcessType = ProcessType.Process1, 
-                CurrentProcessStep = Process1AllSteps.Process1Step1, 
-                CreationDate = DateTime.Now
-            };
-            await _processLogic.CreateAsync(process);
-
-            await RunProcess1(); 
         }
 
         private IDisposable _disposableSubscription;
@@ -99,7 +82,7 @@ namespace Api.Processes.Process1
                     .Result
                     .Contains(process)) return;
 
-                CreateProcess1(); 
+                RunProcess1();
             }
         }
     }

@@ -50,7 +50,7 @@ namespace Blazor.Pages
                     {
                         var random = new Random();
 
-                        var nbFamilies = 100;
+                        var nbFamilies = 10;
 
                         var families = new List<Family>();
                         var parents = new List<Parent>();

@@ -5,14 +5,15 @@ namespace Library.Processes.Models
     public class Process : Entity
     {
         public ProcessType ProcessType { get; set; }
-        public Enum CurrentProcessStep { get; set;  }
+        public string? CurrentProcessStep { get; set;  }
         public ProcessState ProcessState { get; set; }
     }
 
     public enum ProcessState
     {
-        Fail = 0,
+        Queued = 0, 
         Success = 1, 
+        Fail = 2,
     }
 
     public enum ProcessType

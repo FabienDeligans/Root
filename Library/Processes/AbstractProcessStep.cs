@@ -38,7 +38,7 @@ namespace Library.Processes
                     Run(processToUpdate);
 
                     processToUpdate.ProcessState = ProcessState.Success;
-                    processToUpdate.CurrentProcessStep = CurrentProcess;
+                    processToUpdate.CurrentProcessStep = CurrentProcess.ToString();
                     processToUpdate.UpdateDate = DateTime.Now;
 
                     _serviceDatabase.UpdateAsync(processToUpdate);
@@ -52,7 +52,7 @@ namespace Library.Processes
                 if (processToUpdate != null)
                 {
                     processToUpdate.ProcessState = ProcessState.Fail;
-                    processToUpdate.CurrentProcessStep = CurrentProcess;
+                    processToUpdate.CurrentProcessStep = CurrentProcess.ToString();
                     processToUpdate.UpdateDate = DateTime.Now;
 
                     _serviceDatabase.UpdateAsync(processToUpdate); 
