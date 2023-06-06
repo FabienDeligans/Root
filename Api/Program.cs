@@ -4,7 +4,6 @@ using Api.Processes.Process1;
 using Api.Services.MongoDb;
 using Library.Api.ApiExceptionManager;
 using Library.Settings;
-using Microsoft.OpenApi.Models;
 
 namespace Api
 {

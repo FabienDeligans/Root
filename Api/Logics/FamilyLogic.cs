@@ -2,7 +2,6 @@
 using Api.Services.MongoDb;
 using Library.Api.ApiLogicProvider;
 using Library.Models.Business;
-using Library.Processes.Models;
 
 namespace Api.Logics
 {

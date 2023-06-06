@@ -1,6 +1,4 @@
 ﻿using Api.Logics;
-using Api.Services.MongoDb;
-using Library.Api.ApiDatabaseProvider;
 using Library.Api.ApiLogicProvider;
 using Library.Processes;
 using Library.Processes.Models;
@@ -10,7 +8,7 @@ namespace Api.Processes.Process1
     public class ClientProcess1 : IObserver<Process>
     {
         private readonly IApiLogic<Process> _processLogic;
-        public ProcessType ProcessType { get; set; }
+        private readonly ProcessType _processType;
 
         private readonly IProcessStep? _step1;
         private readonly IProcessStep? _step2;
@@ -20,8 +18,7 @@ namespace Api.Processes.Process1
             Process1Step1? step1,
             Process1Step2? step2)
         {
-            ProcessType = ProcessType.Process1;
-
+            _processType = ProcessType.Process1;
             _processLogic = processLogic;
 
             _step1 = step1;
@@ -31,7 +28,7 @@ namespace Api.Processes.Process1
         private async Task RunProcess1()
         {
             var processesModels = await _processLogic.GetAllFilteredByPropertyEqualAsync(
-                        v => v.ProcessType == ProcessType && v.ProcessState != ProcessState.Success);
+                        v => v.ProcessType == _processType && v.ProcessState != ProcessState.Success);
 
             foreach (var processModel in processesModels)
             {
@@ -73,10 +70,10 @@ namespace Api.Processes.Process1
 
         public void OnNext(Process process)
         {
-            if (process.ProcessType == ProcessType)
+            if (process.ProcessType == _processType)
             {
                 if (_processLogic
-                    .GetAllFilteredByPropertyEqualAsync(v => v.ProcessType == ProcessType)
+                    .GetAllFilteredByPropertyEqualAsync(v => v.ProcessType == _processType)
                     .Result
                     .Contains(process)) return;
 

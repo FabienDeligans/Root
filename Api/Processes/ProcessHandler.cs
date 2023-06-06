@@ -7,8 +7,8 @@ namespace Api.Processes
     public class ProcessHandler : IObservable<Process>
     {
         private List<IObserver<Process>> _observers;
-
         private readonly ProcessLogic _processLogic;
+
         public ProcessHandler(
             ProcessLogic processLogic,
             ClientProcess1 clientProcess1)

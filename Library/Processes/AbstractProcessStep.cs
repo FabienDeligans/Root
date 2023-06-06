@@ -6,7 +6,7 @@ namespace Library.Processes
 {
     public abstract class AbstractProcessStep : IProcessStep
     {
-        public Enum CurrentProcess { get; set; }
+        public Enum CurrentStep { get; set; }
         public IProcessStep? NextProcess { get; set; }
 
         private readonly IApiServiceDatabase _serviceDatabase;
@@ -25,7 +25,7 @@ namespace Library.Processes
 
         public IProcessStep SetCurrentStep(Enum currentStep)
         {
-            CurrentProcess = currentStep;
+            CurrentStep = currentStep;
             return this;
         }
 
@@ -36,9 +36,8 @@ namespace Library.Processes
                 if (processToUpdate != null)
                 {
                     Run(processToUpdate);
-
                     processToUpdate.ProcessState = ProcessState.Success;
-                    processToUpdate.CurrentProcessStep = CurrentProcess.ToString();
+                    processToUpdate.CurrentProcessStep = CurrentStep.ToString();
                     processToUpdate.UpdateDate = DateTime.Now;
 
                     _serviceDatabase.UpdateAsync(processToUpdate);
@@ -52,7 +51,7 @@ namespace Library.Processes
                 if (processToUpdate != null)
                 {
                     processToUpdate.ProcessState = ProcessState.Fail;
-                    processToUpdate.CurrentProcessStep = CurrentProcess.ToString();
+                    processToUpdate.CurrentProcessStep = CurrentStep.ToString();
                     processToUpdate.UpdateDate = DateTime.Now;
 
                     _serviceDatabase.UpdateAsync(processToUpdate); 

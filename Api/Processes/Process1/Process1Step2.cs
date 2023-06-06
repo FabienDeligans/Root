@@ -15,6 +15,7 @@ namespace Api.Processes.Process1
         public override void Run(Process? processToUpdate)
         {
             //DO
+            Console.WriteLine($"Process1 step2");
         }
     }
 }
