@@ -1,7 +1,7 @@
 ﻿using Blazor.Provider;
 using Blazored.Modal;
 using Blazored.Modal.Services;
-using Library.Models.Business;
+using Library._Providers.Models.Business;
 using Microsoft.AspNetCore.Components;
 
 namespace Blazor.Pages.PagesFamilies

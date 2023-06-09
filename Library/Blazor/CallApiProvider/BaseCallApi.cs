@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Net.Mime;
 using System.Text;
-using Library.Models;
+using Library._Providers.Models;
 using Library.Settings;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;

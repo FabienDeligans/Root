@@ -1,6 +1,6 @@
-﻿using Library.Blazor.BlazorExceptionManager;
+﻿using Library._Providers.Models.Business;
+using Library.Blazor.BlazorExceptionManager;
 using Library.Blazor.CallApiProvider;
-using Library.Models.Business;
 using Library.Settings;
 using Microsoft.Extensions.Options;
 

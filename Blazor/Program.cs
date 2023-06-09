@@ -1,9 +1,11 @@
 using Blazor.Controller.Modal;
 using Blazor.Provider;
+using Blazor.Provider.CallApiAddressProvider;
+using Blazor.Provider.CallApiLoraineProvider;
 using Blazored.Modal;
+using Library._Providers.Models.Business;
 using Library.Blazor.BlazorExceptionManager;
-using Library.Blazor.CallApiAddressProvider;
-using Library.Blazor.CallApiLoraineProvider;
+using Library.Blazor.CallApiProvider;
 using Library.Settings;
 
 namespace Blazor

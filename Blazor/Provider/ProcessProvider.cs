@@ -1,10 +1,10 @@
 ﻿using Library.Blazor.BlazorExceptionManager;
-using Library.Processes.Models;
 using Library.Settings;
 using Microsoft.Extensions.Options;
 using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
+using Library._LogicLayer.Processes.Models;
 using Route = Library.Settings.Route;
 
 namespace Blazor.Provider

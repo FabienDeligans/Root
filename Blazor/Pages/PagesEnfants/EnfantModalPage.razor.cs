@@ -1,8 +1,8 @@
 ﻿using Blazored.Modal.Services;
-using Library.Models.Business;
 using Microsoft.AspNetCore.Components;
 using Blazor.Provider;
 using Blazored.Modal;
+using Library._Providers.Models.Business;
 
 namespace Blazor.Pages.PagesEnfants
 {

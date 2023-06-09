@@ -1,9 +1,10 @@
 ﻿using Blazor.Controller.Modal;
 using Blazor.Provider;
-using Library.Blazor.CallApiAddressProvider;
-using Library.Blazor.CallApiLoraineProvider;
-using Library.Blazor.CallApiLoraineProvider.Models;
-using Library.Models.Business;
+using Blazor.Provider.CallApiAddressProvider;
+using Blazor.Provider.CallApiLoraineProvider;
+using Blazor.Provider.CallApiLoraineProvider.Models;
+using Library._Providers.Models.Business;
+using Library.Blazor.CallApiProvider;
 using Microsoft.AspNetCore.Components;
 
 namespace Blazor.Pages

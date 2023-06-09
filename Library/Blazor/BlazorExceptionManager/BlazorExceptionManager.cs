@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using Library.Models;
+using Library._Providers.Models;
 using Newtonsoft.Json;
 
 namespace Library.Blazor.BlazorExceptionManager

@@ -1,4 +1,4 @@
-﻿using Library.Models;
+﻿using Library._Providers.Models;
 
 namespace Library.Blazor.CallApiProvider
 {

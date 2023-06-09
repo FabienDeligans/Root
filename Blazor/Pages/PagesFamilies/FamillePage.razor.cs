@@ -3,7 +3,7 @@ using Blazor.Pages.PagesEnfants;
 using Blazor.Pages.PagesParents;
 using Blazor.Provider;
 using Blazored.Modal;
-using Library.Models.Business;
+using Library._Providers.Models.Business;
 using Microsoft.AspNetCore.Components;
 
 namespace Blazor.Pages.PagesFamilies
