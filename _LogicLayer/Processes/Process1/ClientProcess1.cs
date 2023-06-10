@@ -27,28 +27,36 @@ namespace _LogicLayer.Processes.Process1
 
         private async Task RunProcess1()
         {
-            var processesModels = await _processLogic.GetAllFilteredByPropertyEqualAsync(
-                        v => v.ProcessType == _processType && v.ProcessState != ProcessState.Success);
-
-            foreach (var processModel in processesModels)
+            try
             {
-                IProcessStep? step = null;
-                
-                switch (processModel.CurrentProcessStep)
-                {
-                    case null:
-                    case Process1AllSteps.Process1Step1:
-                        step = _step1;
-                        break;
-                    case Process1AllSteps.Process1Step2: 
-                        step = _step2;
-                        break;
-                }
+                var processesModels = await _processLogic.GetAllFilteredByPropertyEqualAsync(
+                               v => v.ProcessType == _processType && v.ProcessState != ProcessState.Success);
 
-                while (step != null)
+                foreach (var processModel in processesModels)
                 {
-                    step = step.Handle(processModel);
+                    IProcessStep? step = null;
+
+                    switch (processModel.CurrentStep)
+                    {
+                        case null:
+                        case _Steps.Step1:
+                            step = _step1;
+                            break;
+                        case _Steps.Step2:
+                            step = _step2;
+                            break;
+                    }
+
+                    while (step != null)
+                    {
+                        step = step.Handle(processModel);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                var msg = e.Message; 
+                throw;
             }
         }
 

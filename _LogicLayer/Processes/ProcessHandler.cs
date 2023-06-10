@@ -42,31 +42,16 @@ namespace _LogicLayer.Processes
             process.ProcessState = ProcessState.Queued;
             _processLogic.CreateAsync(process).ConfigureAwait(false);
 
-            if (_observers.Count > 0)
+            if (_observers.Count <= 0) return;
+            foreach (var observer in _observers)
             {
-                foreach (var observer in _observers)
-                {
-                    observer.OnNext(process);
-                }
-            }
-        }
-
-        public void RunAllFaillureProcesses()
-        {
-            var processes = GetAllAsync().Result
-                .Where(v => v.ProcessState != ProcessState.Success);
-
-            foreach (var process in processes)
-            {
-                foreach (var observer in _observers)
-                {
-                    observer.OnNext(process);
-                }
+                observer.OnNext(process);
             }
         }
 
         public void RunSpecificProcess(Process process)
         {
+            if (_observers.Count <= 0) return;
             foreach (var observer in _observers)
             {
                 observer.OnNext(process);

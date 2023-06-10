@@ -4,6 +4,8 @@ using _LogicLayer.Processes.Process1;
 using _Providers.DatabaseProviders.MongoDb;
 using Library._Api.ApiExceptionManager;
 using Library.Settings;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Conventions;
 
 namespace _ApiLayer
 {
@@ -40,6 +42,13 @@ namespace _ApiLayer
             builder.Services.AddSingleton<ClientProcess1>();
             builder.Services.AddSingleton<Process1Step1>();
             builder.Services.AddSingleton<Process1Step2>();
+
+            // Set up MongoDB conventions
+            var pack = new ConventionPack
+            {
+                new EnumRepresentationConvention(BsonType.String)
+            };
+            ConventionRegistry.Register("EnumStringConvention", pack, t => true);
 
             var app = builder.Build();
 

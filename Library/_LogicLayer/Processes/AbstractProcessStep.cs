@@ -37,9 +37,9 @@ namespace Library._LogicLayer.Processes
                 {
                     Run(processToUpdate);
                     processToUpdate.ProcessState = ProcessState.Success;
-                    processToUpdate.CurrentProcessStep = CurrentStep;
+                    processToUpdate.CurrentStep = CurrentStep;
                     processToUpdate.UpdateDate = DateTime.Now;
-
+                   
                     _serviceDatabase.UpdateAsync(processToUpdate);
                     return NextProcess;
                 }
@@ -51,7 +51,7 @@ namespace Library._LogicLayer.Processes
                 if (processToUpdate != null)
                 {
                     processToUpdate.ProcessState = ProcessState.Fail;
-                    processToUpdate.CurrentProcessStep = CurrentStep;
+                    processToUpdate.CurrentStep = CurrentStep;
                     processToUpdate.UpdateDate = DateTime.Now;
 
                     _serviceDatabase.UpdateAsync(processToUpdate);

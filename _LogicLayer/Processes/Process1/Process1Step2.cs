@@ -10,7 +10,7 @@ namespace _LogicLayer.Processes.Process1
             ServiceMongoDatabase serviceMongoDatabase) 
             : base(serviceMongoDatabase)
         {
-            SetCurrentStep(Process1AllSteps.Process1Step2);
+            SetCurrentStep(_Steps.Step2);
             SetNext(null);
         }
 

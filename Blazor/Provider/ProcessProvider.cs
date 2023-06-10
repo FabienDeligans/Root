@@ -98,25 +98,5 @@ namespace Blazor.Provider
                 throw new Exception(msg);
             }
         }
-
-        public async Task RunAllFaillureProcesses(Process entity)
-        {
-            try
-            {
-                var json = new StringContent(JsonSerializer.Serialize(entity), Encoding.UTF8,
-                    MediaTypeNames.Application.Json);
-
-                Response = await _httpClient
-                    .PostAsync(Route.RunAllFaillureProcesses, json)
-                    .ConfigureAwait(false);
-
-                Response.EnsureSuccessStatusCode();
-            }
-            catch (Exception e)
-            {
-                var msg = await _blazorExceptionManager.CatchExceptions(e, Response);
-                throw new Exception(msg);
-            }
-        }
     }
 }

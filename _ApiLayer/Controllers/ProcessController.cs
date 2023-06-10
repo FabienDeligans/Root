@@ -67,23 +67,7 @@ public class ProcessController : ControllerBase
             return _apiExceptionManager.CatchExceptions(e);
         }
     }
-
-    [HttpPost(Route.RunAllFaillureProcesses)]
-    public async Task<ActionResult> RunAllFaillureProcesses(Process process)
-    {
-        try
-        {
-            _apiExceptionManager.EnsureFromAllowed(Request);
-
-            _processHandler.RunAllFaillureProcesses();
-            return Ok();
-        }
-        catch (Exception e)
-        {
-            return _apiExceptionManager.CatchExceptions(e);
-        }
-    }
-
+    
     [HttpDelete(Route.DropCollectionAsync)]
     public async Task<ActionResult> DropCollectionAsync()
     {

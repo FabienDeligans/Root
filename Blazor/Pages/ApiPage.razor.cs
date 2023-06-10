@@ -63,7 +63,6 @@ namespace Blazor.Pages
 
             await ProcessProvider.RunSpecificProcess(process);
 
-            await ProcessProvider.RunAllFaillureProcesses(process); 
         }
     }
 }
