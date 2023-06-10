@@ -1,8 +1,8 @@
 ﻿namespace _LogicLayer.Processes.Process1
 {
-    public enum Process1AllSteps
+    public static class Process1AllSteps
     {
-        Process1Step1 = 1, 
-        Process1Step2 = 2,
+        public const string Process1Step1 = "Process1Step1";
+        public const string Process1Step2 = "Process1Step2"; 
     }
 }

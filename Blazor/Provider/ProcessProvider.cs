@@ -27,6 +27,23 @@ namespace Blazor.Provider
 
         private string GetTypeName() => nameof(Process);
 
+        public async Task DropCollectionAsync()
+        {
+            try
+            {
+                Response = await _httpClient
+                    .DeleteAsync(Route.DropCollectionAsync)
+                    .ConfigureAwait(false);
+
+                Response.EnsureSuccessStatusCode();
+            }
+            catch (Exception e)
+            {
+                var msg = await _blazorExceptionManager.CatchExceptions(e, Response);
+                throw new Exception(msg);
+            }
+        }
+
         public async Task<IEnumerable<Process>?> GetAllAsync()
         {
             try

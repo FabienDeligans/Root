@@ -1,7 +1,6 @@
 ﻿using _Providers.DatabaseProviders.MongoDb;
 using Library._LogicLayer.Logic;
 using Library._LogicLayer.Processes.Models;
-using Library._Providers.DatabaseProvider;
 
 namespace _LogicLayer.Logics;
 

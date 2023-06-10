@@ -4,7 +4,6 @@ using Blazor.Provider.CallApiAddressProvider;
 using Blazor.Provider.CallApiLoraineProvider;
 using Blazor.Provider.CallApiLoraineProvider.Models;
 using Library._Providers.Models.Business;
-using Library.Blazor.CallApiProvider;
 using Microsoft.AspNetCore.Components;
 
 namespace Blazor.Pages
@@ -19,6 +18,9 @@ namespace Blazor.Pages
 
         [Inject]
         public ChildProvider ChildProvider { get; set; }
+
+        [Inject]
+        public ProcessProvider ProcessProvider { get; set; }
 
         [Inject]
         public LorraineHipseaumeProvider LorraineHipseaume { get; set; }
@@ -155,6 +157,7 @@ namespace Blazor.Pages
                         await FamilyProvider.DropCollectionAsync().ConfigureAwait(false);
                         await ParentProvider.DropCollectionAsync().ConfigureAwait(false);
                         await ChildProvider.DropCollectionAsync().ConfigureAwait(false);
+                        await ProcessProvider.DropCollectionAsync().ConfigureAwait(false);
 
 
                         Family = null;

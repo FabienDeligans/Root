@@ -83,4 +83,20 @@ public class ProcessController : ControllerBase
             return _apiExceptionManager.CatchExceptions(e);
         }
     }
+
+    [HttpDelete(Route.DropCollectionAsync)]
+    public async Task<ActionResult> DropCollectionAsync()
+    {
+        try
+        {
+            _apiExceptionManager.EnsureFromAllowed(Request);
+
+            await _processHandler.DropCollectionAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return _apiExceptionManager.CatchExceptions(e);
+        }
+    }
 }

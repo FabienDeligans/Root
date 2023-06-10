@@ -6,7 +6,7 @@ namespace Library._LogicLayer.Processes
 {
     public abstract class AbstractProcessStep : IProcessStep
     {
-        public Enum CurrentStep { get; set; }
+        public string CurrentStep { get; set; }
         public IProcessStep? NextProcess { get; set; }
 
         private readonly IApiServiceDatabase _serviceDatabase;
@@ -23,7 +23,7 @@ namespace Library._LogicLayer.Processes
             return NextProcess;
         }
 
-        public IProcessStep SetCurrentStep(Enum currentStep)
+        public IProcessStep SetCurrentStep(string currentStep)
         {
             CurrentStep = currentStep;
             return this;
@@ -37,7 +37,7 @@ namespace Library._LogicLayer.Processes
                 {
                     Run(processToUpdate);
                     processToUpdate.ProcessState = ProcessState.Success;
-                    processToUpdate.CurrentProcessStep = CurrentStep.ToString();
+                    processToUpdate.CurrentProcessStep = CurrentStep;
                     processToUpdate.UpdateDate = DateTime.Now;
 
                     _serviceDatabase.UpdateAsync(processToUpdate);
@@ -51,7 +51,7 @@ namespace Library._LogicLayer.Processes
                 if (processToUpdate != null)
                 {
                     processToUpdate.ProcessState = ProcessState.Fail;
-                    processToUpdate.CurrentProcessStep = CurrentStep.ToString();
+                    processToUpdate.CurrentProcessStep = CurrentStep;
                     processToUpdate.UpdateDate = DateTime.Now;
 
                     _serviceDatabase.UpdateAsync(processToUpdate);

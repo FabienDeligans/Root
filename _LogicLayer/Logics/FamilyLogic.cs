@@ -2,7 +2,6 @@
 using _Providers.DatabaseProviders.MongoDb;
 using Library._LogicLayer.Logic;
 using Library._LogicLayer.Processes.Models;
-using Library._Providers.DatabaseProvider;
 using Library._Providers.Models.Business;
 
 namespace _LogicLayer.Logics
@@ -37,6 +36,15 @@ namespace _LogicLayer.Logics
             }
 
             return await ServiceDatabase.UpdateAsync(entityUpdate);
+        }
+
+        public override Task<Family> CreateAsync(Family entity)
+        {
+            _processHandler.CreateSpecificProcess(new Process()
+            {
+                ProcessType = ProcessType.Process1
+            });
+            return base.CreateAsync(entity);
         }
     }
 }

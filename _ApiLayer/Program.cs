@@ -3,13 +3,7 @@ using _LogicLayer.Processes;
 using _LogicLayer.Processes.Process1;
 using _Providers.DatabaseProviders.MongoDb;
 using Library._Api.ApiExceptionManager;
-using Library._LogicLayer.Logic;
-using Library._LogicLayer.Processes.Models;
-using Library._Providers.DatabaseProvider;
-using Library._Providers.Models.Business;
 using Library.Settings;
-using System;
-using Library._LogicLayer.Processes;
 
 namespace _ApiLayer
 {

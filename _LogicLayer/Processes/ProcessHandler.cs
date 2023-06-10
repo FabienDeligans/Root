@@ -77,5 +77,10 @@ namespace _LogicLayer.Processes
         {
             return await _processLogic.GetAllAsync();
         }
+
+        public async Task  DropCollectionAsync()
+        {
+            await _processLogic.DropCollectionAsync(); 
+        }
     }
 }

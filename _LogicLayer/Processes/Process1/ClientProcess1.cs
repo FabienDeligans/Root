@@ -33,15 +33,16 @@ namespace _LogicLayer.Processes.Process1
             foreach (var processModel in processesModels)
             {
                 IProcessStep? step = null;
-
-                if (processModel.CurrentProcessStep == Process1AllSteps.Process1Step1.ToString()
-                    || processModel.CurrentProcessStep == null)
+                
+                switch (processModel.CurrentProcessStep)
                 {
-                    step = _step1;
-                }
-                if (processModel.CurrentProcessStep == Process1AllSteps.Process1Step2.ToString())
-                {
-                    step = _step2;
+                    case null:
+                    case Process1AllSteps.Process1Step1:
+                        step = _step1;
+                        break;
+                    case Process1AllSteps.Process1Step2: 
+                        step = _step2;
+                        break;
                 }
 
                 while (step != null)
