@@ -10,9 +10,10 @@
     <PackageReference Include="Blazored.Modal" Version="7.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.16" />
   </ItemGroup>
-    
+
   <ItemGroup>
-    <ProjectReference Include="..\Library\Library.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Front\Front.csproj" />
   </ItemGroup>
 
 </Project>

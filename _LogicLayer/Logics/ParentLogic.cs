@@ -1,6 +1,6 @@
 ﻿using _Providers.DatabaseProviders.MongoDb;
-using Library._LogicLayer.Logic;
-using Library._Providers.Models.Business;
+using Back._LogicLayer.Logic;
+using Common.Models.Business;
 
 namespace _LogicLayer.Logics
 {

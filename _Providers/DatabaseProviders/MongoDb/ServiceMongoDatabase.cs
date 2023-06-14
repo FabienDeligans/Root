@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Linq.Expressions;
-using Library._Providers.CustomAttribute;
-using Library._Providers.DatabaseProvider;
-using Library._Providers.Models;
-using Library.Settings;
+using Back._Providers.DatabaseProvider;
+using Common.Models;
+using Common.Models.CustomAttribute;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
@@ -40,6 +39,7 @@ namespace _Providers.DatabaseProviders.MongoDb
 
         public async Task<T> CreateAsync<T>(T entity) where T : IEntity
         {
+            entity.CreationDate = DateTime.Now.ToLocalTime();
             await Collection<T>()
                         .InsertOneAsync(entity)
                         .ConfigureAwait(false);
@@ -65,14 +65,14 @@ namespace _Providers.DatabaseProviders.MongoDb
             return result.AsEnumerable();
         }
 
-        public async Task<IEnumerable<T>> GetAllFilterd<T>(Expression<Func<T, bool>> predicate) where T : IEntity
+        public async Task<IEnumerable<T>> GetAllFiltered<T>(Expression<Func<T, bool>> predicate) where T : IEntity
         {
             var filter = Builders<T>.Filter.Where(predicate);
             var result = await Collection<T>().FindAsync(filter);
             return result.ToEnumerable();
         }
 
-        public async Task<T> GetOneAsync<T>(string? id) where T : IEntity
+        public async Task<T> GetOneAsync<T>(string id) where T : IEntity
         {
             return await Collection<T>()
                 .Find(x => x.Id == id)
@@ -82,6 +82,8 @@ namespace _Providers.DatabaseProviders.MongoDb
 
         public async Task<T> UpdateAsync<T>(T entityUpdate) where T : IEntity
         {
+            entityUpdate.UpdateDate = DateTime.Now.ToLocalTime();
+
             await Collection<T>()!
                 .ReplaceOneAsync(x => x!.Id == entityUpdate!.Id, entityUpdate)
                 .ConfigureAwait(false);
@@ -90,6 +92,7 @@ namespace _Providers.DatabaseProviders.MongoDb
 
         public async Task<T> UpdatePropertyAsync<T>(string id, Dictionary<string, object> propertyValueDictionary) where T : IEntity
         {
+            propertyValueDictionary.Add(nameof(IEntity.UpdateDate), DateTime.Now.ToLocalTime());
             foreach (var (key, value) in propertyValueDictionary)
             {
                 var filter = Builders<T>.Filter.Eq(v => v.Id, id);

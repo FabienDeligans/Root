@@ -1,8 +1,8 @@
 ﻿using _LogicLayer.Processes;
-using Library._Api.ApiExceptionManager;
-using Library._LogicLayer.Processes.Models;
+using Back._Api.ApiExceptionManager;
+using Common.Models.Processes;
 using Microsoft.AspNetCore.Mvc;
-using Route = Library.Settings.Route;
+using Route = Common.Route;
 
 namespace _ApiLayer.Controllers;
 

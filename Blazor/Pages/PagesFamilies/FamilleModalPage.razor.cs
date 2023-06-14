@@ -1,7 +1,7 @@
-﻿using Blazor.Provider;
+﻿using Blazor.Provider.Api;
 using Blazored.Modal;
 using Blazored.Modal.Services;
-using Library._Providers.Models.Business;
+using Common.Models.Business;
 using Microsoft.AspNetCore.Components;
 
 namespace Blazor.Pages.PagesFamilies
@@ -12,7 +12,7 @@ namespace Blazor.Pages.PagesFamilies
         public FamilyProvider? FamilyProvider { get; set; }
 
         [Parameter]
-        public string? FamilyId { get; set; }
+        public string FamilyId { get; set; }
         private Family Family { get; set; }
 
         [CascadingParameter]

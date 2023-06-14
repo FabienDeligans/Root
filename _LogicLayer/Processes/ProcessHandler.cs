@@ -1,7 +1,7 @@
 ﻿using _LogicLayer.Logics;
 using _LogicLayer.Processes.Process1;
-using Library._LogicLayer.Logic;
-using Library._LogicLayer.Processes.Models;
+using Back._LogicLayer.Logic;
+using Common.Models.Processes;
 
 namespace _LogicLayer.Processes
 {

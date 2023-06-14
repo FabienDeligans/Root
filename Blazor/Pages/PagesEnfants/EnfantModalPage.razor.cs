@@ -1,8 +1,8 @@
 ﻿using Blazored.Modal.Services;
 using Microsoft.AspNetCore.Components;
-using Blazor.Provider;
+using Blazor.Provider.Api;
 using Blazored.Modal;
-using Library._Providers.Models.Business;
+using Common.Models.Business;
 
 namespace Blazor.Pages.PagesEnfants
 {
@@ -25,8 +25,8 @@ namespace Blazor.Pages.PagesEnfants
         private Child? Child { get; set; }
         private bool IsDisabled { get; set; }
 
-        private string? _statusMessage;
-        private string? _statusClass;
+        private string _statusMessage;
+        private string _statusClass;
 
         protected override async Task OnInitializedAsync()
         {

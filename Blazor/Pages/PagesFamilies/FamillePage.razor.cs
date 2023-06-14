@@ -1,9 +1,9 @@
 ﻿using Blazor.Controller.Modal;
 using Blazor.Pages.PagesEnfants;
 using Blazor.Pages.PagesParents;
-using Blazor.Provider;
+using Blazor.Provider.Api;
 using Blazored.Modal;
-using Library._Providers.Models.Business;
+using Common.Models.Business;
 using Microsoft.AspNetCore.Components;
 
 namespace Blazor.Pages.PagesFamilies
@@ -119,7 +119,7 @@ namespace Blazor.Pages.PagesFamilies
             }
         }
 
-        private async Task UpdateFamily(string? familyId)
+        private async Task UpdateFamily(string familyId)
         {
             var parameters = new ModalParameters()
             {
@@ -161,7 +161,7 @@ namespace Blazor.Pages.PagesFamilies
             });
         }
 
-        private async Task UpdateParent(string? parentId)
+        private async Task UpdateParent(string parentId)
         {
             var parameters = new ModalParameters()
             {
@@ -203,7 +203,7 @@ namespace Blazor.Pages.PagesFamilies
             });
         }
 
-        private async Task UpdateEnfant(string? enfantId)
+        private async Task UpdateEnfant(string enfantId)
         {
             var parameters = new ModalParameters()
             {

@@ -1,7 +1,7 @@
 ﻿using _LogicLayer.Logics;
-using Library._LogicLayer.Logic;
-using Library._LogicLayer.Processes;
-using Library._LogicLayer.Processes.Models;
+using Back._LogicLayer.Logic;
+using Back._LogicLayer.Processes;
+using Common.Models.Processes;
 
 namespace _LogicLayer.Processes.Process1
 {
@@ -31,8 +31,8 @@ namespace _LogicLayer.Processes.Process1
             {
                 var processesModels = await _processLogic.GetAllFilteredByPropertyEqualAsync(
                                v => v.ProcessType == _processType && v.ProcessState != ProcessState.Success);
-
-                foreach (var processModel in processesModels)
+                
+                foreach (var processModel in processesModels.ToList())
                 {
                     IProcessStep? step = null;
 
@@ -55,7 +55,10 @@ namespace _LogicLayer.Processes.Process1
             }
             catch (Exception e)
             {
-                var msg = e.Message; 
+                var msg = e.Message;
+
+                OnError(e);
+
                 throw;
             }
         }
@@ -72,9 +75,14 @@ namespace _LogicLayer.Processes.Process1
             throw new NotImplementedException();
         }
 
+        private int _errorCount { get; set; } = 0; 
         public void OnError(Exception error)
         {
-            throw new NotImplementedException();
+            _errorCount++;
+            if (_errorCount < 10)
+            {
+                RunProcess1(); 
+            }
         }
 
         public void OnNext(Process process)

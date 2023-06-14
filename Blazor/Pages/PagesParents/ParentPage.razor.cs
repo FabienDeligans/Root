@@ -1,6 +1,6 @@
 ﻿using Blazor.Controller.Modal;
-using Blazor.Provider;
-using Library._Providers.Models.Business;
+using Blazor.Provider.Api;
+using Common.Models.Business;
 using Microsoft.AspNetCore.Components;
 
 namespace Blazor.Pages.PagesParents

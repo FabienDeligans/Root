@@ -56,7 +56,7 @@ namespace Blazor.Controller.Modal
         }
         #endregion
 
-        public async Task ShowModalAlert(string text, int millisecond, string? alert, ModalParameters parameters, ModalOptions options)
+        public async Task ShowModalAlert(string text, int millisecond, string alert, ModalParameters parameters, ModalOptions options)
         {
             parameters.Add(nameof(AlertComponent.Message), text);
             parameters.Add(nameof(AlertComponent.ClassCSS), alert);

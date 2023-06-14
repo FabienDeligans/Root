@@ -1,9 +1,9 @@
-﻿using Blazor.Provider;
-using Blazor.Provider.CallApiAddressProvider;
-using Blazor.Provider.CallApiAddressProvider.Models;
-using Blazor.Provider.CallApiLoraineProvider;
-using Blazor.Provider.CallApiLoraineProvider.Models;
-using Library._LogicLayer.Processes.Models;
+﻿using Blazor.Provider.AddressProvider;
+using Blazor.Provider.AddressProvider.Models;
+using Blazor.Provider.Api;
+using Blazor.Provider.LoraineProvider;
+using Blazor.Provider.LoraineProvider.Models;
+using Common.Models.Processes;
 using Microsoft.AspNetCore.Components;
 
 namespace Blazor.Pages

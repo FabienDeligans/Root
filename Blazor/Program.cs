@@ -1,10 +1,10 @@
 using Blazor.Controller.Modal;
-using Blazor.Provider;
-using Blazor.Provider.CallApiAddressProvider;
-using Blazor.Provider.CallApiLoraineProvider;
+using Blazor.Provider.AddressProvider;
+using Blazor.Provider.Api;
+using Blazor.Provider.LoraineProvider;
 using Blazored.Modal;
-using Library.Blazor.BlazorExceptionManager;
-using Library.Settings;
+using Front.BlazorExceptionManager;
+using Front.CallApiProvider;
 
 namespace Blazor
 {

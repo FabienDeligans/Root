@@ -16,10 +16,10 @@
     public BlazoredModalInstance BlazoredModal { get; set; } = default; 
 
     [Parameter]
-    public string? Message { get; set; }
+    public string Message { get; set; }
 
     [Parameter]
-    public string? ClassCSS { get; set; }
+    public string ClassCSS { get; set; }
 
     private async Task Cancel() => await InvokeAsync(async () => await BlazoredModal!.CancelAsync(BlazoredModal).ConfigureAwait(false));
 }

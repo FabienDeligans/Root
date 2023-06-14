@@ -1,7 +1,7 @@
 ﻿using _LogicLayer.Logics;
-using Library._Api.ApiControllerProvider;
-using Library._Api.ApiExceptionManager;
-using Library._Providers.Models.Business;
+using Back._Api.ApiControllerProvider;
+using Back._Api.ApiExceptionManager;
+using Common.Models.Business;
 using Microsoft.AspNetCore.Mvc;
 
 namespace _ApiLayer.Controllers

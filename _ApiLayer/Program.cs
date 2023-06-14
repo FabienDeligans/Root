@@ -2,8 +2,9 @@ using _LogicLayer.Logics;
 using _LogicLayer.Processes;
 using _LogicLayer.Processes.Process1;
 using _Providers.DatabaseProviders.MongoDb;
-using Library._Api.ApiExceptionManager;
-using Library.Settings;
+using Back._Api;
+using Back._Api.ApiExceptionManager;
+using Back._Providers.DatabaseProvider;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
 
