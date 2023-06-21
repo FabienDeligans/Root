@@ -1,5 +1,4 @@
-﻿using _LogicLayer.Logics;
-using Back._LogicLayer.Logic;
+﻿using Back._LogicLayer.Logic;
 using Back._LogicLayer.Processes;
 using Common.Models.Processes;
 
@@ -9,12 +8,11 @@ namespace _LogicLayer.Processes.Process1
     {
         private readonly ILogic<Process> _processLogic;
         private readonly ProcessType _processType;
-
         private readonly IProcessStep? _step1;
         private readonly IProcessStep? _step2;
 
         public ClientProcess1(
-            ProcessLogic processLogic,
+            ILogic<Process> processLogic,
             Process1Step1? step1,
             Process1Step2? step2)
         {

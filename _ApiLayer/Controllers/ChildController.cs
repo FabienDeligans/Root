@@ -1,6 +1,6 @@
-﻿using _LogicLayer.Logics;
-using Back._Api.ApiControllerProvider;
+﻿using Back._Api.ApiControllerProvider;
 using Back._Api.ApiExceptionManager;
+using Back._LogicLayer.Logic;
 using Common.Models.Business;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,9 +10,9 @@ namespace _ApiLayer.Controllers
     [Route("[controller]")]
     public class ChildController : BaseApiController<Child>
     {
-        private readonly ChildLogic _childLogic;
+        private readonly ILogic<Child> _childLogic;
         public ChildController(
-            ChildLogic apiLogic, 
+            ILogic<Child> apiLogic, 
             ApiExceptionManager apiExceptionManager) 
             : base(apiLogic, apiExceptionManager)
         {

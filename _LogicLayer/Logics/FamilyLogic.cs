@@ -8,14 +8,14 @@ namespace _LogicLayer.Logics
 {
     public class FamilyLogic : BaseApiLogic<Family>
     {
-        private readonly ParentLogic _parentLogic;
-        private readonly ChildLogic _childLogic;
+        private readonly ILogic<Parent> _parentLogic;
+        private readonly ILogic<Child> _childLogic;
         private readonly ProcessHandler _processHandler;
         public FamilyLogic(
             ProcessHandler processHandler,
             ServiceMongoDatabase serviceDatabaseDatabase,
-            ParentLogic parentLogic,
-            ChildLogic childLogic) 
+            ILogic<Parent> parentLogic,
+            ILogic<Child> childLogic) 
             : base(serviceDatabaseDatabase)
         {
             _processHandler = processHandler;

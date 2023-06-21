@@ -1,5 +1,4 @@
-﻿using _LogicLayer.Logics;
-using _LogicLayer.Processes.Process1;
+﻿using _LogicLayer.Processes.Process1;
 using Back._LogicLayer.Logic;
 using Common.Models.Processes;
 
@@ -11,11 +10,10 @@ namespace _LogicLayer.Processes
         private readonly ILogic<Process> _processLogic;
 
         public ProcessHandler(
-            ProcessLogic processLogic,
+            ILogic<Process> processLogic,
             ClientProcess1 clientProcess1)
         {
             _processLogic = processLogic;
-
             _observers = new List<IObserver<Process>>();
 
             clientProcess1.Subscribe(this);
