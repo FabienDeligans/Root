@@ -1,5 +1,4 @@
 ﻿using _LogicLayer.Processes;
-using Back._Api.ApiExceptionManager;
 using Common.Models.Processes;
 using Microsoft.AspNetCore.Mvc;
 using Route = Common.Route;
@@ -10,10 +9,10 @@ namespace _ApiLayer.Controllers;
 [Route("[controller]")]
 public class ProcessController : ControllerBase
 {
-    private readonly ApiExceptionManager _apiExceptionManager;
+    private readonly ApiExceptionManager.ApiExceptionManager _apiExceptionManager;
     private readonly ProcessHandler _processHandler; 
     public ProcessController(
-        ApiExceptionManager apiExceptionManager, 
+        ApiExceptionManager.ApiExceptionManager apiExceptionManager, 
         ProcessHandler processHandler)
     {
         _apiExceptionManager = apiExceptionManager;

@@ -1,8 +1,8 @@
-﻿using Back._Providers.DatabaseProvider;
+﻿using _Providers.DatabaseProviders;
 using Common.Models.Processes;
 using Process = Common.Models.Processes.Process;
 
-namespace Back._LogicLayer.Processes
+namespace _LogicLayer.Processes
 {
     public abstract class AbstractProcessStep : IProcessStep
     {

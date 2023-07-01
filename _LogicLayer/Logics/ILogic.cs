@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Back._LogicLayer.Logic
+namespace _LogicLayer.Logics
 {
     public interface ILogic<T>
     {

@@ -1,9 +1,9 @@
 ﻿using System.Security.Authentication;
-using Microsoft.AspNetCore.Http;
+using _ApiLayer.ApiControllerProvider;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace Back._Api.ApiExceptionManager
+namespace _ApiLayer.ApiExceptionManager
 {
     public class ApiExceptionManager : ControllerBase
     {

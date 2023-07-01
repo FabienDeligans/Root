@@ -1,4 +1,4 @@
-﻿namespace Back._Api
+﻿namespace _ApiLayer.ApiControllerProvider
 {
     public class SettingsApi
     {

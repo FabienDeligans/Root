@@ -1,6 +1,5 @@
-﻿using Back._Api.ApiControllerProvider;
-using Back._Api.ApiExceptionManager;
-using Back._LogicLayer.Logic;
+﻿using _ApiLayer.ApiControllerProvider;
+using _LogicLayer.Logics;
 using Common.Models.Business;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +12,7 @@ namespace _ApiLayer.Controllers
         private readonly ILogic<Parent> _parentLogic;
         public ParentController(
             ILogic<Parent> parentLogic, 
-            ApiExceptionManager apiExceptionManager) 
+            ApiExceptionManager.ApiExceptionManager apiExceptionManager) 
             : base(parentLogic, apiExceptionManager)
         {
             _parentLogic = parentLogic;

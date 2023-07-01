@@ -1,7 +1,7 @@
 ﻿using Common.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Back._Api.ApiControllerProvider
+namespace _ApiLayer.ApiControllerProvider
 {
     public interface IApiController<T> where T : IEntity
     {

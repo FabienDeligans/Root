@@ -1,9 +1,8 @@
 ﻿using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
+using Blazor.Provider.Api.CallApiProvider;
 using Common.Models.Processes;
-using Front.BlazorExceptionManager;
-using Front.CallApiProvider;
 using Microsoft.Extensions.Options;
 using Route = Common.Route;
 
@@ -13,10 +12,10 @@ namespace Blazor.Provider.Api
     {
         private readonly HttpClient _httpClient;
         private readonly IOptions<SettingsCallApi> _options;
-        private readonly BlazorExceptionManager _blazorExceptionManager;
+        private readonly BlazorExceptionManager.BlazorExceptionManager _blazorExceptionManager;
         private HttpResponseMessage? Response { get; set; }
 
-        public ProcessProvider(HttpClient client, IOptions<SettingsCallApi> options, BlazorExceptionManager blazorExceptionManager)
+        public ProcessProvider(HttpClient client, IOptions<SettingsCallApi> options, BlazorExceptionManager.BlazorExceptionManager blazorExceptionManager)
         {
             _options = options;
             _httpClient = client;

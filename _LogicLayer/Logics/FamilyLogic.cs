@@ -1,6 +1,5 @@
 ﻿using _LogicLayer.Processes;
 using _Providers.DatabaseProviders.MongoDb;
-using Back._LogicLayer.Logic;
 using Common.Models.Business;
 using Common.Models.Processes;
 

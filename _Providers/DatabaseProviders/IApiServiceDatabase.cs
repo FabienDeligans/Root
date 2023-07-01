@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Common.Models;
 
-namespace Back._Providers.DatabaseProvider
+namespace _Providers.DatabaseProviders
 {
     public interface IApiServiceDatabase
     {

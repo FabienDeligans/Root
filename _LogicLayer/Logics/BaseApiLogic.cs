@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
 using System.Web;
-using Back._Providers.DatabaseProvider;
+using _Providers.DatabaseProviders;
 using Common.Models;
 
-namespace Back._LogicLayer.Logic
+namespace _LogicLayer.Logics
 {
     public abstract class BaseApiLogic<T> : ILogic<T> where T : IEntity
     {

@@ -1,11 +1,9 @@
+using _ApiLayer.ApiControllerProvider;
 using _LogicLayer.Logics;
 using _LogicLayer.Processes;
 using _LogicLayer.Processes.Process1;
+using _Providers.DatabaseProviders;
 using _Providers.DatabaseProviders.MongoDb;
-using Back._Api;
-using Back._Api.ApiExceptionManager;
-using Back._LogicLayer.Logic;
-using Back._Providers.DatabaseProvider;
 using Common.Models.Business;
 using Common.Models.Processes;
 using MongoDB.Bson;
@@ -26,7 +24,7 @@ namespace _ApiLayer
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddTransient<ApiExceptionManager>();
+            builder.Services.AddTransient<ApiExceptionManager.ApiExceptionManager>();
 
             // Récupère les informations dans "appsettings.json"
             builder.Services.Configure<SettingsServiceMongoDb>(builder.Configuration.GetSection("MongoDatabase"));

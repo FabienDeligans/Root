@@ -1,5 +1,4 @@
 ﻿using _Providers.DatabaseProviders.MongoDb;
-using Back._LogicLayer.Processes;
 using Common.Models.Processes;
 
 namespace _LogicLayer.Processes.Process1

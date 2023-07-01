@@ -1,4 +1,4 @@
-﻿namespace Back._Providers.DatabaseProvider
+﻿namespace _Providers.DatabaseProviders.MongoDb
 {
     public class SettingsServiceMongoDb
     {

@@ -1,9 +1,9 @@
-﻿using Back._LogicLayer.Logic;
-using Common;
+﻿using _LogicLayer.Logics;
 using Common.Models;
 using Microsoft.AspNetCore.Mvc;
+using Route = Common.Route;
 
-namespace Back._Api.ApiControllerProvider
+namespace _ApiLayer.ApiControllerProvider
 {
     [ApiController]
     public abstract class BaseApiController<T> : ControllerBase, IApiController<T> where T : IEntity

@@ -1,6 +1,6 @@
 ﻿using Common.Models.Processes;
 
-namespace Back._LogicLayer.Processes
+namespace _LogicLayer.Processes
 {
     public interface IProcessStep
     {

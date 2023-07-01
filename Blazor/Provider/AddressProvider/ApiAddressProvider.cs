@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using Blazor.Provider.AddressProvider.Models;
-using Front.BlazorExceptionManager;
+using Blazor.Provider.BlazorExceptionManager;
 using Newtonsoft.Json;
 
 namespace Blazor.Provider.AddressProvider

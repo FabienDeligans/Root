@@ -1,6 +1,6 @@
 ﻿using System.Net;
+using Blazor.Provider.BlazorExceptionManager;
 using Blazor.Provider.LoraineProvider.Models;
-using Front.BlazorExceptionManager;
 using Newtonsoft.Json;
 
 namespace Blazor.Provider.LoraineProvider

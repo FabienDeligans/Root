@@ -1,5 +1,4 @@
-﻿using Back._LogicLayer.Logic;
-using Back._LogicLayer.Processes;
+﻿using _LogicLayer.Logics;
 using Common.Models.Processes;
 
 namespace _LogicLayer.Processes.Process1
