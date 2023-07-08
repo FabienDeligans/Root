@@ -1,5 +1,5 @@
-﻿using _ApiLayer.ApiControllerProvider;
-using _LogicLayer.Logics;
+﻿using _ApiLayer.Controllers.ApiControllerBase;
+using _LogicLayer.Logics.LogicBase;
 using Common.Models.Business;
 using Microsoft.AspNetCore.Mvc;
 

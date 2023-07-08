@@ -1,4 +1,4 @@
-﻿using Blazor.Provider.Api.CallApiProvider;
+﻿using Blazor.Provider.Api.CallApiProviderBase;
 using Common.Models.Business;
 using Microsoft.Extensions.Options;
 

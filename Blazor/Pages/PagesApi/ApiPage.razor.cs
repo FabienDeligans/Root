@@ -6,7 +6,7 @@ using Blazor.Provider.LoraineProvider.Models;
 using Common.Models.Processes;
 using Microsoft.AspNetCore.Components;
 
-namespace Blazor.Pages
+namespace Blazor.Pages.PagesApi
 {
     public partial class ApiPage
     {
@@ -18,7 +18,7 @@ namespace Blazor.Pages
         {
             var value = arg.Value.ToString();
             Address = await ApiAddressProvider.GetListAddress(value, 10);
-            await InvokeAsync(StateHasChanged); 
+            await InvokeAsync(StateHasChanged);
         }
 
         /// ////////////////////////
@@ -41,7 +41,7 @@ namespace Blazor.Pages
 
         private async Task SearchNameLorraineIpsum()
         {
-            ListNomPrenomIpsum = await LorraineIpsumProvider.GetListRandomName(); 
+            ListNomPrenomIpsum = await LorraineIpsumProvider.GetListRandomName();
             await InvokeAsync(StateHasChanged);
         }
 
@@ -57,7 +57,7 @@ namespace Blazor.Pages
                 ProcessType = ProcessType.Process1,
             };
 
-            var processes = await ProcessProvider.GetAllAsync(); 
+            var processes = await ProcessProvider.GetAllAsync();
 
             await ProcessProvider.CreateSpecificProcess(process);
 

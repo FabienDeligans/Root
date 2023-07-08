@@ -1,4 +1,5 @@
-﻿using _Providers.DatabaseProviders.MongoDb;
+﻿using _LogicLayer.Logics.LogicBase;
+using _Providers.DatabaseProviders;
 using Common.Models.Processes;
 
 namespace _LogicLayer.Logics;
@@ -6,8 +7,8 @@ namespace _LogicLayer.Logics;
 public class ProcessLogic : BaseApiLogic<Process>
 {
     public ProcessLogic(
-        ServiceMongoDatabase serviceDatabaseDatabase) 
-        : base(serviceDatabaseDatabase)
+        IApiServiceDatabase serviceDatabase) 
+        : base(serviceDatabase)
     {
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Net;
-using Blazor.Provider.AddressProvider.Models;
-using Blazor.Provider.BlazorExceptionManager;
+﻿using Blazor.Provider.AddressProvider.Models;
 using Newtonsoft.Json;
 
 namespace Blazor.Provider.AddressProvider
@@ -9,11 +7,13 @@ namespace Blazor.Provider.AddressProvider
     {
         protected readonly HttpClient _httpClient;
         protected HttpResponseMessage? Response { get; set; }
+        protected readonly BlazorExceptionManager.BlazorExceptionManager BlazorExceptionManager;
 
-        public ApiAddressProvider(HttpClient client)
+        public ApiAddressProvider(HttpClient client, BlazorExceptionManager.BlazorExceptionManager blazorExceptionManager)
         {
             _httpClient = client;
             _httpClient.BaseAddress = new Uri($"https://api-adresse.data.gouv.fr/search/");
+            BlazorExceptionManager = blazorExceptionManager;
         }
         public async Task<AddressResult> GetListAddress(string address, int nbResult)
         {
@@ -24,28 +24,9 @@ namespace Blazor.Provider.AddressProvider
                 var result = JsonConvert.DeserializeObject<AddressResult>(returnJson);
                 return result; 
             }
-            catch (Exception e) when (Response is null)
+            catch (Exception e)
             {
-                throw new Exception(e.Message);
-            }
-            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
-            {
-                var returnJson = await Response.Content
-                    .ReadAsStringAsync()
-                    .ConfigureAwait(false);
-
-                var errors = JsonConvert.DeserializeObject<ProblemDetailsWithErrors>(returnJson).Errors;
-
-                string msg = "";
-                foreach (var error in errors)
-                {
-                    msg += $"{error.Key} : ";
-                    for (var i = 0; i < errors.Values.Count; i++)
-                    {
-                        var end = errors.Values.Count - 1 == i ? "" : "- ";
-                        msg += $"{error.Value[i]} {end}";
-                    }
-                }
+                var msg = await BlazorExceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }

@@ -3,7 +3,7 @@ using System.Web;
 using _Providers.DatabaseProviders;
 using Common.Models;
 
-namespace _LogicLayer.Logics
+namespace _LogicLayer.Logics.LogicBase
 {
     public abstract class BaseApiLogic<T> : ILogic<T> where T : IEntity
     {

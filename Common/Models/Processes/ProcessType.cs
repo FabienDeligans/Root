@@ -3,4 +3,5 @@
 public enum ProcessType
 {
     Process1 = 1,
+    MES = 2
 }

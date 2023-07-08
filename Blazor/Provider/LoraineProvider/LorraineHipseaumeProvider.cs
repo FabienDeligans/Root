@@ -1,6 +1,4 @@
-﻿using System.Net;
-using Blazor.Provider.BlazorExceptionManager;
-using Blazor.Provider.LoraineProvider.Models;
+﻿using Blazor.Provider.LoraineProvider.Models;
 using Newtonsoft.Json;
 
 namespace Blazor.Provider.LoraineProvider
@@ -9,11 +7,13 @@ namespace Blazor.Provider.LoraineProvider
     {
         protected readonly HttpClient _httpClient;
         protected HttpResponseMessage? Response { get; set; }
+        protected readonly BlazorExceptionManager.BlazorExceptionManager BlazorExceptionManager;
 
-        public LorraineHipseaumeProvider(HttpClient client)
+        public LorraineHipseaumeProvider(HttpClient client, BlazorExceptionManager.BlazorExceptionManager blazorExceptionManager)
         {
             _httpClient = client;
             _httpClient.BaseAddress = new Uri($"https://lorraine-hipseau.me/data?rarity=0&title=0&q=2011-2020");
+            BlazorExceptionManager = blazorExceptionManager;
         }
         public async Task<List<NomPrenomHipseaume>> GetListRandomName()
         {
@@ -38,26 +38,7 @@ namespace Blazor.Provider.LoraineProvider
             }
             catch (Exception e) when (Response is null)
             {
-                throw new Exception(e.Message);
-            }
-            catch (Exception e) when (Response.StatusCode == HttpStatusCode.BadRequest)
-            {
-                var returnJson = await Response.Content
-                    .ReadAsStringAsync()
-                    .ConfigureAwait(false);
-
-                var errors = JsonConvert.DeserializeObject<ProblemDetailsWithErrors>(returnJson).Errors;
-
-                string msg = "";
-                foreach (var error in errors)
-                {
-                    msg += $"{error.Key} : ";
-                    for (var i = 0; i < errors.Values.Count; i++)
-                    {
-                        var end = errors.Values.Count - 1 == i ? "" : "- ";
-                        msg += $"{error.Value[i]} {end}";
-                    }
-                }
+                var msg = await BlazorExceptionManager.CatchExceptions(e, Response);
                 throw new Exception(msg);
             }
         }

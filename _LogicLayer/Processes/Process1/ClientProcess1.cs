@@ -1,4 +1,4 @@
-﻿using _LogicLayer.Logics;
+﻿using _LogicLayer.Logics.LogicBase;
 using Common.Models.Processes;
 
 namespace _LogicLayer.Processes.Process1
@@ -69,7 +69,7 @@ namespace _LogicLayer.Processes.Process1
 
         public void OnCompleted()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private int _errorCount { get; set; } = 0; 

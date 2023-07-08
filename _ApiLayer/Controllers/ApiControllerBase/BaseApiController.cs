@@ -1,22 +1,22 @@
-﻿using _LogicLayer.Logics;
+﻿using _LogicLayer.Logics.LogicBase;
 using Common.Models;
 using Microsoft.AspNetCore.Mvc;
 using Route = Common.Route;
 
-namespace _ApiLayer.ApiControllerProvider
+namespace _ApiLayer.Controllers.ApiControllerBase
 {
     [ApiController]
     public abstract class BaseApiController<T> : ControllerBase, IApiController<T> where T : IEntity
     {
         protected readonly ILogic<T> _apiLogic;
-        protected readonly ApiExceptionManager.ApiExceptionManager _apiExceptionManager; 
+        protected readonly ApiExceptionManager.ApiExceptionManager _apiExceptionManager;
 
         public BaseApiController(ILogic<T> apiLogic, ApiExceptionManager.ApiExceptionManager apiExceptionManager)
         {
             _apiLogic = apiLogic;
             _apiExceptionManager = apiExceptionManager;
         }
-        
+
         [HttpDelete(Route.DropCollectionAsync)]
         public virtual async Task<ActionResult> DropCollectionAsync()
         {

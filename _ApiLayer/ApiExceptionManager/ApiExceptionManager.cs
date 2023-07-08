@@ -1,5 +1,5 @@
 ﻿using System.Security.Authentication;
-using _ApiLayer.ApiControllerProvider;
+using _ApiLayer.Controllers.ApiControllerBase;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 

@@ -1,7 +1,7 @@
 ﻿using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
-using Blazor.Provider.Api.CallApiProvider;
+using Blazor.Provider.Api.CallApiProviderBase;
 using Common.Models.Processes;
 using Microsoft.Extensions.Options;
 using Route = Common.Route;

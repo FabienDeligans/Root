@@ -4,11 +4,10 @@ using Common.Models;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Exception = System.Exception;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 using Route = Common.Route; 
 
 
-namespace Blazor.Provider.Api.CallApiProvider
+namespace Blazor.Provider.Api.CallApiProviderBase
 {
     public class BaseCallApi<T> : ICallApi<T> where T : IEntity
     {
@@ -70,7 +69,7 @@ namespace Blazor.Provider.Api.CallApiProvider
         {
             try
             {
-                var json = new StringContent(JsonSerializer.Serialize(entity), Encoding.UTF8,
+                var json = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8,
                     MediaTypeNames.Application.Json);
 
                 Response = await _httpClient
@@ -96,7 +95,7 @@ namespace Blazor.Provider.Api.CallApiProvider
         {
             try
             {
-                var json = new StringContent(JsonSerializer.Serialize(entities), Encoding.UTF8, MediaTypeNames.Application.Json);
+                var json = new StringContent(JsonConvert.SerializeObject(entities), Encoding.UTF8, MediaTypeNames.Application.Json);
 
                 Response = await _httpClient
                     .PostAsync(Route.CreateManyAsync, json)
@@ -196,7 +195,7 @@ namespace Blazor.Provider.Api.CallApiProvider
 
         public async Task<T> UpdateAsync(T entityUpdate)
         {
-            var json = new StringContent(JsonSerializer.Serialize(entityUpdate), Encoding.UTF8, MediaTypeNames.Application.Json);
+            var json = new StringContent(JsonConvert.SerializeObject(entityUpdate), Encoding.UTF8, MediaTypeNames.Application.Json);
 
             try
             {
@@ -221,7 +220,7 @@ namespace Blazor.Provider.Api.CallApiProvider
 
         public async Task<T> UpdatePropertyAsync(string id, Dictionary<string, object> propertyValueDictionary)
         {
-            var json = new StringContent(JsonSerializer.Serialize(propertyValueDictionary), Encoding.UTF8, MediaTypeNames.Application.Json);
+            var json = new StringContent(JsonConvert.SerializeObject(propertyValueDictionary), Encoding.UTF8, MediaTypeNames.Application.Json);
 
             try
             {

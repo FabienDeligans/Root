@@ -1,4 +1,4 @@
-﻿namespace Blazor.Provider.Api.CallApiProvider
+﻿namespace Blazor.Provider.Api.CallApiProviderBase
 {
     public class SettingsCallApi
     {

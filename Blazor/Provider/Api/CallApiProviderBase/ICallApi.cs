@@ -1,6 +1,6 @@
 ﻿using Common.Models;
 
-namespace Blazor.Provider.Api.CallApiProvider
+namespace Blazor.Provider.Api.CallApiProviderBase
 {
     public interface ICallApi<T> where T : IEntity
     {

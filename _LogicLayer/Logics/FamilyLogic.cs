@@ -1,7 +1,6 @@
-﻿using _LogicLayer.Processes;
-using _Providers.DatabaseProviders.MongoDb;
+﻿using _LogicLayer.Logics.LogicBase;
+using _Providers.DatabaseProviders;
 using Common.Models.Business;
-using Common.Models.Processes;
 
 namespace _LogicLayer.Logics
 {
@@ -9,15 +8,12 @@ namespace _LogicLayer.Logics
     {
         private readonly ILogic<Parent> _parentLogic;
         private readonly ILogic<Child> _childLogic;
-        private readonly ProcessHandler _processHandler;
         public FamilyLogic(
-            ProcessHandler processHandler,
-            ServiceMongoDatabase serviceDatabaseDatabase,
+            IApiServiceDatabase serviceDatabase,
             ILogic<Parent> parentLogic,
             ILogic<Child> childLogic) 
-            : base(serviceDatabaseDatabase)
+            : base(serviceDatabase)
         {
-            _processHandler = processHandler;
             _parentLogic = parentLogic;
             _childLogic = childLogic;
         }
@@ -37,13 +33,5 @@ namespace _LogicLayer.Logics
             return await ServiceDatabase.UpdateAsync(entityUpdate);
         }
 
-        public override Task<Family> CreateAsync(Family entity)
-        {
-            _processHandler.CreateSpecificProcess(new Process()
-            {
-                ProcessType = ProcessType.Process1
-            });
-            return base.CreateAsync(entity);
-        }
     }
 }

@@ -36,6 +36,7 @@ namespace _LogicLayer.Processes
                 if (processToUpdate != null)
                 {
                     Run(processToUpdate);
+
                     processToUpdate.ProcessState = ProcessState.Success;
                     processToUpdate.CurrentStep = CurrentStep;
                     processToUpdate.UpdateDate = DateTime.Now;

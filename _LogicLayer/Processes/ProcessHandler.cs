@@ -1,4 +1,4 @@
-﻿using _LogicLayer.Logics;
+﻿using _LogicLayer.Logics.LogicBase;
 using _LogicLayer.Processes.Process1;
 using Common.Models.Processes;
 
