@@ -2,6 +2,7 @@ using Blazor.Controller.Modal;
 using Blazor.Provider.AddressProvider;
 using Blazor.Provider.Api;
 using Blazor.Provider.Api.CallApiProviderBase;
+using Blazor.Provider.Api.MES;
 using Blazor.Provider.BlazorExceptionManager;
 using Blazor.Provider.LoraineProvider;
 using Blazored.Modal;
@@ -35,6 +36,9 @@ namespace Blazor
             builder.Services.AddHttpClient<LorraineIpsumProvider>();
             builder.Services.AddHttpClient<ProcessProvider>();
 
+            builder.Services.AddHttpClient<ArticleProvider>();
+            builder.Services.AddHttpClient<OfProvider>();
+            builder.Services.AddHttpClient<OpeProvider>();
 
             builder.Services.AddControllers().AddNewtonsoftJson();
 
