@@ -4,9 +4,17 @@ using Common.Models.MES;
 
 namespace _LogicLayer.Logics.MES;
 
-public class ArticleLogic : BaseApiLogic<Article>
+public class ManufacturedArticleLogic : BaseApiLogic<ManufacturedArticle>
 {
-    public ArticleLogic(IApiServiceDatabase serviceDatabase)
+    public ManufacturedArticleLogic(IApiServiceDatabase serviceDatabase)
+        : base(serviceDatabase)
+    {
+    }
+}
+
+public class PurchasedArticleLogic : BaseApiLogic<PurchasedArticle>
+{
+    public PurchasedArticleLogic(IApiServiceDatabase serviceDatabase)
         : base(serviceDatabase)
     {
     }

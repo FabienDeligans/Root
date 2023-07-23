@@ -11,6 +11,10 @@ public class Ope : Entity
 
     public string? Description { get; set; }
 
+    public bool Done { get; set; }
+
+    public Dictionary<string, int> ArticlesUsedIdQuantity { get; set; }
+
     [ForeignKey(typeof(Article))]
     public string ArticleId { get; set; }
         

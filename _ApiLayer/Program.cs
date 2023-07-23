@@ -46,9 +46,11 @@ namespace _ApiLayer
             builder.Services.AddTransient<ILogic<Child>, ChildLogic>();
             builder.Services.AddTransient<ILogic<Process>, ProcessLogic>();
 
-            builder.Services.AddTransient<ILogic<Article>, ArticleLogic>();
+            builder.Services.AddTransient<ILogic<ManufacturedArticle>, ManufacturedArticleLogic>();
+            builder.Services.AddTransient<ILogic<PurchasedArticle>, PurchasedArticleLogic>();
             builder.Services.AddTransient<ILogic<Of>, OfLogic>();
             builder.Services.AddTransient<ILogic<Ope>, OpeLogic>();
+            builder.Services.AddTransient<ILogic<Gamme>, GammeLogic>();
 
             // Inscrit CHAQUE Process et CHAQUE Steps dans l'injection de dépendance
             builder.Services.AddTransient<ProcessHandler>();

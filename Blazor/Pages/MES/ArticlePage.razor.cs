@@ -8,52 +8,67 @@ namespace Blazor.Pages.MES
     public partial class ArticlePage
     {
         [Inject]
-        public ArticleProvider ArticleProvider { get; set; }
+        public ManufacturedArticle ManufacturedArticle { get; set; }
+
+        [Inject]
+        public PurchasedArticle PurchasedArticle { get; set; }
 
         [Inject]
         public OpeProvider OpeProvider { get; set; }
 
-        public List<Article>? Articles { get; set; } = new List<Article>();
-        public int? Nb { get; set; }
+        [Inject]
+        public GammeProvider GammeProvider { get; set; }
+
+        public List<ManufacturedArticle>? ManufacturedArticles { get; set; }
+        public List<PurchasedArticle>? PurchasedArticles { get; set; }
+        public int? Nb { get; set; } = 10;
 
         protected override async Task OnInitializedAsync()
         {
-            Articles = ArticleProvider.GetAllAsync().Result.ToList(); 
+            
         }
 
-        public async Task GenerateArticles()
+        public async Task GenerateManufacturedArticles()
         {
-            for (var i = 0; i < Nb; i++)
-            {
-                var article = new Article
-                {
-                    Name = $"Article Name-{i}",
-                    Quantity = 1,
-                    TypeArticle = TypeArticle.Manufactured,
-                };
+            //for (var i = 0; i < Nb; i++)
+            //{
+            //    var article = new ManufacturedArticle()
+            //    {
+            //        Name = $"Article Name-{i}",
+            //        Quantity = 1,
+            //        TypeArticle = TypeArticle.Manufactured,
+            //        Version = "1.0.0"
+            //    };
 
-                article = await ArticleProvider.CreateAsync(article); 
+            //    var gamme = new Gamme();
+            //    var opes = new List<Ope>();
+            //    for (var j = 0; j < 5; j++)
+            //    {
+            //        var ope = new Ope
+            //        {
+            //            Step = j,
+            //            Name = $"ope-{article.Id}-{j}",
+            //            Description = $"ope description {j}",
+            //            ArticleId = article.Id,
+            //        };
+            //        ope = await OpeProvider.CreateAsync(ope); 
+            //        opes.Add(ope);
+            //    }
+            //    gamme = await GammeProvider.CreateAsync(gamme); 
 
-                var opes = new List<Ope>();
-                for (var j = 0; j < 5; j++)
-                {
-                    var ope = new Ope
-                    {
-                        Step = j,
-                        Name = $"ope-{article.Id}-{j}",
-                        Description = $"ope description {j}",
-                        ArticleId = article.Id,
-                    };
-                    ope = await OpeProvider.CreateAsync(ope); 
-                    opes.Add(ope);
-                }
+            //    article.GammeId = gamme.Id;
+            //}
 
-                article.Operations = opes;
+            //await OnInitializedAsync();
+            //await InvokeAsync(StateHasChanged); 
+        }
 
-                Articles.Add(article); 
-            }
+        public async Task DropMES()
+        {
+            //await OpeProvider.DropCollectionAsync();
 
-            await InvokeAsync(StateHasChanged); 
+            //await OnInitializedAsync();
+            //await InvokeAsync(StateHasChanged);
         }
     }
 }

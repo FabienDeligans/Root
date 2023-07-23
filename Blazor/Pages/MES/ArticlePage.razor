@@ -1,12 +1,17 @@
 ﻿@page "/ArticlePage"
+@using Common.Models.MES
 
 <h3>List des Articles</h3>
 
 <input type="number" @bind="Nb"/>
-<button @onclick="GenerateArticles">Generate Articles</button>
+<button @onclick="GenerateManufacturedArticles">Generate Articles</button>
+<button @onclick="DropMES">Drop all</button>
 
 
-@if (Articles.Any())
+@*@if (Articles.Any())
 {
-
-}
+    @foreach (var article in Articles)
+    {
+        <div>@article.Name - @article.Quantity</div>
+    }
+}*@

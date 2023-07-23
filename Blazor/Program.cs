@@ -36,9 +36,11 @@ namespace Blazor
             builder.Services.AddHttpClient<LorraineIpsumProvider>();
             builder.Services.AddHttpClient<ProcessProvider>();
 
-            builder.Services.AddHttpClient<ArticleProvider>();
+            builder.Services.AddHttpClient<ManufacturedArticleProvider>();
+            builder.Services.AddHttpClient<PurchasedArticleProvider>();
             builder.Services.AddHttpClient<OfProvider>();
             builder.Services.AddHttpClient<OpeProvider>();
+            builder.Services.AddHttpClient<GammeProvider>();
 
             builder.Services.AddControllers().AddNewtonsoftJson();
 

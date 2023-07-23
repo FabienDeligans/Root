@@ -11,3 +11,11 @@ public class OpeLogic : BaseApiLogic<Ope>
     {
     }
 }
+
+public class GammeLogic : BaseApiLogic<Gamme>
+{
+    public GammeLogic(IApiServiceDatabase serviceDatabase)
+        : base(serviceDatabase)
+    {
+    }
+}

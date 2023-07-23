@@ -7,14 +7,28 @@ namespace _ApiLayer.Controllers.MES;
 
 [ApiController]
 [Route("[controller]")]
-public class ArticleController : BaseApiController<Article>
+public class ManufacturedArticleController : BaseApiController<ManufacturedArticle>
 {
-    private readonly ILogic<Article> _articleLogic;
-    public ArticleController(
-        ILogic<Article> apiLogic,
+    private readonly ILogic<ManufacturedArticle> _manufacturedArticleLogic;
+    public ManufacturedArticleController(
+        ILogic<ManufacturedArticle> apiLogic,
         ApiExceptionManager.ApiExceptionManager apiExceptionManager)
         : base(apiLogic, apiExceptionManager)
     {
-        _articleLogic = apiLogic;
+        _manufacturedArticleLogic = apiLogic;
+    }
+}
+
+[ApiController]
+[Route("[controller]")]
+public class PurchasedArticleController : BaseApiController<PurchasedArticle>
+{
+    private readonly ILogic<PurchasedArticle> _purchasedArticleLogic;
+    public PurchasedArticleController(
+        ILogic<PurchasedArticle> apiLogic,
+        ApiExceptionManager.ApiExceptionManager apiExceptionManager)
+        : base(apiLogic, apiExceptionManager)
+    {
+        _purchasedArticleLogic = apiLogic;
     }
 }
