@@ -1,6 +1,6 @@
 ﻿using _LogicLayer.Logics.LogicBase;
 using _Providers.DatabaseProviders;
-using Common.Models.MES;
+using Common.Models.MES.Article;
 
 namespace _LogicLayer.Logics.MES;
 

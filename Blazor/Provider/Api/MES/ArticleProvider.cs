@@ -1,5 +1,5 @@
 ﻿using Blazor.Provider.Api.CallApiProviderBase;
-using Common.Models.MES;
+using Common.Models.MES.Article;
 using Microsoft.Extensions.Options;
 
 namespace Blazor.Provider.Api.MES;

@@ -10,6 +10,7 @@ using _Providers.DatabaseProviders.SQLServer;
 using Common.Models;
 using Common.Models.Business;
 using Common.Models.MES;
+using Common.Models.MES.Article;
 using Common.Models.Processes;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;

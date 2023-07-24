@@ -1,6 +1,6 @@
 ﻿using _ApiLayer.Controllers.ApiControllerBase;
 using _LogicLayer.Logics.LogicBase;
-using Common.Models.MES;
+using Common.Models.MES.Article;
 using Microsoft.AspNetCore.Mvc;
 
 namespace _ApiLayer.Controllers.MES;

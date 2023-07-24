@@ -1,5 +1,5 @@
 ﻿using Blazor.Provider.Api.MES;
-using Common.Models.MES;
+using Common.Models.MES.Article;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Identity.Client;
 
@@ -25,7 +25,6 @@ namespace Blazor.Pages.MES
 
         protected override async Task OnInitializedAsync()
         {
-            
         }
 
         public async Task GenerateManufacturedArticles()
