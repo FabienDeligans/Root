@@ -6,6 +6,4 @@ public interface IArticle
 
     public double Quantity { get; set; }
 
-    public TypeArticle TypeArticle { get; set; }
-
 }

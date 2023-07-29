@@ -1,17 +1,18 @@
 ﻿using Blazor.Provider.Api.MES;
+using Common.Helper;
+using Common.Models.MES;
 using Common.Models.MES.Article;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Identity.Client;
 
 namespace Blazor.Pages.MES
 {
     public partial class ArticlePage
     {
         [Inject]
-        public ManufacturedArticle ManufacturedArticle { get; set; }
+        public ManufacturedArticleProvider ManufacturedArticleProvider { get; set; }
 
         [Inject]
-        public PurchasedArticle PurchasedArticle { get; set; }
+        public PurchasedArticleProvider PurchasedArticleProvider { get; set; }
 
         [Inject]
         public OpeProvider OpeProvider { get; set; }
@@ -19,47 +20,68 @@ namespace Blazor.Pages.MES
         [Inject]
         public GammeProvider GammeProvider { get; set; }
 
-        public List<ManufacturedArticle>? ManufacturedArticles { get; set; }
-        public List<PurchasedArticle>? PurchasedArticles { get; set; }
+        public List<ManufacturedArticle>? ManufacturedArticles { get; set; } = new List<ManufacturedArticle>();
+        public List<PurchasedArticle>? PurchasedArticles { get; set; } = new List<PurchasedArticle>();
         public int? Nb { get; set; } = 10;
 
         protected override async Task OnInitializedAsync()
         {
         }
 
+        public async Task GeneratePurchasedArticles()
+        {
+            PurchasedArticles = new List<PurchasedArticle>();
+
+            for (var i = 0; i < Nb; i++)
+            {
+                var article = new PurchasedArticle()
+                {
+                    Name = $"{RandomHelper.GetRandomString(10)} - {i}",
+                    Quantity = 10
+                };
+
+                PurchasedArticles.Add(await PurchasedArticleProvider.CreateAsync(article));
+            }
+        }
+
         public async Task GenerateManufacturedArticles()
         {
-            //for (var i = 0; i < Nb; i++)
-            //{
-            //    var article = new ManufacturedArticle()
-            //    {
-            //        Name = $"Article Name-{i}",
-            //        Quantity = 1,
-            //        TypeArticle = TypeArticle.Manufactured,
-            //        Version = "1.0.0"
-            //    };
+            for (var i = 0; i < Nb; i++)
+            {
+                var manufacturedArticle = new ManufacturedArticle()
+                {
+                    Name = $"Article Name-{i}",
+                    Quantity = 1,
+                    Version = "1.0.0"
+                };
+                manufacturedArticle = await ManufacturedArticleProvider.CreateAsync(manufacturedArticle); 
 
-            //    var gamme = new Gamme();
-            //    var opes = new List<Ope>();
-            //    for (var j = 0; j < 5; j++)
-            //    {
-            //        var ope = new Ope
-            //        {
-            //            Step = j,
-            //            Name = $"ope-{article.Id}-{j}",
-            //            Description = $"ope description {j}",
-            //            ArticleId = article.Id,
-            //        };
-            //        ope = await OpeProvider.CreateAsync(ope); 
-            //        opes.Add(ope);
-            //    }
-            //    gamme = await GammeProvider.CreateAsync(gamme); 
+                var gamme = new Gamme
+                {
+                    ManufacturedArticleId = manufacturedArticle.Id,
+                    OpeGamme = new List<Ope>()
+                };
 
-            //    article.GammeId = gamme.Id;
-            //}
 
-            //await OnInitializedAsync();
-            //await InvokeAsync(StateHasChanged); 
+                var opes = new List<Ope>();
+                for (var j = 0; j < 5; j++)
+                {
+                    var ope = new Ope
+                    {
+                        Step = j,
+                        Name = $"ope-{manufacturedArticle.Id}-{j}",
+                        Description = $"ope description {j}",
+                    };
+                    ope = await OpeProvider.CreateAsync(ope);
+                    opes.Add(ope);
+                }
+                gamme.OpeGamme.AddRange(opes);
+
+                await GammeProvider.CreateAsync(gamme);
+            }
+
+            await OnInitializedAsync();
+            await InvokeAsync(StateHasChanged);
         }
 
         public async Task DropMES()

@@ -1,8 +1,4 @@
-﻿using Common.Models.CustomAttribute;
-using Common.Models.MES.Article;
-using MongoDB.Bson.Serialization.Attributes;
-
-namespace Common.Models.MES;
+﻿namespace Common.Models.MES;
 
 public class Ope : Entity
 {

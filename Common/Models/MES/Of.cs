@@ -13,7 +13,7 @@ namespace Common.Models.MES
         public Gamme? Gamme { get; set; }
 
         [ForeignKey(typeof(ManufacturedArticle))]
-        public string ArticleId { get; set; }
+        public string ManufacturedArticleId { get; set; }
 
         [BsonIgnore]
         public ManufacturedArticle? ManufacturedArticle { get; set; }
