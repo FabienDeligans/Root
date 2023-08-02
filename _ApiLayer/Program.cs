@@ -6,13 +6,9 @@ using _LogicLayer.Processes;
 using _LogicLayer.Processes.Process1;
 using _Providers.DatabaseProviders;
 using _Providers.DatabaseProviders.MongoDb;
-using _Providers.DatabaseProviders.SQLServer;
-using Common.Models;
 using Common.Models.Business;
 using Common.Models.MES;
-using Common.Models.MES.Article;
 using Common.Models.Processes;
-using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
 
@@ -36,7 +32,6 @@ namespace _ApiLayer
             // Récupère les informations dans "appsettings.json"
             builder.Services.Configure<SettingsServiceMongoDb>(builder.Configuration.GetSection("MongoDatabase"));
             builder.Services.Configure<SettingsApi>(builder.Configuration.GetSection("Callers"));
-            builder.Services.AddDbContext<SQLServerContext<Entity>>(options => options.UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = master; Integrated Security = True; Connect Timeout = 30; Encrypt = False; Trust Server Certificate = False; Application Intent = ReadWrite; Multi Subnet Failover = False"));
             
             // Inscrit les objets de la couche PROVIDER dans l'injection de dépendance
             builder.Services.AddTransient<IApiServiceDatabase ,ServiceMongoDatabase>();
@@ -47,11 +42,11 @@ namespace _ApiLayer
             builder.Services.AddTransient<ILogic<Child>, ChildLogic>();
             builder.Services.AddTransient<ILogic<Process>, ProcessLogic>();
 
-            builder.Services.AddTransient<ILogic<ManufacturedArticle>, ManufacturedArticleLogic>();
-            builder.Services.AddTransient<ILogic<PurchasedArticle>, PurchasedArticleLogic>();
-            builder.Services.AddTransient<ILogic<Of>, OfLogic>();
-            builder.Services.AddTransient<ILogic<Ope>, OpeLogic>();
+            builder.Services.AddTransient<ILogic<Article>, ArticleLogic>();
+            builder.Services.AddTransient<ILogic<Etape>, EtapeLogic>();
             builder.Services.AddTransient<ILogic<Gamme>, GammeLogic>();
+            builder.Services.AddTransient<ILogic<GammeEtape>, GammeEtapeLogic>();
+            builder.Services.AddTransient<ILogic<OrdreFabrication>, OrdreFabricationLogic>();
 
             // Inscrit CHAQUE Process et CHAQUE Steps dans l'injection de dépendance
             builder.Services.AddTransient<ProcessHandler>();

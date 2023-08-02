@@ -1,34 +1,21 @@
 ﻿using _ApiLayer.Controllers.ApiControllerBase;
 using _LogicLayer.Logics.LogicBase;
-using Common.Models.MES.Article;
+using Common.Models.MES;
 using Microsoft.AspNetCore.Mvc;
 
-namespace _ApiLayer.Controllers.MES;
-
-[ApiController]
-[Route("[controller]")]
-public class ManufacturedArticleController : BaseApiController<ManufacturedArticle>
+namespace _ApiLayer.Controllers.MES
 {
-    private readonly ILogic<ManufacturedArticle> _manufacturedArticleLogic;
-    public ManufacturedArticleController(
-        ILogic<ManufacturedArticle> apiLogic,
-        ApiExceptionManager.ApiExceptionManager apiExceptionManager)
-        : base(apiLogic, apiExceptionManager)
+    [ApiController]
+    [Route("[controller]")]
+    public class ArticleController : BaseApiController<Article>
     {
-        _manufacturedArticleLogic = apiLogic;
-    }
-}
-
-[ApiController]
-[Route("[controller]")]
-public class PurchasedArticleController : BaseApiController<PurchasedArticle>
-{
-    private readonly ILogic<PurchasedArticle> _purchasedArticleLogic;
-    public PurchasedArticleController(
-        ILogic<PurchasedArticle> apiLogic,
-        ApiExceptionManager.ApiExceptionManager apiExceptionManager)
-        : base(apiLogic, apiExceptionManager)
-    {
-        _purchasedArticleLogic = apiLogic;
+        private readonly ILogic<Article> _articleLogic;
+        public ArticleController(
+            ILogic<Article> apiLogic,
+            ApiExceptionManager.ApiExceptionManager apiExceptionManager)
+            : base(apiLogic, apiExceptionManager)
+        {
+            _articleLogic = apiLogic;
+        }
     }
 }

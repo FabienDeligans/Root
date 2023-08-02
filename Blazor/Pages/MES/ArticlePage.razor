@@ -1,16 +1,2 @@
 ﻿@page "/ArticlePage"
 
-<h3>List des Articles</h3>
-
-<input type="number" @bind="Nb"/>
-<button @onclick="GenerateManufacturedArticles">Generate Articles</button>
-<button @onclick="DropMES">Drop all</button>
-
-
-@*@if (Articles.Any())
-{
-    @foreach (var article in Articles)
-    {
-        <div>@article.Name - @article.Quantity</div>
-    }
-}*@

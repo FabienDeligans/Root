@@ -1,21 +1,14 @@
 ﻿using _LogicLayer.Logics.LogicBase;
 using _Providers.DatabaseProviders;
-using Common.Models.MES.Article;
+using Common.Models.MES;
 
-namespace _LogicLayer.Logics.MES;
-
-public class ManufacturedArticleLogic : BaseApiLogic<ManufacturedArticle>
+namespace _LogicLayer.Logics.MES
 {
-    public ManufacturedArticleLogic(IApiServiceDatabase serviceDatabase)
-        : base(serviceDatabase)
+    public class ArticleLogic : BaseApiLogic<Article>
     {
-    }
-}
-
-public class PurchasedArticleLogic : BaseApiLogic<PurchasedArticle>
-{
-    public PurchasedArticleLogic(IApiServiceDatabase serviceDatabase)
-        : base(serviceDatabase)
-    {
+        public ArticleLogic(IApiServiceDatabase serviceDatabase)
+            : base(serviceDatabase)
+        {
+        }
     }
 }

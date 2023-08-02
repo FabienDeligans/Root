@@ -1,7 +1,6 @@
 ﻿using Blazor.Provider.Api.MES;
 using Common.Helper;
 using Common.Models.MES;
-using Common.Models.MES.Article;
 using Microsoft.AspNetCore.Components;
 
 namespace Blazor.Pages.MES
@@ -9,86 +8,52 @@ namespace Blazor.Pages.MES
     public partial class ArticlePage
     {
         [Inject]
-        public ManufacturedArticleProvider ManufacturedArticleProvider { get; set; }
+        public ArticleProvider ArticleProvider { get; set; }
 
         [Inject]
-        public PurchasedArticleProvider PurchasedArticleProvider { get; set; }
+        public EtapeProvider EtapeProvider { get; set; }
 
         [Inject]
-        public OpeProvider OpeProvider { get; set; }
+        public GammeEtapeProvider GammeEtapeProvider { get; set; }
 
         [Inject]
         public GammeProvider GammeProvider { get; set; }
 
-        public List<ManufacturedArticle>? ManufacturedArticles { get; set; } = new List<ManufacturedArticle>();
-        public List<PurchasedArticle>? PurchasedArticles { get; set; } = new List<PurchasedArticle>();
-        public int? Nb { get; set; } = 10;
+        [Inject]
+        public OrdreFabricationProvider OrdreFabricationProvider { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        public async Task GenerateEtape()
         {
-        }
 
-        public async Task GeneratePurchasedArticles()
-        {
-            PurchasedArticles = new List<PurchasedArticle>();
-
-            for (var i = 0; i < Nb; i++)
+            var etape = new Etape
             {
-                var article = new PurchasedArticle()
+                NumeroEtape = 0,
+                Nom = null,
+                ArticlesConsommes = new List<ArticleConsome>
                 {
-                    Name = $"{RandomHelper.GetRandomString(10)} - {i}",
-                    Quantity = 10
-                };
-
-                PurchasedArticles.Add(await PurchasedArticleProvider.CreateAsync(article));
-            }
-        }
-
-        public async Task GenerateManufacturedArticles()
-        {
-            for (var i = 0; i < Nb; i++)
-            {
-                var manufacturedArticle = new ManufacturedArticle()
-                {
-                    Name = $"Article Name-{i}",
-                    Quantity = 1,
-                    Version = "1.0.0"
-                };
-                manufacturedArticle = await ManufacturedArticleProvider.CreateAsync(manufacturedArticle); 
-
-                var gamme = new Gamme
-                {
-                    ManufacturedArticleId = manufacturedArticle.Id,
-                    OpeGamme = new List<Ope>()
-                };
-
-                var opes = new List<Ope>();
-                for (var j = 0; j < 5; j++)
-                {
-                    var ope = new Ope
+                    new ArticleConsome
                     {
-                        Step = j,
-                        Name = $"ope-{manufacturedArticle.Id}-{j}",
-                        Description = $"ope description {j}",
-                    };
-                    ope = await OpeProvider.CreateAsync(ope);
-                    opes.Add(ope);
-                }
-                gamme.OpeGamme.AddRange(opes);
-
-                await GammeProvider.CreateAsync(gamme);
-            }
-
-            await OnInitializedAsync();
-            await InvokeAsync(StateHasChanged);
+                        ArticleId = null,
+                        ArticleNom = null,
+                        QuantityToUse = 0
+                    },
+                },
+            };
         }
 
-        public async Task DropMES()
+        public async Task GeneratePurchasedArticle()
         {
-            //await OpeProvider.DropCollectionAsync();
-
-            //await OnInitializedAsync();
-            //await InvokeAsync(StateHasChanged);
+            for (var i = 0; i < 10; i++)
+            {
+                var article = new Article
+                {
+                    Nom = $"{RandomHelper.GetRandomString(5)} - {i}",
+                    EstFabrique = false,
+                    GammesFabrication = null,
+                    Stock = 10
+                };
+                await ArticleProvider.CreateAsync(article); 
+            }
         }
     }
 }

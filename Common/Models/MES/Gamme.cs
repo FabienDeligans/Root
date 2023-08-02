@@ -1,16 +1,20 @@
 ﻿using Common.Models.CustomAttribute;
-using Common.Models.MES.Article;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Common.Models.MES;
 
 public class Gamme : Entity
 {
-    [ForeignKey(typeof(ManufacturedArticle))]
-    public string ManufacturedArticleId { get; set; }
+    [ForeignKey(typeof(Article))]
+    public string ArticleId { get; set; }
+        
+    [BsonIgnore]
+    public Article? Article { get; set; }
+        
+    public string Nom { get; set; }
+
+    public int Quantity { get; set; }
 
     [BsonIgnore]
-    public ManufacturedArticle? ManufacturedArticle { get; set; }
-
-    public List<Ope> OpeGamme { get; set; }
+    public List<Etape>? Etapes { get; set; }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Common.Helper
 {
-    public static class RandomHelper
+    public class RandomHelper
     {
         public static string GetRandomString(int length)
         {

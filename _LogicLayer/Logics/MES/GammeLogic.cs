@@ -4,9 +4,9 @@ using Common.Models.MES;
 
 namespace _LogicLayer.Logics.MES;
 
-public class OfLogic : BaseApiLogic<Of>
+public class GammeLogic : BaseApiLogic<Gamme>
 {
-    public OfLogic(IApiServiceDatabase serviceDatabase)
+    public GammeLogic(IApiServiceDatabase serviceDatabase)
         : base(serviceDatabase)
     {
     }

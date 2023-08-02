@@ -7,14 +7,14 @@ namespace _ApiLayer.Controllers.MES;
 
 [ApiController]
 [Route("[controller]")]
-public class OfController : BaseApiController<Of>
+public class GammeEtapeController : BaseApiController<GammeEtape>
 {
-    private readonly ILogic<Of> _ofLogic;
-    public OfController(
-        ILogic<Of> apiLogic,
+    private readonly ILogic<GammeEtape> _gammeEtapeLogic;
+    public GammeEtapeController(
+        ILogic<GammeEtape> apiLogic,
         ApiExceptionManager.ApiExceptionManager apiExceptionManager)
         : base(apiLogic, apiExceptionManager)
     {
-        _ofLogic = apiLogic;
+        _gammeEtapeLogic = apiLogic;
     }
 }

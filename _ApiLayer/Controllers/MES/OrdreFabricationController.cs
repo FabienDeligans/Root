@@ -7,14 +7,14 @@ namespace _ApiLayer.Controllers.MES;
 
 [ApiController]
 [Route("[controller]")]
-public class OpeController : BaseApiController<Ope>
+public class OrdreFabricationController : BaseApiController<OrdreFabrication>
 {
-    private readonly ILogic<Ope> _opeLogic;
-    public OpeController(
-        ILogic<Ope> apiLogic,
+    private readonly ILogic<OrdreFabrication> _ordreFabricationLogic;
+    public OrdreFabricationController(
+        ILogic<OrdreFabrication> apiLogic,
         ApiExceptionManager.ApiExceptionManager apiExceptionManager)
         : base(apiLogic, apiExceptionManager)
     {
-        _opeLogic = apiLogic;
+        _ordreFabricationLogic = apiLogic;
     }
 }
