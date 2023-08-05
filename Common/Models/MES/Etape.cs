@@ -10,6 +10,8 @@ public class Etape : Entity
     
     public List<ArticleConsome>? ArticlesConsommes { get; set; }
 
+    public TimeSpan DureePrevue { get; set; }
+    
     [BsonIgnore]
     public List<Gamme>? GammeFabrications { get; set;}
 }

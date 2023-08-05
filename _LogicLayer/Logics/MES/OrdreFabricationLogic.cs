@@ -11,7 +11,6 @@ public class OrdreFabricationLogic : BaseApiLogic<OrdreFabrication>
     private readonly ILogic<Etape> _etapeLogic;
     private readonly ILogic<GammeEtape> _gammeEtapeLogic;
 
-
     public OrdreFabricationLogic(IApiServiceDatabase serviceDatabase,
         ILogic<Article> articleLogic,
         ILogic<Gamme> gammeLogic,
@@ -25,6 +24,18 @@ public class OrdreFabricationLogic : BaseApiLogic<OrdreFabrication>
         _gammeEtapeLogic = gammeEtapeLogic;
     }
 
+    public override async Task<IEnumerable<OrdreFabrication>> GetAllAsync()
+    {
+        var ofs = await ServiceDatabase.GetAllAsync<OrdreFabrication>();
+        foreach (var item in ofs)
+        {
+            item.ArticleFabrique = await _articleLogic.GetOneSimpleAsync(item.ArticleId);
+            item.Gamme = await _gammeLogic.GetOneFullAsync(item.GammeId);
+        }
+
+        return ofs;
+    }
+
     public override async Task<OrdreFabrication> GetOneFullAsync(string id)
     {
         var of = await GetOneSimpleAsync(id);
@@ -36,11 +47,11 @@ public class OrdreFabricationLogic : BaseApiLogic<OrdreFabrication>
 
         foreach (var gammeEtape in gammeEtapes)
         {
-            var etape = await _etapeLogic.GetOneSimpleAsync(gammeEtape.EtapeId); 
+            var etape = await _etapeLogic.GetOneSimpleAsync(gammeEtape.EtapeId);
             of.Gamme.Etapes.Add(etape);
         }
 
-        return of; 
+        return of;
     }
 
     public override async Task<OrdreFabrication> UpdateAsync(OrdreFabrication entityUpdate)
@@ -48,25 +59,38 @@ public class OrdreFabricationLogic : BaseApiLogic<OrdreFabrication>
         foreach (var articlesConsomme in entityUpdate.EtapesExecuted.Last().ArticlesConsommes)
         {
             articlesConsomme.DateUsed = DateTime.Now;
-
-            var article = await _articleLogic.GetOneSimpleAsync(articlesConsomme.ArticleId);
-            article.StockReserved -= articlesConsomme.QuantityToUse; 
-            article.Stock -= articlesConsomme.QuantityUsed;
-            await _articleLogic.UpdateAsync(article); 
         }
 
         if (entityUpdate.EtapesExecuted.Count() == entityUpdate.Gamme.Etapes.Count)
         {
-            var articleToMake = await _articleLogic.GetOneSimpleAsync(entityUpdate.ArticleId);
-            articleToMake.Stock += 1;
+            var end = false;
+            foreach (var etapeExecuted in entityUpdate.EtapesExecuted)
+            {
+                if (etapeExecuted.End == default)
+                {
+                    end = false;
+                }
+                else
+                {
+                    end = true;
+                }
+            }
 
-            await ServiceDatabase.UpdateAsync(articleToMake); 
-            entityUpdate.DateFin = DateTime.Now;
+            if (end == true)
+            {
+                var articleToMake = await _articleLogic.GetOneSimpleAsync(entityUpdate.ArticleId);
+                articleToMake.Stock += 1;
+
+                await ServiceDatabase.UpdateAsync(articleToMake);
+                entityUpdate.DateFin = DateTime.Now;
+                entityUpdate.IsDisabled = true;
+            }
+
         }
 
         await ServiceDatabase.UpdateAsync(entityUpdate);
 
-        return entityUpdate; 
+        return entityUpdate;
     }
 
     public override async Task<OrdreFabrication> CreateAsync(OrdreFabrication entity)
@@ -84,20 +108,20 @@ public class OrdreFabricationLogic : BaseApiLogic<OrdreFabrication>
             {
                 var article = await _articleLogic.GetOneSimpleAsync(etapeArticlesConsomme.ArticleId);
                 article.StockReserved += etapeArticlesConsomme.QuantityToUse;
-                
-                await _articleLogic.UpdateAsync(article); 
-            }
 
+                await _articleLogic.UpdateAsync(article);
+            }
         }
+        gamme.Etapes = gamme.Etapes.OrderBy(v => v.NumeroEtape).ToList();
         entity.Gamme = gamme;
 
         entity.ArticleId = gamme.ArticleId;
         entity.ArticleFabrique = await _articleLogic.GetOneSimpleAsync(entity.ArticleId);
 
         entity.DateDebut = DateTime.Now;
-        entity.EtapesExecuted = new List<Etape>();
+        entity.EtapesExecuted = new List<EtapeExecuted>();
 
-        entity = await ServiceDatabase.CreateAsync(entity); 
+        entity = await ServiceDatabase.CreateAsync(entity);
 
         return entity;
     }

@@ -185,9 +185,15 @@ namespace Blazor.Pages.MES
             });
         }
 
-        private void GoProduction(string gammeId)
+        private async Task GoProduction(string gammeId)
         {
-            NavigationManager.NavigateTo($"/production/{gammeId}");
+            var of = new OrdreFabrication()
+            {
+                GammeId = gammeId
+            };
+            of = await OrdreFabricationProvider.CreateAsync(of);
+
+            NavigationManager.NavigateTo($"/productionEnCours/{of.Id}");
         }
     }
 }

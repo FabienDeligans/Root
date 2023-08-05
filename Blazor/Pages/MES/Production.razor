@@ -1,39 +1,115 @@
-﻿@page "/production/{GammeId}"
+﻿@page "/productionEnCours/"
 @page "/productionEnCours/{OfId}"
+@using Microsoft.Identity.Client
 
 <h3>Production</h3>
 
+
+@if (OfList != null)
+{
+    <h4>Ordre de fabrication en cours</h4>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" @onchange="Reload">
+        <label class="form-check-label" for="inlineCheckbox2">Afficher tous les ordres de fabrication ?</label>
+    </div>
+    <select class="form-select" id="inputGroupSelect01" @onchange="LoadOf">
+
+        @if (string.IsNullOrWhiteSpace(OfId))
+        {
+            <option selected="selected"></option>
+        }
+        else
+        {
+            <option></option>
+        }
+
+        @foreach (var of in OfList)
+        {
+            if (of.Id == OfId)
+            {
+                <option value="@of.Id" selected="selected">@of.ArticleFabrique.Nom / @of.Gamme.Nom</option>
+            }
+            else
+            {
+                <option value="@of.Id">@of.ArticleFabrique.Nom / @of.Gamme.Nom</option>
+            }
+        }
+    </select>
+    <br />
+}
+
+
 @if (OrdreFabrication != null && OrdreFabrication.Gamme != null)
 {
-
     <div class="container-fluid">
         <div class="row">
-            <div class="col-3">
+            <div class="col-4">
+
+                @if (DisplayOfEnded)
+                {
+                    <h3 style="color: red">OF terminé</h3>
+                }
+
                 @foreach (var step in OrdreFabrication.Gamme.Etapes.OrderBy(v => v.NumeroEtape))
                 {
-                    <button class="btn btn-@(OrdreFabrication.EtapesExecuted.Select(v => v.Id).Contains(step.Id) ? "danger" : "info")" @onclick="(()=>DisplayStep(step))">@step.Nom</button>
+                    @if (EtapeToDisplay != null && step.Id == EtapeToDisplay.Id)
+                    {
+                        <button class="btn btn-@(OrdreFabrication.EtapesExecuted.Select(v => v.Id).Contains(step.Id) && OrdreFabrication.EtapesExecuted.FirstOrDefault(v => v.Id == step.Id).End != default ? "danger" : "info")" style="border: 5px yellow solid;" @onclick="(() => DisplayStep(step))">@step.Nom</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-@(OrdreFabrication.EtapesExecuted.Select(v => v.Id).Contains(step.Id) && OrdreFabrication.EtapesExecuted.FirstOrDefault(v => v.Id == step.Id).End != default? "danger" : "info")" @onclick="(() => DisplayStep(step))">@step.Nom</button>
+                    }
                 }
             </div>
-            <div class="col-9">
+            <div class="col-8">
                 @if (EtapeToDisplay != null)
                 {
-                    <div>@EtapeToDisplay.NumeroEtape / @EtapeToDisplay.Nom</div>
+                    @if (DisplayStartButton)
+                    {
+                        <button class="btn btn-danger" @onclick="() => StartStep(EtapeToDisplay)">Start Step</button>
+                    }
+
+                    <br />
+                    <div><strong>N° d'étape :</strong> @EtapeToDisplay.NumeroEtape</div>
+                    <div><strong>Nom de l'étape :</strong> @EtapeToDisplay.Nom</div>
+
+                    <br />
                     <div>
-                        @foreach (var article in EtapeToDisplay.ArticlesConsommes)
-                        {
-                            <div>@article.ArticleId - @article.ArticleNom</div>
-                            <div>A consommer : @article.QuantityToUse</div>
-                            <div>Réellement consommé : <input type="number" @bind="article.QuantityUsed" /></div>
-                        }
+                        <div><h5>Articles à consommer</h5></div>
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Article Id</th>
+                                    <th>Quantité à consommer</th>
+                                    <th>Réellement consommé</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var article in EtapeToDisplay.ArticlesConsommes)
+                                {
+                                    <tr>
+                                        <td>@article.ArticleNom</td>
+                                        <td>@article.ArticleId</td>
+                                        <td>@article.QuantityToUse</td>
+                                        <td><input type="number" @bind="article.QuantityUsed" /></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
                     </div>
 
-                    if (!OrdreFabrication.EtapesExecuted.Select(v => v.Id).Contains(EtapeToDisplay.Id))
+                    @if (DisplayEndButton)
                     {
                         <button class="btn btn-danger" @onclick="() => EndStep(EtapeToDisplay)">End Step</button>
                     }
+
                 }
             </div>
         </div>
     </div>
-
 }

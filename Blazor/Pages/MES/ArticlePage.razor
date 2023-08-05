@@ -29,7 +29,6 @@
                     <td>@article.StockReserved</td>
                     @if (article.EstFabrique)
                     {
-
                         <td>
                             <select class="form-select" id="inputGroupSelect01" @bind="gammeSelectedId">
                                 <option></option>
@@ -41,7 +40,7 @@
                         </td>
                         <td><button class="btn btn-warning" @onclick="() => GoProduction(gammeSelectedId)">Création OF</button></td>
 
-                        @if (!String.IsNullOrWhiteSpace(gammeSelectedId) && Gammes.FirstOrDefault(v => v.Id == gammeSelectedId).ArticleId == article.Id)
+                        @if (!String.IsNullOrWhiteSpace(gammeSelectedId) && Gammes.FirstOrDefault(v => v.Id == gammeSelectedId)?.ArticleId == article.Id)
                         {
                             <td>@OrdreFabrications.Count(v => v.GammeId == gammeSelectedId)</td>
                         }
