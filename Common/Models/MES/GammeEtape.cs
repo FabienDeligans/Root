@@ -9,12 +9,12 @@ public class GammeEtape : Entity
     public string GammeId { get; set; }
 
     [BsonIgnore]
-    public Gamme Gamme { get; set; }
+    public Gamme? Gamme { get; set; }
 
     [ForeignKey(typeof(Etape))]
     public string EtapeId { get; set; }
 
     [BsonIgnore]
-    public Etape Etape { get; set; }
+    public Etape? Etape { get; set; }
 
 }

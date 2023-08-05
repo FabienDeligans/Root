@@ -1,2 +1,83 @@
 ﻿@page "/ArticlePage"
 
+<button class="btn btn-info" @onclick="GenerateArticle">Generate Article</button>
+<button class="btn btn-info" @onclick="GenerateGamme">Generate Gamme</button>
+<button class="btn btn-danger" @onclick="DropMES">DROP ALL</button>
+
+@if (Articles.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Nom</td>
+                <td>Est Fabriqué</td>
+                <td>Stock</td>
+                <td>Stock Réservé</td>
+                <td>Gamme</td>
+                <td></td>
+                <td>Nb OF liés</td>
+                <td>Etapes</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var article in Articles)
+            {
+                <tr>
+                    <td>@article.Nom</td>
+                    <td><input type="checkbox" @bind="@article.EstFabrique" disabled="disabled" /></td>
+                    <td>@article.Stock</td>
+                    <td>@article.StockReserved</td>
+                    @if (article.EstFabrique)
+                    {
+
+                        <td>
+                            <select class="form-select" id="inputGroupSelect01" @bind="gammeSelectedId">
+                                <option></option>
+                                @foreach (var gamme in Gammes.Where(v => v.ArticleId == article.Id))
+                                {
+                                    <option value="@gamme.Id">@gamme.Nom</option>
+                                }
+                            </select>
+                        </td>
+                        <td><button class="btn btn-warning" @onclick="() => GoProduction(gammeSelectedId)">Création OF</button></td>
+
+                        @if (!String.IsNullOrWhiteSpace(gammeSelectedId) && Gammes.FirstOrDefault(v => v.Id == gammeSelectedId).ArticleId == article.Id)
+                        {
+                            <td>@OrdreFabrications.Count(v => v.GammeId == gammeSelectedId)</td>
+                        }
+
+                        @if (GammeEtapes.Select(v => v.GammeId).Contains(gammeSelectedId) && Gammes.FirstOrDefault(v => v.Id == gammeSelectedId).ArticleId == article.Id)
+                        {
+                            <td>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <td>N°</td>
+                                            <td>Nom Etape</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @{
+                                            var step = GammeEtapes.Where(ge => ge.GammeId == gammeSelectedId).Select(v => v.EtapeId);
+                                        }
+
+                                        @foreach (var etape in Etapes.Where(v => step.Contains(v.Id)))
+                                        {
+                                            <tr>
+                                                <td>@etape.NumeroEtape</td>
+                                                <td>@etape.Nom</td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </td>
+                        }
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

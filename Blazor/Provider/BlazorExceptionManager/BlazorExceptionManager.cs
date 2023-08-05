@@ -51,8 +51,7 @@ namespace Blazor.Provider.BlazorExceptionManager
                 msg += $"{error.Key} : ";
                 for (var i = 0; i < errors.Values.Count; i++)
                 {
-                    var end = errors.Values.Count - 1 == i ? "" : "- ";
-                    msg += $"{error.Value[i]} {end}";
+                    msg += $"{error.Value[i]} - ";
                 }
             }
 

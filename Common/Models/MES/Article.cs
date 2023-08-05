@@ -12,5 +12,6 @@ namespace Common.Models.MES
         public List<Gamme>? GammesFabrication { get; set; }
 
         public int Stock { get; set; }
+        public int StockReserved { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using Blazor.Provider.Api.MES;
 using Blazor.Provider.BlazorExceptionManager;
 using Blazor.Provider.LoraineProvider;
 using Blazored.Modal;
+using Common.Models.MES;
 
 namespace Blazor
 {
@@ -23,7 +24,7 @@ namespace Blazor
             builder.Services.AddScoped<ModalController>();
 
             builder.Services.AddScoped<BlazorExceptionManager>();
-
+            
             // R�cup�re la route principale de l'api dans "appsettings.json"
             builder.Services.Configure<SettingsCallApi>(builder.Configuration.GetSection("Api"));
 
@@ -36,11 +37,11 @@ namespace Blazor
             builder.Services.AddHttpClient<LorraineIpsumProvider>();
             builder.Services.AddHttpClient<ProcessProvider>();
 
-            builder.Services.AddHttpClient<ArticleProvider>();
-            builder.Services.AddHttpClient<EtapeProvider>();
-            builder.Services.AddHttpClient<GammeProvider>();
-            builder.Services.AddHttpClient<GammeEtapeProvider>();
-            builder.Services.AddHttpClient<OrdreFabricationProvider>();
+            builder.Services.AddHttpClient<ICallApi<Article>, ArticleProvider>();
+            builder.Services.AddHttpClient<ICallApi<Gamme>, GammeProvider>();
+            builder.Services.AddHttpClient<ICallApi<Etape>, EtapeProvider>();
+            builder.Services.AddHttpClient<ICallApi<GammeEtape>, GammeEtapeProvider>();
+            builder.Services.AddHttpClient<ICallApi<OrdreFabrication>, OrdreFabricationProvider>();
 
 
             builder.Services.AddControllers().AddNewtonsoftJson();

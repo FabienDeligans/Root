@@ -1,0 +1,39 @@
+﻿@page "/production/{GammeId}"
+@page "/productionEnCours/{OfId}"
+
+<h3>Production</h3>
+
+@if (OrdreFabrication != null && OrdreFabrication.Gamme != null)
+{
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3">
+                @foreach (var step in OrdreFabrication.Gamme.Etapes.OrderBy(v => v.NumeroEtape))
+                {
+                    <button class="btn btn-@(OrdreFabrication.EtapesExecuted.Select(v => v.Id).Contains(step.Id) ? "danger" : "info")" @onclick="(()=>DisplayStep(step))">@step.Nom</button>
+                }
+            </div>
+            <div class="col-9">
+                @if (EtapeToDisplay != null)
+                {
+                    <div>@EtapeToDisplay.NumeroEtape / @EtapeToDisplay.Nom</div>
+                    <div>
+                        @foreach (var article in EtapeToDisplay.ArticlesConsommes)
+                        {
+                            <div>@article.ArticleId - @article.ArticleNom</div>
+                            <div>A consommer : @article.QuantityToUse</div>
+                            <div>Réellement consommé : <input type="number" @bind="article.QuantityUsed" /></div>
+                        }
+                    </div>
+
+                    if (!OrdreFabrication.EtapesExecuted.Select(v => v.Id).Contains(EtapeToDisplay.Id))
+                    {
+                        <button class="btn btn-danger" @onclick="() => EndStep(EtapeToDisplay)">End Step</button>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+}

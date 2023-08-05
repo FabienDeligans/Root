@@ -13,8 +13,6 @@ public class Gamme : Entity
         
     public string Nom { get; set; }
 
-    public int Quantity { get; set; }
-
     [BsonIgnore]
     public List<Etape>? Etapes { get; set; }
 }
