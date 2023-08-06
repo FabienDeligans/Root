@@ -4,6 +4,5 @@
     {
         public int Position { get; set; }
         public string Texte { get; set; }
-        public bool IsDragOver { get; set; }
     }
 }

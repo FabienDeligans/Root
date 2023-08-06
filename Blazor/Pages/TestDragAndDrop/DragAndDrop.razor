@@ -1,27 +1,51 @@
-﻿@page "/testDragAndDrop"
+﻿@using MudBlazor.Utilities
+@using Common.Models.TestDragAndDrop
+@page "/testDragAndDrop"
 
 <h3>DragAndDrop</h3>
-@if (Items != null)
+@if (_dropzoneItems != null)
 {
+    
+    <div class="d-flex flex-column mud-width-full mud-height-full">
+        <MudToolBar Class="gap-4">
+            <MudButton OnClick="LoadServerData" Variant="Variant.Filled" Color="Color.Default">Load Data</MudButton>
+            <MudButton OnClick="SaveData" Variant="Variant.Filled" Color="Color.Primary">Save Data</MudButton>
+            <MudSpacer />
+            <MudButton OnClick="Reset" Variant="Variant.Text" Color="Color.Error">Reset Example</MudButton>
+        </MudToolBar>
 
-    <div style="border-style: solid solid solid solid; border-color:black; padding-top: 20px">
-
-        <ul ondragover="event.preventDefault();"
-            ondragstart="event.dataTransfer.setData('', event.target.id);">
-            @foreach (var item in Items.OrderBy(v => v.Position))
-            {
-                <li @ondrop="()=>HandleDrop(item)" @key="item">
-                    <div @ondragleave="@(() => { item.IsDragOver = false; })"
-                    @ondragenter="@(() => { item.IsDragOver = true; })"
-                    @ondragstart="() => ItemToMove = item"
-                    @ondragend="() => ItemToMove = null" draggable="true"
-                    style="@(item.IsDragOver ? "border-style: dotted none none none; border-color:red; padding-top: 20px" : "")"
-                    >
-                    @item.Position | @item.Texte
-                    </div>
-                </li>
-            }
-        </ul>
-
+        <MudDropContainer T="DropItem" Items="@_dropzoneItems" @ref="_container" ItemsSelector="@((item,dropzone) => item.DropZone == dropzone)" ItemDropped="ItemUpdated" Class="d-flex flex-wrap flex-grow-1">
+            <ChildContent>
+                @for (int i = 1; i < 10; i++)
+                {
+                    var dropzone = i.ToString();
+                    <MudPaper Class="ma-4 flex-grow-1">
+                        <MudList Clickable="true" Class="d-flex flex-column mud-height-full">
+                            <MudListSubheader>Drop Zone @dropzone</MudListSubheader>
+                            <MudDropZone T="DropItem" Identifier="@dropzone" Class="flex-grow-1" AllowReorder="true" />
+                        </MudList>
+                    </MudPaper>
+                }
+            </ChildContent>
+            <ItemRenderer>
+                <MudListItem Text="@($"{context.Name} ({context.Order})")" />
+            </ItemRenderer>
+        </MudDropContainer>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
