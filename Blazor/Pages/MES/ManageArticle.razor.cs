@@ -36,6 +36,8 @@ namespace Blazor.Pages.MES
             await InvokeAsync(StateHasChanged);
         }
 
+        #region Article
+
         private async Task AddNewArticle()
         {
             Article = new Article();
@@ -88,6 +90,10 @@ namespace Blazor.Pages.MES
             await InvokeAsync(StateHasChanged);
         }
 
+        #endregion
+
+        #region Gamme
+        
         private async Task AddNewGamme()
         {
             if (Article.EstFabrique == true)
@@ -127,5 +133,8 @@ namespace Blazor.Pages.MES
             Gammes = gammes.Where(v => v.ArticleId == Article.Id).ToList();
             await InvokeAsync(StateHasChanged);
         }
+        
+        #endregion
+
     }
 }
