@@ -17,6 +17,7 @@ namespace Blazor.Pages.MES
 
         public Article? Article { get; set; } = new Article();
         public Gamme? Gamme { get; set; } = new Gamme();
+        public Etape? Etape { get; set; } = new Etape();
 
         private string _statusMessage;
         private string _statusClass;
@@ -27,49 +28,104 @@ namespace Blazor.Pages.MES
             Articles = articles.ToList();
         }
 
+        private async Task Cancel()
+        {
+            Article = new Article();
+            Gamme = null;
+            Etape = null;
+            await InvokeAsync(StateHasChanged);
+        }
+
         private async Task AddNewArticle()
         {
             Article = new Article();
+
+            await InvokeAsync(StateHasChanged);
         }
 
         private async Task SelectArticle(ChangeEventArgs arg)
         {
-            Article = Articles.FirstOrDefault(v => v.Id == arg.Value.ToString());
-            if (Article.EstFabrique)
+            if (!string.IsNullOrWhiteSpace(arg.Value.ToString()))
             {
-                var gammes = await GammeProvider.GetAllAsync();
-                Gammes = gammes.Where(v => v.ArticleId == Article.Id).ToList();
+                Article = Articles.FirstOrDefault(v => v.Id == arg.Value.ToString());
+                if (Article.EstFabrique)
+                {
+                    var gammes = await GammeProvider.GetAllAsync();
+                    Gammes = gammes.Where(v => v.ArticleId == Article.Id).ToList();
+                }
+                else
+                {
+                    Gammes = null;
+                }
             }
             else
             {
-                Gammes = new List<Gamme>(); 
+                Article = new Article();
+                Gammes = null;
             }
+
+            await InvokeAsync(StateHasChanged);
         }
 
-        private async Task Submit()
+        private async Task SubmitArticle()
         {
             if (Article.Id != null)
             {
-                Article = await ArticleProvider!.UpdateAsync(Article);
+                Article = await ArticleProvider.UpdateAsync(Article);
+                if (Article.EstFabrique)
+                {
+                    Gamme = new Gamme() { ArticleId = Article.Id };
+                }
             }
             else
             {
-                Article = await ArticleProvider!.CreateAsync(Article);
+                Article = await ArticleProvider.CreateAsync(Article);
+                Gamme = new Gamme() { ArticleId = Article.Id };
+                Gammes = new List<Gamme>(); 
             }
 
             await OnInitializedAsync();
             await InvokeAsync(StateHasChanged);
         }
 
-        private async Task Cancel()
+        private async Task AddNewGamme()
         {
-            Article = new Article();
+            if (Article.EstFabrique == true)
+            {
+                Gamme = new Gamme() { ArticleId = Article.Id };
+            }
+
             await InvokeAsync(StateHasChanged);
         }
 
         private async Task SelectGamme(ChangeEventArgs arg)
         {
-            Gamme = Gammes.FirstOrDefault(v => v.Id == arg.Value.ToString());
+            if (!string.IsNullOrWhiteSpace(arg.Value.ToString()))
+            {
+                Gamme = Gammes.FirstOrDefault(v => v.Id == arg.Value.ToString());
+            }
+            else
+            {
+                Gamme = new Gamme() { ArticleId = Article.Id };
+            }
+
+            await InvokeAsync(StateHasChanged);
+        }
+
+        private async Task SubmitGamme()
+        {
+            if (Gamme.Id != null)
+            {
+                Gamme = await GammeProvider.UpdateAsync(Gamme);
+            }
+            else
+            {
+                Gamme = await GammeProvider.CreateAsync(Gamme);
+            }
+
+            var gammes = await GammeProvider.GetAllAsync();
+            Gammes = gammes.Where(v => v.ArticleId == Article.Id).ToList();
+            await InvokeAsync(StateHasChanged);
         }
     }
 }
