@@ -13,6 +13,7 @@ public class Gamme : Entity
         
     public string Nom { get; set; }
 
-    [BsonIgnore]
+    public string? Commentaire { get; set; }
+
     public List<Etape>? Etapes { get; set; }
 }

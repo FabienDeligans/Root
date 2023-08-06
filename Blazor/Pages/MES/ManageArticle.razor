@@ -86,7 +86,7 @@
         @if (Article.EstFabrique && !string.IsNullOrWhiteSpace(Article.Id))
         {
             <div class="col-4" style="border : 3px grey solid; padding : 15px">
-                
+
                 <label for="inputGroupSelect02"><b>Liste des gammes possible de l'article: </b></label>
                 <div class="input-group">
                     @if (Gammes != null)
@@ -127,6 +127,16 @@
                 </EditForm>
 
             </div>
+
+            @if (Gamme.Etapes != null)
+            {
+                <div class="col-4" style="border : 3px grey solid; padding : 15px">
+                    @foreach (var etape in Gamme.Etapes)
+                    {
+                        <div>@etape.Nom</div>
+                    }
+                </div>
+            }
         }
     </div>
 

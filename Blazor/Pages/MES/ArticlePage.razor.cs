@@ -98,12 +98,11 @@ namespace Blazor.Pages.MES
             return gammeEtape;
         }
 
-        public async Task<Etape> GenerateEtape(Gamme gamme, int numEtape)
+        public async Task<Etape> GenerateEtape(Gamme gamme)
         {
             var etape = new Etape
             {
-                NumeroEtape = numEtape,
-                Nom = $"etape n° {numEtape} de - {gamme.Nom}",
+                Nom = $"etape de - {gamme.Nom}",
                 ArticlesConsommes = new List<ArticleConsome>()
             };
 
@@ -143,11 +142,25 @@ namespace Blazor.Pages.MES
                         gamme = await GammeProvider.CreateAsync(gamme);
                         Gammes.Add(gamme);
 
+                        var etapes = new List<Etape>(); 
                         for (var i = 0; i < new Random().Next(1, 10); i++)
                         {
-                            var etape = await GenerateEtape(gamme, i);
+                            var etape = await GenerateEtape(gamme);
+                            etapes.Add(etape);
                             var gammeEtape = await LinkGammeEtape(gamme, etape);
                         }
+
+                        var o = 1; 
+                        foreach (var etape in etapes)
+                        {
+                            // order etapes
+                            etape.Nom = $"Etape n° {o} de la gamme {gamme.Nom}";
+                            etape.NumeroEtape = o;
+                            o++;
+                        }
+
+                        gamme.Etapes = etapes;
+                        gamme = await GammeProvider.UpdateAsync(gamme); 
                     }
                 }
             });

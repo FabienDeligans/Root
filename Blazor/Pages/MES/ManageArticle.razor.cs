@@ -98,7 +98,7 @@ namespace Blazor.Pages.MES
         {
             if (Article.EstFabrique == true)
             {
-                Gamme = new Gamme() { ArticleId = Article.Id };
+                Gamme = new Gamme() { ArticleId = Article.Id, Etapes = new List<Etape>() };
             }
 
             await InvokeAsync(StateHasChanged);
@@ -112,7 +112,7 @@ namespace Blazor.Pages.MES
             }
             else
             {
-                Gamme = new Gamme() { ArticleId = Article.Id };
+                Gamme = new Gamme() { ArticleId = Article.Id, Etapes = new List<Etape>()};
             }
 
             await InvokeAsync(StateHasChanged);

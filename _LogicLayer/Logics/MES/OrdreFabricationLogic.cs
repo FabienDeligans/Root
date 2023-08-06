@@ -27,30 +27,19 @@ public class OrdreFabricationLogic : BaseApiLogic<OrdreFabrication>
     public override async Task<IEnumerable<OrdreFabrication>> GetAllAsync()
     {
         var ofs = await ServiceDatabase.GetAllAsync<OrdreFabrication>();
+
+        var ofsToReturn = new List<OrdreFabrication>();
         foreach (var item in ofs)
         {
-            item.ArticleFabrique = await _articleLogic.GetOneSimpleAsync(item.ArticleId);
-            item.Gamme = await _gammeLogic.GetOneFullAsync(item.GammeId);
+            ofsToReturn.Add(await GetOneFullAsync(item.Id)); 
         }
 
-        return ofs;
+        return ofsToReturn;
     }
 
     public override async Task<OrdreFabrication> GetOneFullAsync(string id)
     {
         var of = await GetOneSimpleAsync(id);
-        of.ArticleFabrique = await _articleLogic.GetOneSimpleAsync(of.ArticleId);
-        of.Gamme = await _gammeLogic.GetOneSimpleAsync(of.GammeId);
-
-        of.Gamme.Etapes = new List<Etape>();
-        var gammeEtapes = await _gammeEtapeLogic.GetAllFilteredByPropertyEqualAsync(nameof(GammeEtape.GammeId), of.GammeId);
-
-        foreach (var gammeEtape in gammeEtapes)
-        {
-            var etape = await _etapeLogic.GetOneSimpleAsync(gammeEtape.EtapeId);
-            of.Gamme.Etapes.Add(etape);
-        }
-
         return of;
     }
 
@@ -95,28 +84,17 @@ public class OrdreFabricationLogic : BaseApiLogic<OrdreFabrication>
 
     public override async Task<OrdreFabrication> CreateAsync(OrdreFabrication entity)
     {
+        // enregistrement de la gamme dans l'of
         var gamme = await _gammeLogic.GetOneSimpleAsync(entity.GammeId);
-        gamme.Etapes = new List<Etape>();
-
-        var gammeEtapes = await _gammeEtapeLogic.GetAllFilteredByPropertyEqualAsync(nameof(GammeEtape.GammeId), entity.GammeId);
-        foreach (var gammeEtape in gammeEtapes)
-        {
-            var etape = await _etapeLogic.GetOneSimpleAsync(gammeEtape.EtapeId);
-            gamme.Etapes.Add(etape);
-
-            foreach (var etapeArticlesConsomme in etape.ArticlesConsommes)
-            {
-                var article = await _articleLogic.GetOneSimpleAsync(etapeArticlesConsomme.ArticleId);
-                article.StockReserved += etapeArticlesConsomme.QuantityToUse;
-
-                await _articleLogic.UpdateAsync(article);
-            }
-        }
         gamme.Etapes = gamme.Etapes.OrderBy(v => v.NumeroEtape).ToList();
         entity.Gamme = gamme;
 
+        // enregistrement de l'article à fabriquer dans l'of
         entity.ArticleId = gamme.ArticleId;
         entity.ArticleFabrique = await _articleLogic.GetOneSimpleAsync(entity.ArticleId);
+
+        // set un nouveau n° d'of
+        entity.Number = await CountDataAsync() +1; 
 
         entity.DateDebut = DateTime.Now;
         entity.EtapesExecuted = new List<EtapeExecuted>();
