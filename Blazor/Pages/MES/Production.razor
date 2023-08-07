@@ -67,6 +67,8 @@
                         <button class="btn btn-@(OrdreFabrication.EtapesExecuted.Select(v => v.Id).Contains(step.Id) && OrdreFabrication.EtapesExecuted.FirstOrDefault(v => v.Id == step.Id).End != default? "danger" : "info")" @onclick="(() => DisplayStep(step))">@step.Nom</button>
                     }
                 }
+                <br/>
+                <div>@OrdreFabrication.Gamme.Commentaire</div>
             </div>
             <div class="col-8">
                 @if (EtapeToDisplay != null)

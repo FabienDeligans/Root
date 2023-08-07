@@ -52,8 +52,8 @@ namespace Blazor.Pages.MES
                 Article = Articles.FirstOrDefault(v => v.Id == arg.Value.ToString());
                 if (Article.EstFabrique)
                 {
-                    var gammes = await GammeProvider.GetAllAsync();
-                    Gammes = gammes.Where(v => v.ArticleId == Article.Id).ToList();
+                    var gammes = await GammeProvider.GetAllFilteredByPropertyEqualAsync(nameof(Gamme.ArticleId), Article.Id);
+                    Gammes = gammes.ToList();
                 }
                 else
                 {
@@ -129,8 +129,8 @@ namespace Blazor.Pages.MES
                 Gamme = await GammeProvider.CreateAsync(Gamme);
             }
 
-            var gammes = await GammeProvider.GetAllAsync();
-            Gammes = gammes.Where(v => v.ArticleId == Article.Id).ToList();
+            var gammes = await GammeProvider.GetAllFilteredByPropertyEqualAsync(nameof(Gamme.ArticleId), Article.Id);
+            Gammes = gammes.ToList();
             await InvokeAsync(StateHasChanged);
         }
         

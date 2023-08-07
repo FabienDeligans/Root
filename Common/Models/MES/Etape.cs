@@ -7,6 +7,7 @@ public class Etape : Entity
     public int? NumeroEtape { get; set; } 
     
     public string Nom { get; set; }
+
     public string? Commentaire { get; set; }
 
     public List<ArticleConsome>? ArticlesConsommes { get; set; }

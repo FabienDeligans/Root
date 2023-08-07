@@ -116,6 +116,13 @@
                                 <ValidationMessage For="@(() => Gamme.Nom)" />
                             </div>
                         </p>
+                        <p>
+                            <div class="form-group col-12">
+                                <label for="nom"><b>Commentaire: </b></label>
+                                <InputTextArea Id="nom" Class="form-control" @bind-Value="@Gamme.Commentaire"></InputTextArea>
+                                <ValidationMessage For="@(() => Gamme.Commentaire)" />
+                            </div>
+                        </p>
 
                         <br />
 
