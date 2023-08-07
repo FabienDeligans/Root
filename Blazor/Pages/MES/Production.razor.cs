@@ -142,17 +142,14 @@ namespace Blazor.Pages.MES
 
             await InvokeAsync(StateHasChanged);
         }
+
         private async Task EndStep(Etape etapeToDisplay)
         {
-            var etapeExecuted = OrdreFabrication.EtapesExecuted.FirstOrDefault(v => v.Id == etapeToDisplay.Id);
-            etapeExecuted.End = DateTime.Now;
-
             var index = OrdreFabrication.EtapesExecuted.FindIndex(v => v.Id == etapeToDisplay.Id);
-            OrdreFabrication.EtapesExecuted[index] = etapeExecuted;
-
+            OrdreFabrication.EtapesExecuted[index].End = DateTime.Now;
             OrdreFabrication = await OrdreFabricationProvider.UpdateAsync(OrdreFabrication);
             
-            foreach (var articleConsomme in etapeExecuted.ArticlesConsommes)
+            foreach (var articleConsomme in OrdreFabrication.EtapesExecuted[index].ArticlesConsommes)
             {
                 var article = await ArticleProvider.GetOneSimpleAsync(articleConsomme.ArticleId);
                 article.StockReserved -= articleConsomme.QuantityToUse;
