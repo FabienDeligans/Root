@@ -7,7 +7,7 @@
 <div class="container-fluid">
 
     <div class="row">
-        <div class="col-6" style="margin: 10px">
+        <div class="col-4" style="margin: 10px">
             <div class="input-group">
                 @if (Articles != null)
                 {
@@ -22,127 +22,57 @@
                 <button class="btn btn-info" type="button" @onclick="AddNewArticle">+</button>
             </div>
         </div>
+        <div class="col-4" style="margin: 10px">
+            <div class="input-group">
+                @if (Gammes != null)
+                {
+                    <select class="form-select" id="inputGroupSelect02" @onchange="SelectGamme">
+                        <option></option>
+                        @foreach (var gamme in Gammes)
+                        {
+                            <option value="@gamme.Id">@gamme.Nom</option>
+                        }
+                    </select>
+                }
+                <button class="btn btn-info" type="button" @onclick="AddNewGamme">+</button>
+            </div>
+        </div>
     </div>
 
     <br />
-    <div class="row">
-        <div class="col-4" style="border : 3px grey solid; padding : 15px">
-            <EditForm Model="Article" OnValidSubmit="SubmitArticle">
-                <div class="@_statusClass">@_statusMessage</div>
-
-                <DataAnnotationsValidator />
-
-                <div class="row">
-                    <p>
-                        <div class="form-group col-12">
-                            <label for="nom"><b>Nom de l'article: </b></label>
-                            <InputText Id="nom" Class="form-control" @bind-Value="@Article.Nom"></InputText>
-                            <ValidationMessage For="@(() => Article.Nom)" />
-                        </div>
-                    </p>
-
-                    <br />
-
-                    <p>
-                        <div class="form-group col-12">
-                            <div class="form-group">
-                                <label for="fabrique"><b>Fabriqué: </b></label>
-                                <InputCheckbox Id="fabrique" Class="form-check" @bind-Value="@Article.EstFabrique"></InputCheckbox>
-                                <ValidationMessage For="@(() => Article.EstFabrique)" />
-                            </div>
-                        </div>
-                    </p>
-
-                    <br />
-
-                    <p>
-                        <div class="form-group col-12">
-                            <div class="form-group">
-                                <label for="stock"><b>Stock: </b></label>
-                                <InputNumber Id="stock" Class="form-control" @bind-Value="@Article.Stock"></InputNumber>
-                                <ValidationMessage For="@(() => Article.EstFabrique)" />
-                            </div>
-                        </div>
-                    </p>
-
-                    <br />
-
-                    <p>
-                        <div class="form-group col-12">
-                            <div class="form-group">
-                                <label for="isDisabled"><b>Désactiver: </b></label>
-                                <InputCheckbox Id="isDisabled" Class="form-check" @bind-Value="@Article.IsDisabled"></InputCheckbox>
-                                <ValidationMessage For="@(() => Article.IsDisabled)" />
-                            </div>
-                        </div>
-                    </p>
-
-                </div>
-
-                <br />
-                <button class="btn btn-info" type="submit">Ok</button>
-                <button class="btn btn-danger" @onclick="Cancel">Cancel</button>
-            </EditForm>
+    <div class="row align-self-stretch">
+        <div class="col-4 align-items-stretch" style="border : 3px grey solid; padding : 15px">
+            
+            @if (Article != null)
+            {
+                <CascadingValue Value="Article">
+                    <_ArticleComponent OnChildChange="OnInitializedAsync"></_ArticleComponent>
+                </CascadingValue>
+            }
+            
         </div>
 
+            
         @if (Article.EstFabrique && !string.IsNullOrWhiteSpace(Article.Id))
         {
-            <div class="col-4" style="border : 3px grey solid; padding : 15px">
-
-                <label for="inputGroupSelect02"><b>Liste des gammes possible de l'article: </b></label>
-                <div class="input-group">
-                    @if (Gammes != null)
-                    {
-                        <select class="form-select" id="inputGroupSelect02" @onchange="SelectGamme">
-                            <option></option>
-                            @foreach (var gamme in Gammes)
-                            {
-                                <option value="@gamme.Id">@gamme.Nom</option>
-                            }
-                        </select>
-                    }
-                    <button class="btn btn-info" type="button" @onclick="AddNewGamme">+</button>
-                </div>
-
-                <br />
-                <EditForm Model="Gamme" OnValidSubmit="SubmitGamme">
-                    <div class="@_statusClass">@_statusMessage</div>
-
-                    <DataAnnotationsValidator />
-
-                    <div class="row">
-                        <p>
-                            <div class="form-group col-12">
-                                <label for="nom"><b>Nom de la gamme: </b></label>
-                                <InputText Id="nom" Class="form-control" @bind-Value="@Gamme.Nom"></InputText>
-                                <ValidationMessage For="@(() => Gamme.Nom)" />
-                            </div>
-                        </p>
-                        <p>
-                            <div class="form-group col-12">
-                                <label for="nom"><b>Commentaire: </b></label>
-                                <InputTextArea Id="nom" Class="form-control" @bind-Value="@Gamme.Commentaire"></InputTextArea>
-                                <ValidationMessage For="@(() => Gamme.Commentaire)" />
-                            </div>
-                        </p>
-
-                        <br />
-
-                    </div>
-
-                    <br />
-                    <button class="btn btn-info" type="submit">Ok</button>
-                    <button class="btn btn-danger" @onclick="Cancel">Cancel</button>
-                </EditForm>
+            <div class="col-4 align-items-stretch" style="border : 3px grey solid; padding : 15px">
+                
+                <CascadingValue Value="Gamme">
+                    <_GammeOfArticleComponent OnChildChange="OnInitializedAsync"></_GammeOfArticleComponent>
+                </CascadingValue>
 
             </div>
 
-            <div class="col-4" style="border : 3px grey solid; padding : 15px">
+            <div class="col-4 align-items-stretch" style="border : 3px grey solid; padding : 15px">
 
                 @if (Gamme.Etapes != null)
                 {
                     <CascadingValue Value="Gamme.Etapes">
-                        <DragAndDropComponent T="Etape" Title="@($"Etapes de la gamme")"></DragAndDropComponent>
+                        <DragAndDropComponent
+                            T="Etape"
+                            Title="@($"Etapes de la gamme")"
+                            OnChildChange="SubmitGamme">
+                        </DragAndDropComponent>
                     </CascadingValue>
                 }
 

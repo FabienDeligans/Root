@@ -1,5 +1,4 @@
 ﻿using Common.Models;
-using Common.Models.MES;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudBlazor.Utilities;
@@ -13,6 +12,9 @@ namespace Blazor.Pages.Components
 
         [Parameter]
         public string Title { get; set; }
+
+        [Parameter]
+        public string? DropZoneTitle { get; set; }
 
         private MudDropContainer<T> _container;
 
@@ -36,9 +38,10 @@ namespace Blazor.Pages.Components
         }
 
 
-        private void ItemUpdated(MudItemDropInfo<T> dropItem)
+        private async Task ItemUpdated(MudItemDropInfo<T> dropItem)
         {
             BaseListOf.UpdateOrder(dropItem, item => item.Order);
+            await RefreshParent(); 
         }
     }
 }

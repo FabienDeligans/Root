@@ -1,0 +1,56 @@
+﻿@inherits Blazor.Pages.Components.ChildComponentBase
+
+<EditForm Model="Article" OnValidSubmit="SubmitArticle">
+    <DataAnnotationsValidator />
+
+    <div class="row">
+        <p>
+            <div class="form-group col-12">
+                <label for="nom"><b>Nom de l'article: </b></label>
+                <InputText Id="nom" Class="form-control" @bind-Value="@Article.Nom"></InputText>
+                <ValidationMessage For="@(() => Article.Nom)" />
+            </div>
+        </p>
+
+        <br />
+
+        <p>
+            <div class="form-group col-12">
+                <div class="form-group">
+                    <label for="fabrique"><b>Fabriqué: </b></label>
+                    <InputCheckbox Id="fabrique" Class="form-check" @bind-Value="@Article.EstFabrique"></InputCheckbox>
+                    <ValidationMessage For="@(() => Article.EstFabrique)" />
+                </div>
+            </div>
+        </p>
+
+        <br />
+
+        <p>
+            <div class="form-group col-12">
+                <div class="form-group">
+                    <label for="stock"><b>Stock: </b></label>
+                    <InputNumber Id="stock" Class="form-control" @bind-Value="@Article.Stock"></InputNumber>
+                    <ValidationMessage For="@(() => Article.EstFabrique)" />
+                </div>
+            </div>
+        </p>
+
+        <br />
+
+        <p>
+            <div class="form-group col-12">
+                <div class="form-group">
+                    <label for="isDisabled"><b>Désactiver: </b></label>
+                    <InputCheckbox Id="isDisabled" Class="form-check" @bind-Value="@Article.IsDisabled"></InputCheckbox>
+                    <ValidationMessage For="@(() => Article.IsDisabled)" />
+                </div>
+            </div>
+        </p>
+
+    </div>
+
+    <br />
+    <button class="btn btn-info" type="submit">Ok</button>
+    <button class="btn btn-danger" @onclick="Cancel">Cancel</button>
+</EditForm>

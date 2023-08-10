@@ -36,8 +36,6 @@ namespace Blazor.Pages.MES
             await InvokeAsync(StateHasChanged);
         }
 
-        #region Article
-
         private async Task AddNewArticle()
         {
             Article = new Article();
@@ -69,34 +67,13 @@ namespace Blazor.Pages.MES
             await InvokeAsync(StateHasChanged);
         }
 
-        private async Task SubmitArticle()
+        private async Task SelectGamme(ChangeEventArgs arg)
         {
-            if (Article.Id != null)
+            if (!string.IsNullOrWhiteSpace(arg.Value.ToString()))
             {
-                Article = await ArticleProvider.UpdateAsync(Article);
-                if (Article.EstFabrique)
-                {
-                    Gamme = new Gamme() { ArticleId = Article.Id };
-                }
+                Gamme = Gammes.FirstOrDefault(v => v.Id == arg.Value.ToString());
             }
             else
-            {
-                Article = await ArticleProvider.CreateAsync(Article);
-                Gamme = new Gamme() { ArticleId = Article.Id };
-                Gammes = new List<Gamme>(); 
-            }
-
-            await OnInitializedAsync();
-            await InvokeAsync(StateHasChanged);
-        }
-
-        #endregion
-
-        #region Gamme
-        
-        private async Task AddNewGamme()
-        {
-            if (Article.EstFabrique == true)
             {
                 Gamme = new Gamme() { ArticleId = Article.Id, Etapes = new List<Etape>() };
             }
@@ -104,23 +81,11 @@ namespace Blazor.Pages.MES
             await InvokeAsync(StateHasChanged);
         }
 
-        private async Task SelectGamme(ChangeEventArgs arg)
+        private async Task AddNewGamme()
         {
-            if (!string.IsNullOrWhiteSpace(arg.Value.ToString()))
+            if (Article.EstFabrique == true)
             {
-                Gamme = Gammes.FirstOrDefault(v => v.Id == arg.Value.ToString());
-
-                var i = 1; 
-                foreach (var gammeEtape in Gamme.Etapes)
-                {
-                    gammeEtape.Order = i;
-                    i++; 
-                }
-
-            }
-            else
-            {
-                Gamme = new Gamme() { ArticleId = Article.Id, Etapes = new List<Etape>()};
+                Gamme = new Gamme() { ArticleId = Article.Id, Etapes = new List<Etape>() };
             }
 
             await InvokeAsync(StateHasChanged);
@@ -141,8 +106,5 @@ namespace Blazor.Pages.MES
             Gammes = gammes.ToList();
             await InvokeAsync(StateHasChanged);
         }
-        
-        #endregion
-
     }
 }
