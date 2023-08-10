@@ -86,7 +86,7 @@ public class OrdreFabricationLogic : BaseApiLogic<OrdreFabrication>
     {
         // enregistrement de la gamme dans l'of
         var gamme = await _gammeLogic.GetOneSimpleAsync(entity.GammeId);
-        gamme.Etapes = gamme.Etapes.OrderBy(v => v.NumeroEtape).ToList();
+        gamme.Etapes = gamme.Etapes.OrderBy(v => v.Order).ToList();
         entity.Gamme = gamme;
 
         // enregistrement de l'article à fabriquer dans l'of

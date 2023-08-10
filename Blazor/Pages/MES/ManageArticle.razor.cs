@@ -109,6 +109,14 @@ namespace Blazor.Pages.MES
             if (!string.IsNullOrWhiteSpace(arg.Value.ToString()))
             {
                 Gamme = Gammes.FirstOrDefault(v => v.Id == arg.Value.ToString());
+
+                var i = 1; 
+                foreach (var gammeEtape in Gamme.Etapes)
+                {
+                    gammeEtape.Order = i;
+                    i++; 
+                }
+
             }
             else
             {

@@ -1,0 +1,10 @@
+﻿@inherits Blazor.Pages.Components.ChildComponentBase
+
+
+@if (TextList != null)
+{
+    @foreach (var ligne in TextList)
+    {
+        <div>@ligne</div>
+    }
+}

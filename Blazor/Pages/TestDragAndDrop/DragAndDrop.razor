@@ -14,18 +14,22 @@
             <MudButton OnClick="Reset" Variant="Variant.Text" Color="Color.Error">Reset Example</MudButton>
         </MudToolBar>
 
-        <MudDropContainer T="DropItem" Items="@_dropzoneItems" @ref="_container" ItemsSelector="@((item,dropzone) => item.DropZone == dropzone)" ItemDropped="ItemUpdated" Class="d-flex flex-wrap flex-grow-1">
+        <MudDropContainer 
+            T="DropItem" 
+            Items="@_dropzoneItems" 
+            @ref="_container" 
+            ItemsSelector="@((item,dropzone) => item.Selector == dropzone)" 
+            ItemDropped="ItemUpdated" 
+            Class="d-flex flex-wrap flex-grow-1">
             <ChildContent>
-                @for (int i = 1; i < 10; i++)
-                {
-                    var dropzone = i.ToString();
+                
                     <MudPaper Class="ma-4 flex-grow-1">
                         <MudList Clickable="true" Class="d-flex flex-column mud-height-full">
-                            <MudListSubheader>Drop Zone @dropzone</MudListSubheader>
-                            <MudDropZone T="DropItem" Identifier="@dropzone" Class="flex-grow-1" AllowReorder="true" />
+                            <MudListSubheader>Drop Zone </MudListSubheader>
+                            <MudDropZone T="DropItem" Identifier="1" Class="flex-grow-1" AllowReorder="true" />
                         </MudList>
                     </MudPaper>
-                }
+                
             </ChildContent>
             <ItemRenderer>
                 <MudListItem Text="@($"{context.Name} ({context.Order})")" />

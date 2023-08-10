@@ -1,0 +1,8 @@
+﻿@page "/testComponent"
+
+<h3>ParentComponent</h3>
+
+<input class="form-control" @bind="Text"/>
+<button class="btn btn-info" @onclick="NewItem">Valid</button>
+
+<ChildComponent OnChildChange="@RefreshMe" TextList="@TextList"></ChildComponent>

@@ -155,7 +155,7 @@ namespace Blazor.Pages.MES
                         {
                             // order etapes
                             etape.Nom = $"Etape n° {o} de la gamme {gamme.Nom}";
-                            etape.NumeroEtape = o;
+                            etape.Order = 0;
                             o++;
                         }
 

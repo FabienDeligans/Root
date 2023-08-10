@@ -64,7 +64,7 @@
                                         @foreach (var etape in Etapes.Where(v => step.Contains(v.Id)))
                                         {
                                             <tr>
-                                                <td>@etape.NumeroEtape</td>
+                                                <td>@etape.Order</td>
                                                 <td>@etape.Nom</td>
                                             </tr>
                                         }

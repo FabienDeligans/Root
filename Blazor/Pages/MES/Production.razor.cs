@@ -127,7 +127,7 @@ namespace Blazor.Pages.MES
                 var executedStep = new EtapeExecuted
                 {
                     Id = etapeToDisplay.Id,
-                    NumeroEtape = etapeToDisplay.NumeroEtape,
+                    Order = etapeToDisplay.Order,
                     Nom = etapeToDisplay.Nom,
                     ArticlesConsommes = etapeToDisplay.ArticlesConsommes,
                     DureePrevue = etapeToDisplay.DureePrevue,

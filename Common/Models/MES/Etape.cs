@@ -1,11 +1,10 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using System.Runtime.CompilerServices;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Common.Models.MES;
 
-public class Etape : Entity
+public class Etape : Entity, IOrderItem
 {
-    public int? NumeroEtape { get; set; } 
-    
     public string Nom { get; set; }
 
     public string? Commentaire { get; set; }
@@ -16,6 +15,16 @@ public class Etape : Entity
     
     [BsonIgnore]
     public List<Gamme>? GammeFabrications { get; set;}
+
+    public string DropZone { get; set; } = "1";
+    public int Order { get; set; }
+    public string Zone { get; set; } = string.Empty;
+
+    public string DisplayName
+    {
+        get => Nom;
+        set => Nom = value;
+    }
 }
 
 public class ArticleConsome
