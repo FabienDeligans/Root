@@ -1,0 +1,83 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        @if (Etape != null)
+        {
+
+            <EditForm Model="Etape" OnValidSubmit="Save">
+                <DataAnnotationsValidator />
+
+                <div class="form-group">
+                    <label for="name"><b>Nom: </b></label>
+                    <InputText Id="name" Class="form-control" @bind-Value="@Etape.Nom"></InputText>
+                    <ValidationMessage For="() => Etape.Nom" />
+                </div>
+
+                <div class="form-group">
+                    <label for="com"><b>Commentaire: </b></label>
+                    <InputTextArea Id="com" Class="form-control" @bind-Value="@Etape.Commentaire"></InputTextArea>
+                    <ValidationMessage For="() => Etape.Commentaire" />
+                </div>
+
+                <div class="form-group">
+                    <MudTimePicker Label="Durée prévue: " @bind-Time="duration" />
+                </div>
+
+                @if (Articles != null)
+                {
+
+                    <br>
+
+                    <div class="input-group">
+                        <select class="form-select" id="inputGroupSelect01" @onchange="SelectArticle">
+                            <option></option>
+                            @foreach (var article in Articles)
+                            {
+                                <option value="@article.Id">@article.Nom</option>
+                            }
+                        </select>
+                        <button class="btn btn-info" type="button" @onclick="AddNewArticleToConsume">+</button>
+                    </div>
+
+                    <div class="row">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Article Id</th>
+                                    <th>Article Nom</th>
+                                    <th>Quantité à utiliser</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var article in Etape.ArticlesConsommes)
+                                {
+                                    <tr>
+                                        <td>@article.ArticleId</td>
+                                        <td>@article.ArticleNom</td>
+                                        <td><input type="number" class="form-control-sm" @bind-value="@article.QuantityToUse"/></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+
+
+
+
+
+
+                <br />
+
+                <div class="form-group">
+                    <label for="disable"><b>Désactiver: </b></label>
+                    <InputCheckbox Id="disable" Class="form-check" @bind-Value="Etape.IsDisabled"></InputCheckbox>
+                    <ValidationMessage For="() => Etape.IsDisabled" />
+                </div>
+
+                <br />
+                <button class="btn btn-info" type="submit">Ok</button>
+                <button class="btn btn-danger" type="cancel" @onclick="Reset">Cancel</button>
+            </EditForm>
+        }
+    </div>
+</div>

@@ -7,7 +7,7 @@
 <div class="container-fluid">
 
     <div class="row">
-        <div class="col-4" style="margin: 10px">
+        <div class="col-4">
             <div class="input-group">
                 @if (Articles != null)
                 {
@@ -22,7 +22,7 @@
                 <button class="btn btn-info" type="button" @onclick="AddNewArticle">+</button>
             </div>
         </div>
-        <div class="col-4" style="margin: 10px">
+        <div class="col-4">
             <div class="input-group">
                 @if (Gammes != null)
                 {
@@ -37,46 +37,50 @@
                 <button class="btn btn-info" type="button" @onclick="AddNewGamme">+</button>
             </div>
         </div>
+        <div class="col-4">
+            <div class="input-group">
+                @if (Gammes != null && Gamme.Etapes != null)
+                {
+                    <button class="btn btn-info" type="button" @onclick="AddNewStep">Ajouter une étape</button>
+                }
+            </div>
+        </div>
     </div>
 
     <br />
-    <div class="row align-self-stretch">
-        <div class="col-4 align-items-stretch" style="border : 3px grey solid; padding : 15px">
-            
+    <div class="row">
+        <div class="col-4">
+
             @if (Article != null)
             {
                 <CascadingValue Value="Article">
-                    <_ArticleComponent OnChildChange="OnInitializedAsync"></_ArticleComponent>
+                    <_ArticleComponent OnChildChange="@(()=> ReloadFullArticle(Article.Id))"></_ArticleComponent>
                 </CascadingValue>
             }
-            
+
         </div>
 
-            
+
         @if (Article.EstFabrique && !string.IsNullOrWhiteSpace(Article.Id))
         {
-            <div class="col-4 align-items-stretch" style="border : 3px grey solid; padding : 15px">
-                
+            <div class="col-4">
                 <CascadingValue Value="Gamme">
-                    <_GammeOfArticleComponent OnChildChange="OnInitializedAsync"></_GammeOfArticleComponent>
+                    <_GammeOfArticleComponent OnChildChange="@(()=> ReloadFullArticle(Article.Id))"></_GammeOfArticleComponent>
                 </CascadingValue>
-
             </div>
 
-            <div class="col-4 align-items-stretch" style="border : 3px grey solid; padding : 15px">
-
-                @if (Gamme.Etapes != null)
-                {
+            @if (Gamme.Etapes != null)
+            {
+                <div class="col-4">
                     <CascadingValue Value="Gamme.Etapes">
-                        <DragAndDropComponent
-                            T="Etape"
-                            Title="@($"Etapes de la gamme")"
-                            OnChildChange="SubmitGamme">
+                        <DragAndDropComponent T="Etape"
+                                      Title="@($"Etapes de la gamme")"
+                                      OnChildChange="@(()=> ReloadFullArticle(Article.Id))">
                         </DragAndDropComponent>
                     </CascadingValue>
-                }
 
-            </div>
+                </div>
+            }
 
         }
     </div>

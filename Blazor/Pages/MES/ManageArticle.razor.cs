@@ -1,4 +1,6 @@
-﻿using Blazor.Provider.Api.CallApiProviderBase;
+﻿using Blazor.Controller.Modal;
+using Blazor.Provider.Api.CallApiProviderBase;
+using Blazored.Modal;
 using Common.Models.MES;
 using Microsoft.AspNetCore.Components;
 
@@ -12,6 +14,9 @@ namespace Blazor.Pages.MES
         [Inject]
         public ICallApi<Gamme> GammeProvider { get; set; }
 
+        [Inject]
+        public ModalController? ModalController { get; set; }
+
         public List<Article> Articles { get; set; }
         public List<Gamme> Gammes { get; set; }
 
@@ -19,27 +24,29 @@ namespace Blazor.Pages.MES
         public Gamme? Gamme { get; set; } = new Gamme();
         public Etape? Etape { get; set; } = new Etape();
 
-        private string _statusMessage;
-        private string _statusClass;
-
         protected override async Task OnInitializedAsync()
         {
             var articles = await ArticleProvider.GetAllAsync();
             Articles = articles.ToList();
         }
-
-        private async Task Cancel()
+        private async Task ReloadFullArticle(string? articleId)
         {
-            Article = new Article();
-            Gamme = null;
-            Etape = null;
-            await InvokeAsync(StateHasChanged);
+            if (!string.IsNullOrEmpty(articleId))
+            {
+                Article = await ArticleProvider.GetOneFullAsync(articleId);
+                Gammes = Article.GammesFabrication;
+
+                await InvokeAsync(StateHasChanged);
+            }
+            else
+            {
+                await OnInitializedAsync();
+            }
         }
 
         private async Task AddNewArticle()
         {
             Article = new Article();
-
             await InvokeAsync(StateHasChanged);
         }
 
@@ -50,8 +57,8 @@ namespace Blazor.Pages.MES
                 Article = Articles.FirstOrDefault(v => v.Id == arg.Value.ToString());
                 if (Article.EstFabrique)
                 {
-                    var gammes = await GammeProvider.GetAllFilteredByPropertyEqualAsync(nameof(Gamme.ArticleId), Article.Id);
-                    Gammes = gammes.ToList();
+                    Article = await ArticleProvider.GetOneFullAsync(arg.Value.ToString());
+                    Gammes = Article.GammesFabrication;
                 }
                 else
                 {
@@ -64,6 +71,17 @@ namespace Blazor.Pages.MES
                 Gammes = null;
             }
 
+            Gamme = new Gamme(); 
+
+            await InvokeAsync(StateHasChanged);
+        }
+        private async Task AddNewGamme()
+        {
+            if (Article.EstFabrique)
+            {
+                Gamme = new Gamme() { ArticleId = Article.Id, Etapes = new List<Etape>() };
+            }
+
             await InvokeAsync(StateHasChanged);
         }
 
@@ -71,7 +89,7 @@ namespace Blazor.Pages.MES
         {
             if (!string.IsNullOrWhiteSpace(arg.Value.ToString()))
             {
-                Gamme = Gammes.FirstOrDefault(v => v.Id == arg.Value.ToString());
+                Gamme = await GammeProvider.GetOneFullAsync(arg.Value.ToString()); 
             }
             else
             {
@@ -81,30 +99,16 @@ namespace Blazor.Pages.MES
             await InvokeAsync(StateHasChanged);
         }
 
-        private async Task AddNewGamme()
+        private async Task AddNewStep()
         {
-            if (Article.EstFabrique == true)
+            var parameters = new ModalParameters()
             {
-                Gamme = new Gamme() { ArticleId = Article.Id, Etapes = new List<Etape>() };
-            }
+                {nameof(_EtapeModal.GammeId), Gamme.Id}
+            }; 
+            var result = (Etape)await ModalController.ShowModal<_EtapeModal>($"Ajouter une étape", parameters); 
 
-            await InvokeAsync(StateHasChanged);
-        }
-
-        private async Task SubmitGamme()
-        {
-            if (Gamme.Id != null)
-            {
-                Gamme = await GammeProvider.UpdateAsync(Gamme);
-            }
-            else
-            {
-                Gamme = await GammeProvider.CreateAsync(Gamme);
-            }
-
-            var gammes = await GammeProvider.GetAllFilteredByPropertyEqualAsync(nameof(Gamme.ArticleId), Article.Id);
-            Gammes = gammes.ToList();
-            await InvokeAsync(StateHasChanged);
+            Gamme.Etapes.Add(result);
+            await InvokeAsync(StateHasChanged); 
         }
     }
 }

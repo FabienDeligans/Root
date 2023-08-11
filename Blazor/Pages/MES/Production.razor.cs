@@ -153,7 +153,7 @@ namespace Blazor.Pages.MES
             {
                 var article = await ArticleProvider.GetOneSimpleAsync(articleConsomme.ArticleId);
                 article.StockReserved -= articleConsomme.QuantityToUse;
-                article.Stock -= articleConsomme.QuantityUsed;
+                article.Stock -= articleConsomme.QuantityUsed.Value;
                 await ArticleProvider.UpdateAsync(article);
             }
 

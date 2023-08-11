@@ -32,7 +32,7 @@ public class ArticleConsome
     public string ArticleId { get; set; }
     public string ArticleNom { get; set; }
     public int QuantityToUse { get; set; }
-    public int QuantityUsed { get; set; }
+    public int? QuantityUsed { get; set; }
 
     public DateTime? DateUsed { get; set; }
 }
