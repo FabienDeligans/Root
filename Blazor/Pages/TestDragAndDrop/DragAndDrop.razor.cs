@@ -29,6 +29,18 @@ namespace Blazor.Pages.TestDragAndDrop
         {
             //throw new NotImplementedException();
         }
+
+        private Task Delete(int arg)
+        {
+            //throw new NotImplementedException();
+            return null; 
+        }
+
+        private Task Edit(int arg)
+        {
+            //throw new NotImplementedException();
+            return null;
+        }
     }
 
 

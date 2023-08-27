@@ -45,6 +45,7 @@ namespace Blazor.Pages.MES
             else
             {
                 Etape = await EtapeProvider.GetOneSimpleAsync(EtapeId);
+                duration = Etape.DureePrevue; 
             }
 
             Articles = await articleTask;
@@ -85,7 +86,6 @@ namespace Blazor.Pages.MES
             else
             {
                 Etape = await EtapeProvider.UpdateAsync(Etape);
-                
             }
 
 
@@ -94,7 +94,14 @@ namespace Blazor.Pages.MES
 
         private Task Reset()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return null; 
+        }
+
+        private async Task RemoveArticle(ArticleConsome articleArticle)
+        {
+            Etape.ArticlesConsommes.Remove(articleArticle);
+            await InvokeAsync(StateHasChanged);
         }
     }
 }

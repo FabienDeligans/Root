@@ -1,5 +1,6 @@
 ﻿@page "/testDragAndDrop"
 @using Blazor.Pages.Components
+@using Microsoft.EntityFrameworkCore
 
 
 <h3>DragAndDrop</h3>
@@ -11,7 +12,9 @@
             <DragAndDropComponent T="Item"
                                   Title="@($"Etapes de la gamme")"
                                   Zones="_zones"
-                                  OnChildChange="@(Do)">
+                                  OnChildChange="Do"
+                                  OnClickDelete="Delete"
+                                  OnClickEdit="Edit">
             </DragAndDropComponent>
         </CascadingValue>
     </div>

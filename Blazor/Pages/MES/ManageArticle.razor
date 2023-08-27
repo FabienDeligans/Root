@@ -76,7 +76,11 @@
                         <DragAndDropComponent T="Etape"
                                               Title="@($"Etapes de la gamme")"
                                               Zones="_zones"
-                                              OnChildChange="@(Do)">
+                                              OnChildChange="@(Do)"
+                                              WithEditOption="true"
+                                              OnClickDelete="Delete"
+                                              OnClickEdit="Edit"
+                                              @ref="_dragAndDropContainer">
                         </DragAndDropComponent>
                     </CascadingValue>
                 </div>

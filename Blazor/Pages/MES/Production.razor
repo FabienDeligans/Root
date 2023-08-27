@@ -85,6 +85,10 @@
                     <br />
                     <div><strong>N° d'étape :</strong> @EtapeToDisplay.Order</div>
                     <div><strong>Nom de l'étape :</strong> @EtapeToDisplay.Nom</div>
+                    @if (EtapeToDisplay.DureePrevue.HasValue)
+                    {
+                        <div><strong>Durée prévue :</strong> @EtapeToDisplay.DureePrevue.Value</div>
+                    }
 
                     <br />
                     <div>

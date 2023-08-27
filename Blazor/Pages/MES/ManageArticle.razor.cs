@@ -1,4 +1,5 @@
 ﻿using Blazor.Controller.Modal;
+using Blazor.Pages.Components;
 using Blazor.Provider.Api.CallApiProviderBase;
 using Blazor.Provider.Api.MES;
 using Blazored.Modal;
@@ -9,6 +10,8 @@ namespace Blazor.Pages.MES
 {
     public partial class ManageArticle
     {
+        private DragAndDropComponent<Etape> _dragAndDropContainer;
+
         [Inject]
         public ICallApi<Article> ArticleProvider { get; set; }
 
@@ -17,6 +20,9 @@ namespace Blazor.Pages.MES
 
         [Inject]
         public ICallApi<OrdreFabrication> OrdreFabricationProvider { get; set; }
+
+        [Inject]
+        public ICallApi<GammeEtape> GammeEtapeProvider { get; set; }
 
         [Inject]
         public ModalController? ModalController { get; set; }
@@ -125,7 +131,10 @@ namespace Blazor.Pages.MES
             var result = (Etape)await ModalController.ShowModal<_EtapeModal>($"Ajouter une étape", parameters); 
 
             Gamme.Etapes.Add(result);
-            await InvokeAsync(StateHasChanged); 
+
+            _dragAndDropContainer.RefreshMe();
+
+            await InvokeAsync(StateHasChanged);
         }
 
         private async Task GoProduction()
@@ -140,12 +149,47 @@ namespace Blazor.Pages.MES
             NavigationManager.NavigateTo($"/productionEnCours/{of.Id}");
         }
 
-        private void Do()
+        private async Task Do()
         {
+            var gammeEtapes = await GammeEtapeProvider.GetAllFilteredByPropertyEqualAsync(nameof(GammeEtape.GammeId), Gamme.Id);
             foreach (var etape in Gamme.Etapes)
             {
-                
+                var gammeEtapeToUpdate = gammeEtapes.FirstOrDefault(v => v.GammeId == Gamme.Id && v.EtapeId == etape.Id); 
+                gammeEtapeToUpdate.Order = etape.Order;
+                await GammeEtapeProvider.UpdateAsync(gammeEtapeToUpdate);
             }
+        }
+
+        private async Task Delete(int arg)
+        {
+            var etape = Gamme.Etapes.FirstOrDefault(v => v.Order == arg);
+            Gamme.Etapes.Remove(etape);
+            _dragAndDropContainer.RefreshMe();
+
+            await InvokeAsync(StateHasChanged);
+        }
+
+        private async Task Edit(int arg)
+        {
+            var etape = Gamme.Etapes.FirstOrDefault(v => v.Order == arg);
+            var parameters = new ModalParameters()
+            {
+                {nameof(_EtapeModal.EtapeId), etape.Id}
+            };
+            var result = (Etape)await ModalController.ShowModal<_EtapeModal>($"Modifier une étape", parameters);
+            _dragAndDropContainer.RefreshMe();
+
+            foreach (var step in Gamme.Etapes)
+            {
+                var gammeEtape = new GammeEtape()
+                {
+                    GammeId = Gamme.Id,
+                    EtapeId = step.Id,
+                    Order = step.Order,
+                };
+                await GammeEtapeProvider.UpdateAsync(gammeEtape);
+            }
+            await InvokeAsync(StateHasChanged);
         }
     }
 }

@@ -35,37 +35,38 @@
                                 <option value="@article.Id">@article.Nom</option>
                             }
                         </select>
-                        <button class="btn btn-info" type="button" @onclick="AddNewArticleToConsume">+</button>
+
+                        @if (Article is not null)
+                        {
+                            <button class="btn btn-info" type="button" @onclick="AddNewArticleToConsume">+</button>
+                        }
                     </div>
+                    
+                    <br />
 
                     <div class="row">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Article Id</th>
                                     <th>Article Nom</th>
                                     <th>Quantité à utiliser</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var article in Etape.ArticlesConsommes)
                                 {
                                     <tr>
-                                        <td>@article.ArticleId</td>
                                         <td>@article.ArticleNom</td>
-                                        <td><input type="number" class="form-control-sm" @bind-value="@article.QuantityToUse"/></td>
+                                        <td><input type="number" class="form-control" @bind-value="@article.QuantityToUse" /></td>
+                                        <td><button class="btn btn-danger" type="button" @onclick="() => RemoveArticle(article)">-</button></td>
                                     </tr>
                                 }
                             </tbody>
                         </table>
                     </div>
                 }
-
-
-
-
-
-
+                
                 <br />
 
                 <div class="form-group">
