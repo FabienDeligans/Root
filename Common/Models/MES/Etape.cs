@@ -11,7 +11,7 @@ public class Etape : Entity, IOrderItem
 
     public List<ArticleConsome>? ArticlesConsommes { get; set; }
 
-    public TimeSpan DureePrevue { get; set; }
+    public TimeSpan? DureePrevue { get; set; }
     
     [BsonIgnore]
     public List<Gamme>? GammeFabrications { get; set;}
@@ -22,8 +22,8 @@ public class Etape : Entity, IOrderItem
 
     public string DisplayName
     {
-        get => Nom;
-        set => Nom = value;
+        get => $"{Order} | {Nom}";
+        set => value = $"{Order} | {Nom}" ;
     }
 }
 
@@ -33,6 +33,5 @@ public class ArticleConsome
     public string ArticleNom { get; set; }
     public int QuantityToUse { get; set; }
     public int? QuantityUsed { get; set; }
-
     public DateTime? DateUsed { get; set; }
 }
