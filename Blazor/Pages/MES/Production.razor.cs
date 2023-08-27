@@ -159,7 +159,7 @@ namespace Blazor.Pages.MES
 
             if (index + 1 < OrdreFabrication.Gamme.Etapes.Count)
             {
-                EtapeToDisplay = OrdreFabrication.Gamme.Etapes[index + 1];
+                EtapeToDisplay = OrdreFabrication.Gamme.Etapes.FirstOrDefault(v => v.Order == etapeToDisplay.Order + 1);
                 await DisplayStep(EtapeToDisplay);
             }
 

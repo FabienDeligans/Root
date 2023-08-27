@@ -74,12 +74,14 @@
                 <div class="col-4">
                     <CascadingValue Value="Gamme.Etapes">
                         <DragAndDropComponent T="Etape"
-                                      Title="@($"Etapes de la gamme")"
-                                      OnChildChange="@(()=> ReloadFullArticle(Article.Id))">
+                                              Title="@($"Etapes de la gamme")"
+                                              Zones="_zones"
+                                              OnChildChange="@(Do)">
                         </DragAndDropComponent>
                     </CascadingValue>
-
                 </div>
+
+                <button class="btn btn-warning" @onclick="GoProduction">Création OF</button>
             }
 
         }

@@ -3,3 +3,29 @@
 <h3>Test</h3>
 
 
+<MudDropContainer T="DropItem"
+                  Items="_items"
+                  ItemsSelector="@((item,dropzone) => item.Zone == dropzone)"
+                  ItemDropped="ItemUpdated"
+                  Class="d-flex flex-wrap flex-grow-1">
+    <ChildContent>
+
+        <MudPaper Class="ma-4 flex-grow-1">
+            <MudList Clickable="true" Class="d-flex flex-column mud-height-full">
+                <MudListSubheader>Drop Zone 1</MudListSubheader>
+                <MudDropZone T="DropItem" Identifier="1" Class="flex-grow-1" AllowReorder="true" />
+            </MudList>
+        </MudPaper>
+
+        <MudPaper Class="ma-4 flex-grow-1">
+            <MudList Clickable="true" Class="d-flex flex-column mud-height-full">
+                <MudListSubheader>Drop Zone 2</MudListSubheader>
+                <MudDropZone T="DropItem" Identifier="2" Class="flex-grow-1" AllowReorder="true" />
+            </MudList>
+        </MudPaper>
+
+    </ChildContent>
+    <ItemRenderer>
+        <MudListItem Text="@($"{@context.Order} | {@context.Name}")" />
+    </ItemRenderer>
+</MudDropContainer>

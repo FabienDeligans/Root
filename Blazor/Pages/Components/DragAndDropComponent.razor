@@ -4,34 +4,37 @@
 @typeparam T
 @inherits ChildComponentBase
 
-@if (_dropzoneItems != null)
+@if (OrderItems != null)
 {
 
     <h3>@Title</h3>
-    <button class="btn btn-info" @onclick="LoadData">Load</button>
-    <div class="d-flex flex-column mud-width-full mud-height-full">
-        <MudDropContainer 
-            T="T" 
-            Items="@_dropzoneItems" 
-            @ref="_container" 
-            ItemsSelector="@((item,dropzone) => item.DropZone == dropzone)" 
-            ItemDropped="ItemUpdated" 
-            Class="d-flex flex-wrap flex-grow-1">
-            <ChildContent>
 
-                <MudPaper Class="ma-4 flex-grow-1">
-                    <MudList Clickable="true" Class="d-flex flex-column mud-height-full">
-                        <MudListSubheader>@DropZoneTitle</MudListSubheader>
-                        <MudDropZone T="T" Identifier="1" Class="flex-grow-1" AllowReorder="true" />
-                    </MudList>
-                </MudPaper>
+    <MudDropContainer T="T"
+                      Items="OrderItems"
+                      ItemsSelector="@((item, dropzone) => item.DropZone == dropzone)"
+                      ItemDropped="ItemUpdated"
+                      Class="d-flex flex-wrap flex-grow-1">
 
-            </ChildContent>
-            <ItemRenderer>
-                <MudListItem Text="@context.DisplayName" />
-            </ItemRenderer>
-        </MudDropContainer>
-    </div>
+        <ChildContent>
+            @if (Zones != null)
+            {
+                @foreach (var zone in Zones)
+                {
+                    <MudPaper Class="ma-4 flex-grow-1">
+                        <MudList Clickable="true" Class="d-flex flex-column mud-height-full">
+                            <MudListSubheader>Zone @zone</MudListSubheader>
+                            <MudDropZone T="T" Identifier="@zone" Class="flex-grow-1" AllowReorder="true" />
+                        </MudList>
+                    </MudPaper>
+                }
+            }
+
+        </ChildContent>
+        <ItemRenderer>
+            <MudListItem Text="@($"{@context.DisplayName}")" />
+        </ItemRenderer>
+    </MudDropContainer>
+
 
 }
 

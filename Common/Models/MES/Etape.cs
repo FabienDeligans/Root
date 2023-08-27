@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 
 namespace Common.Models.MES;
 
@@ -18,8 +17,6 @@ public class Etape : Entity, IOrderItem
 
     public string DropZone { get; set; } = "1";
     public int Order { get; set; }
-    public string Zone { get; set; } = string.Empty;
-
     public string DisplayName
     {
         get => $"{Order} | {Nom}";

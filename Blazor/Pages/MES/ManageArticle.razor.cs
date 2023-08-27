@@ -1,5 +1,6 @@
 ﻿using Blazor.Controller.Modal;
 using Blazor.Provider.Api.CallApiProviderBase;
+using Blazor.Provider.Api.MES;
 using Blazored.Modal;
 using Common.Models.MES;
 using Microsoft.AspNetCore.Components;
@@ -15,7 +16,14 @@ namespace Blazor.Pages.MES
         public ICallApi<Gamme> GammeProvider { get; set; }
 
         [Inject]
+        public ICallApi<OrdreFabrication> OrdreFabricationProvider { get; set; }
+
+        [Inject]
         public ModalController? ModalController { get; set; }
+
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
 
         public List<Article> Articles { get; set; }
         public List<Gamme> Gammes { get; set; }
@@ -96,8 +104,17 @@ namespace Blazor.Pages.MES
                 Gamme = new Gamme() { ArticleId = Article.Id, Etapes = new List<Etape>() };
             }
 
+            _zones = Gamme.Etapes
+                .DistinctBy(v => v.DropZone)
+                .Select(v => v.DropZone)
+                .Order()
+                .ToList();
+
             await InvokeAsync(StateHasChanged);
         }
+
+        private List<string> _zones { get; set; }
+
 
         private async Task AddNewStep()
         {
@@ -109,6 +126,26 @@ namespace Blazor.Pages.MES
 
             Gamme.Etapes.Add(result);
             await InvokeAsync(StateHasChanged); 
+        }
+
+        private async Task GoProduction()
+        {
+            var of = new OrdreFabrication()
+            {
+                GammeId = Gamme.Id, 
+                Gamme = Gamme
+            };
+            of = await OrdreFabricationProvider.CreateAsync(of);
+
+            NavigationManager.NavigateTo($"/productionEnCours/{of.Id}");
+        }
+
+        private void Do()
+        {
+            foreach (var etape in Gamme.Etapes)
+            {
+                
+            }
         }
     }
 }

@@ -17,4 +17,6 @@ public class GammeEtape : Entity
     [BsonIgnore]
     public Etape? Etape { get; set; }
 
+    public int Order { get; set; }
+
 }

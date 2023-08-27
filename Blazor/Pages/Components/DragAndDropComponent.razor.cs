@@ -8,40 +8,29 @@ namespace Blazor.Pages.Components
     public partial class DragAndDropComponent<T> : ChildComponentBase where T : IOrderItem
     {
         [CascadingParameter]
-        public List<T> BaseListOf { get; set; }
+        public List<T> OrderItems { get; set; }
 
         [Parameter]
         public string Title { get; set; }
 
         [Parameter]
-        public string? DropZoneTitle { get; set; }
-
-        private MudDropContainer<T> _container;
-
-        private List<T> _dropzoneItems = new();
-
-        protected override void OnInitialized()
-        {
-            
-        }
-
-        private void LoadData()
-        {
-            _dropzoneItems = BaseListOf;
-            RefreshContainer();
-        }
-
-        protected void RefreshContainer()
-        {
-            StateHasChanged();
-            _container.Refresh();
-        }
-
+        public List<string> Zones { get; set; }
 
         private async Task ItemUpdated(MudItemDropInfo<T> dropItem)
         {
-            BaseListOf.UpdateOrder(dropItem, item => item.Order);
-            await RefreshParent(); 
+            dropItem.Item.DropZone = dropItem.DropzoneIdentifier;
+
+            int indexOffset;
+            indexOffset = 0;
+            var distinctDropZone = OrderItems.DistinctBy(v => v.DropZone).Select(v => v.DropZone).Order();
+
+            if (dropItem.DropzoneIdentifier != distinctDropZone.First())
+            {
+                indexOffset = OrderItems.Count(x => x.DropZone == distinctDropZone.First());
+            }
+            OrderItems.UpdateOrder(dropItem, item => item.Order, indexOffset);
+
+            await RefreshParent();
         }
     }
 }

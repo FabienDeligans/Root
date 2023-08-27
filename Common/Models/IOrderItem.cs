@@ -4,8 +4,6 @@
     {
         public string DropZone { get; set; }
         public int Order { get; set; }
-        public string Zone { get; set; }
-
         public string DisplayName { get; set; }
     }
 }

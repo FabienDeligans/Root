@@ -85,12 +85,12 @@ public class OrdreFabricationLogic : BaseApiLogic<OrdreFabrication>
     public override async Task<OrdreFabrication> CreateAsync(OrdreFabrication entity)
     {
         // enregistrement de la gamme dans l'of
-        var gamme = await _gammeLogic.GetOneSimpleAsync(entity.GammeId);
-        gamme.Etapes = gamme.Etapes.OrderBy(v => v.Order).ToList();
-        entity.Gamme = gamme;
+        //var gamme = await _gammeLogic.GetOneSimpleAsync(entity.GammeId);
+        //gamme.Etapes = gamme.Etapes.OrderBy(v => v.Order).ToList();
+        //entity.Gamme = gamme;
 
         // enregistrement de l'article à fabriquer dans l'of
-        entity.ArticleId = gamme.ArticleId;
+        entity.ArticleId = entity.Gamme.ArticleId;
         entity.ArticleFabrique = await _articleLogic.GetOneSimpleAsync(entity.ArticleId);
 
         // set un nouveau n° d'of
