@@ -15,5 +15,12 @@
 
             return new string(randomChar); 
         }
+
+        public static T? GetRandomEnum<T>()
+        {
+            var rand = new Random();
+            var values = Enum.GetValues(typeof(T));
+            return (T)values.GetValue(rand.Next(values.Length))!;
+        }
     }
 }
