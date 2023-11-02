@@ -38,20 +38,20 @@ namespace Blazor.Pages.Components
         }
 
         [Parameter]
-        public EventCallback<int> OnClickDelete{ get; set; }
+        public EventCallback<int> OnClickDeleteItem{ get; set; }
 
         private async Task DeleteItem(T item)
         {
-            await OnClickDelete.InvokeAsync(item.Order);
+            await OnClickDeleteItem.InvokeAsync(item.Order);
         }
 
         [Parameter]
-        public EventCallback<int> OnClickEdit { get; set; }
+        public EventCallback<int> OnClickEditItem { get; set; }
 
 
         private async Task EditItem(T item)
         {
-            await OnClickEdit.InvokeAsync(item.Order);
+            await OnClickEditItem.InvokeAsync(item.Order);
         }
 
         public async Task RefreshMe()

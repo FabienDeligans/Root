@@ -6,7 +6,7 @@ namespace _LogicLayer.Processes
 {
     public abstract class AbstractProcessStep : IProcessStep
     {
-        public string CurrentStep { get; set; }
+        public Enum CurrentStep { get; set; }
         public IProcessStep? NextProcess { get; set; }
 
         private readonly IApiServiceDatabase _serviceDatabase;
@@ -23,7 +23,7 @@ namespace _LogicLayer.Processes
             return NextProcess;
         }
 
-        public IProcessStep SetCurrentStep(string currentStep)
+        public IProcessStep SetCurrentStep(Enum currentStep)
         {
             CurrentStep = currentStep;
             return this;
