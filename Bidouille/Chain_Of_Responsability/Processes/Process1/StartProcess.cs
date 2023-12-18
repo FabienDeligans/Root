@@ -3,7 +3,6 @@
     public class StartProcess : AbstractProcess
     {
         public override IProcess NextProcess { get; set; }
-        public MyEnum NextStep { get; set; } = MyEnum.start; 
 
         public StartProcess()
         {
