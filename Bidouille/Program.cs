@@ -66,7 +66,7 @@ namespace Bidouille
             var durations = new List<double>(); 
             var durationNews = new List<double>();
             var dif = new List<double>();
-            for (var i = 0; i < 10_000; i++)
+            for (var i = 0; i < 1_000; i++)
             {
                 var doSerialize = new DoSerializer();
                 var (count, duration, durationNew) = doSerialize.Do(1_000);
