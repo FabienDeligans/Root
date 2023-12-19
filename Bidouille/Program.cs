@@ -18,15 +18,17 @@ namespace Bidouille
             var decA = new DecoratorA(truc);
             var decB = new DecoratorB(decA);
 
+            Console.WriteLine(truc.Do());
+            Console.WriteLine(decA.Do());
             Console.WriteLine(decB.Do());
 
             #endregion
 
             #region Observer
 
-            var handler = new TrucHandler<int>();
-            var observer1 = new TrucObserver<int>();
-            var observer2 = new TrucObserver<int>();
+            var handler = new ConcreteHandler();
+            var observer1 = new ConcreteObserver();
+            var observer2 = new ConcreteObserver();
 
             handler.Do(1);
             observer1.Subscribe(handler);

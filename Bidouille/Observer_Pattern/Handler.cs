@@ -1,11 +1,13 @@
-﻿namespace Bidouille.Observer_Pattern
+﻿using System.Text.Json;
+
+namespace Bidouille.Observer_Pattern
 {
-    public class TrucHandler<T> : IObservable<T>
+    public abstract class Handler<T> : IObservable<T>
     {
         private List<T> _listDeTruc;
         private List<IObserver<T>> _observers;
 
-        public TrucHandler()
+        public Handler()
         {
             _listDeTruc = new List<T>();
             _observers = new List<IObserver<T>>();
@@ -21,13 +23,11 @@
                     observer.OnNext(truc);
                 }
             }
-            return new DisposableSubscription<T>(_observers, observer);
+            return new Subscription<T>(_observers, observer);
         }
 
-        public void Do(T data)
+        public virtual void Do(T data)
         {
-            // Do something
-
             _listDeTruc.Add(data);
             if (_observers.Count == 0) return;
 
@@ -44,6 +44,15 @@
                 observer.OnCompleted();
             }
             _observers.Clear();
+        }
+    }
+
+    public class ConcreteHandler : Handler<object>
+    {
+        public override void Do(object data)
+        {
+            Console.WriteLine($"Do in handler : {JsonSerializer.Serialize(data)}");
+            base.Do(data);
         }
     }
 }

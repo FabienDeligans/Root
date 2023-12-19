@@ -10,6 +10,6 @@ public class DecoratorA : AbstractDecorator
 
     public override string Do()
     {
-        return $"azert {base.Do()}";
+        return $"Decorator A | {base.Do()}";
     }
 }
