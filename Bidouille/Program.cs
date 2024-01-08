@@ -13,6 +13,9 @@ namespace Bidouille
     {
         static async Task Main(string[] args)
         {
+            var testDelegate = new TestDelegate(); 
+            testDelegate.Do();
+            
 
             #region Decorator
 
@@ -31,20 +34,6 @@ namespace Bidouille
             var handler = new ConcreteHandler();
             var observer1 = new ConcreteObserver();
             var observer2 = new ConcreteObserver();
-
-            var testDelegate = new TestDelegate(); 
-            testDelegate.Do();
-            
-            var result0 = DuStringAsync(20).ConfigureAwait(false); 
-            var result00 = DuStringAsync(20).GetAwaiter().GetResult(); 
-            var result1 = DoString(20);
-
-
-
-
-            var provider = new TrucHandler<int>();
-            var observer1 = new TrucObserver<int>();
-            var observer2 = new TrucObserver<int>();
 
             handler.Do(1);
             observer1.Subscribe(handler);
@@ -106,26 +95,8 @@ namespace Bidouille
             Console.WriteLine($"Duration Context serialization        : " + durationNews.Average());
             Console.WriteLine($"DurationNew Context serialization Min : " + durationNews.Min());
             Console.WriteLine($"DurationNew Context serialization Max : " + durationNews.Max());
-            var client = new Client();
-            client.ClientProcess(new Do1Process());
+            #endregion
+
         }
-
-            Console.WriteLine($"");
-            Console.WriteLine($"Difference average : {dif.Average()}");
-            Console.WriteLine($"Difference min     : {dif.Min()}");
-            Console.WriteLine($"Difference max     : {dif.Max()}");
-
-        public static async Task<string> DuStringAsync(int nb)
-        {
-            return await Task.Run(()=> RandomHelper.GetRandomString(nb)); 
-        }
-
-        public static string DoString(int nb)
-        {
-            return RandomHelper.GetRandomString(nb);
-        }
-
-
-
     }
 }
