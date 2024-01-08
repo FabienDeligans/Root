@@ -2,7 +2,7 @@
 {
     public class Sender
     {
-        public event EventHandler<ICustomEvent>? SendEvent; 
+        public event EventHandler<EventArgs>? SendEvent; 
 
         public void Do()
         {
@@ -16,7 +16,7 @@
             CallEvent(eventToSend); 
         }
 
-        private void CallEvent(ICustomEvent eventToSend)
+        private void CallEvent(EventArgs eventToSend)
         {
             SendEvent?.Invoke(this, eventToSend);
         }

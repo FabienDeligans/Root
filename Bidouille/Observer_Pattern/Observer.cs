@@ -1,23 +1,25 @@
-﻿namespace Bidouille.Observer_Pattern
+﻿using System.Text.Json;
+
+namespace Bidouille.Observer_Pattern
 {
-    public class TrucObserver<T> : IObserver<T>
+    public abstract class Observer<T> : IObserver<T>
     {
-        private IDisposable _disposableSubscription;
+        private IDisposable _subscription;
         private List<T> _dataList;
 
-        public TrucObserver()
+        public Observer()
         {
             _dataList = new List<T>();
         }
 
-        public void Subscribe(TrucHandler<T> subscription)
+        public void Subscribe(Handler<T> subscription)
         {
-            _disposableSubscription = subscription.Subscribe(this);
+            _subscription = subscription.Subscribe(this);
         }
 
         public void UnSubscribe()
         {
-            _disposableSubscription.Dispose();
+            _subscription.Dispose();
             _dataList.Clear();
         }
 
@@ -38,10 +40,19 @@
             _dataList.Add(value);
             foreach (var data in _dataList)
             {
-                // Do something
-                Console.WriteLine(data);
+               DoInObserver(data); 
             }
             _dataList.Remove(value);
+        }
+
+        public abstract void DoInObserver(T value);
+    }
+
+    public class ConcreteObserver : Observer<object>
+    {
+        public override void DoInObserver(object value)
+        {
+            Console.WriteLine($"Do in observer : {JsonSerializer.Serialize(value)}");
         }
     }
 }

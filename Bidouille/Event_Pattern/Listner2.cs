@@ -10,7 +10,7 @@
             Sender.SendEvent += OnSendEvent;
         }
 
-        private void OnSendEvent(object? sender, ICustomEvent e)
+        private void OnSendEvent(object? sender, EventArgs e)
         {
             // Do something
 
