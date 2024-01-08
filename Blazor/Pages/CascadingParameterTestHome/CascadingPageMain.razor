@@ -1,0 +1,28 @@
+﻿@page "/cascading-page-main"
+@inherits MainComponent
+
+<div style="border: solid 2px red; margin: 15px; padding : 15px;">
+
+    <h3>Parent Page</h3>
+
+    <button class="btn btn-info" @onclick="ChangeParameter">Change values</button>
+    
+    <br />
+    <br />
+
+    <div>Parameter 1 : @Parameter_1</div>
+    <div>Parameter 2 : @Parameter_2</div>
+
+    @* <CascadingValue TValue="string" Name="1_Parameter" IsFixed="false" Value="Parameter_1"> *@
+        <CascadingValue TValue="string" Name="2_Parameter" IsFixed="false" Value="Parameter_2">
+
+            <ChildComponent_1>
+                <ChildComponent_2></ChildComponent_2>
+            </ChildComponent_1>
+            
+            <ChildComponent_2/>
+
+        </CascadingValue>
+    @* </CascadingValue> *@
+
+</div>
