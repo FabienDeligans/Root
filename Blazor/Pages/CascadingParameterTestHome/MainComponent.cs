@@ -18,10 +18,10 @@ namespace Blazor.Pages.CascadingParameterTestHome
             base.BuildRenderTree(builder);
 
             builder.OpenComponent<CascadingValue<string>>(0);
-            builder.AddAttribute(1, "Value", "ae"); // Exemple : valeur transmise
-            builder.AddAttribute(2, "Name", "1_Parameter");
-            builder.AddAttribute(3, "IsFixed", false);
-            builder.AddAttribute(4, "ChildContent", ChildContent);
+            builder.AddComponentParameter(1, "Value", "ae"); // Exemple : valeur transmise
+            builder.AddComponentParameter(2, "Name", "1_Parameter");
+            builder.AddComponentParameter(3, "IsFixed", false);
+            builder.AddComponentParameter(4, "ChildContent", ChildContent);
             builder.CloseComponent();
 
         }
