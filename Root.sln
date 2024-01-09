@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Bidouille", "_Bidouille", "{732FD7C2-FACE-4EC2-9800-A0D57661A3C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bidouille", "Bidouille\Bidouille.csproj", "{2A86C081-C0E6-4086-894B-B46557408174}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bidouille", "Bidouille\Bidouille.csproj", "{2A86C081-C0E6-4086-894B-B46557408174}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
