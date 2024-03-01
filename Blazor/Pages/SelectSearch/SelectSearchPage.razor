@@ -1,0 +1,63 @@
+﻿@page "/selectSearchPage"
+
+<h3>SelectSearchPage</h3>
+
+<div><InputCheckbox @bind-Value="MultipleSelect" />With multiple select</div>
+<div><InputCheckbox @bind-Value="Search" />With search bar</div>
+<div><InputCheckbox @bind-Value="Dense" />Dense</div>
+<div><InputCheckbox @bind-Value="SelectAll" />Select all</div>
+
+<InputSelectCustom ListOfChoice="ObjectValues"
+             MultipleSelection="MultipleSelect"
+             Search="Search"
+             Dense="Dense"
+             SelectAll="SelectAll"
+             OnSelectedValuesChanged="ValuesChange"/>
+
+@code {
+    
+    public bool MultipleSelect { get; set; }
+    public bool Search { get; set; }
+    public bool Dense { get; set; }
+    public bool SelectAll { get; set; }
+
+
+    private void ValuesChange(IEnumerable<ObjectValue> obj)
+    {
+    }
+
+    public List<ObjectValue> ObjectValues { get; set; } = []; 
+
+    protected override void OnInitialized()
+    {
+        foreach (var state in _states)
+        {
+            ObjectValues.Add(new ObjectValue()
+            {
+                Title = state, 
+                Value = state
+            });
+        }
+
+    }
+
+    private string[] _states =
+    {
+        "Alabama", "Alaska", "American Samoa", "Arizona",
+        "Arkansas", "California", "Colorado", "Connecticut",
+        "Delaware", "District of Columbia", "Federated States of Micronesia",
+        "Florida", "Georgia", "Guam", "Hawaii", "Idaho",
+        "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky",
+        "Louisiana", "Maine", "Marshall Islands", "Maryland",
+        "Massachusetts", "Michigan", "Minnesota", "Mississippi",
+        "Missouri", "Montana", "Nebraska", "Nevada",
+        "New Hampshire", "New Jersey", "New Mexico", "New York",
+        "North Carolina", "North Dakota", "Northern Mariana Islands", "Ohio",
+        "Oklahoma", "Oregon", "Palau", "Pennsylvania", "Puerto Rico",
+        "Rhode Island", "South Carolina", "South Dakota", "Tennessee",
+        "Texas", "Utah", "Vermont", "Virgin Island", "Virginia",
+        "Washington", "West Virginia", "Wisconsin", "Wyoming",
+    };
+
+
+}

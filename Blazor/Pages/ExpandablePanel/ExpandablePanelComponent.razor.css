@@ -1,0 +1,10 @@
+﻿.expandable btn btn-info .close {
+    height: 100px;
+    width: 30px;
+}
+
+
+.expandable btn btn-info open {
+    height: 100px;
+    width: 150px;
+}

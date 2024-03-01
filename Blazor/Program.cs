@@ -8,6 +8,7 @@ using Blazor.Provider.LoraineProvider;
 using Blazored.Modal;
 using Common.Models.MES;
 using MudBlazor.Services;
+using MudExtensions.Services;
 
 namespace Blazor
 {
@@ -22,7 +23,9 @@ namespace Blazor
             builder.Services.AddServerSideBlazor();
             
             builder.Services.AddMudServices();
+            builder.Services.AddMudExtensions();
             builder.Services.AddBlazoredModal();
+
             builder.Services.AddScoped<ModalController>();
 
             builder.Services.AddScoped<BlazorExceptionManager>();
